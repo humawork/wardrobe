@@ -1,0 +1,5 @@
+require_relative 'coercions/integer'
+require_relative 'coercions/float'
+require_relative 'coercions/string'
+require_relative 'coercions/hash'
+require_relative 'coercions/array'
