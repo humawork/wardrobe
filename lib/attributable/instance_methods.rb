@@ -1,13 +1,17 @@
 module Attributable
   module InstanceMethods
     def initialize(*args, **kargs)
-      @_attribute_set_singleton = nil
-      kargs = args.merge(kargs) if args.any?
+      raise "POC: More than one arg not supported..." if args.length > 1
+      kargs = args.first.merge(kargs) if args.any?
       _attributable_init(kargs.dup)
     end
 
     def _attribute_set
-      @_attribute_set_singleton || self.class.attribute_set
+      if instance_variable_defined?('@_attribute_set_singleton')
+        @_attribute_set_singleton
+      else
+        self.class.attribute_set
+      end
     end
 
     def _add_attribute(name, klass, **args, &blk)

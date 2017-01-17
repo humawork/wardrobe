@@ -24,6 +24,8 @@ module Attributable
 
     def coerce(val)
       klass.coerce(val)
+    rescue Coercions::UnsupportedError
+      raise Coercions::UnsupportedError, "Can't coerce #{val.class} `#{val}` into #{klass}"
     end
 
     def getter_name
@@ -50,6 +52,8 @@ module Attributable
           instance_variable_set("@#{k}", args.delete(k))
           define_singleton_method(k) { instance_variable_get("@#{k}") }
           add_plugin_hooks(plugin)
+        else
+          puts "WARN: option #{k} not supported"
         end
       end
     end

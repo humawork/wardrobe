@@ -87,6 +87,6 @@ class TestFirst < Minitest::Test
     assert_equal 5, instance2._attribute_set.length
     assert_equal Integer, instance._attribute_set.dynamic.klass
     assert_equal String, instance2._attribute_set.dynamic.klass
-    assert_equal nil, klass.attribute_set[:dynamic]
+    assert_nil klass.attribute_set[:dynamic]
   end
 end

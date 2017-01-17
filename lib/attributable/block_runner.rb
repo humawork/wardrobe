@@ -19,7 +19,6 @@ module Attributable
     end
 
     def attribute(name, klass, **args, &blk)
-      # binding.pry
       calling_klass.attribute(name, klass, **merged_options_for_attribute(args), &blk)
     end
 
@@ -28,22 +27,24 @@ module Attributable
     end
 
     def merged_options_for_attribute(args)
+      result = args.dup
       options.map do |key, value|
         case
         when self.class.plugins[key] == Boolean
-          [
-            key,
-            args[key] || value.last
-          ]
+          result[key] = value.last unless result[key]
         when self.class.plugins[key] == Array
-          [
-            key,
-            args[key] ? value.dup + args[key] : value.dup
-          ]
+          result[key] = if result[key]
+                          value.dup + result[key]
+                        else
+                          value.dup
+                        end
         when self.class.plugins[key] == Hash
           binding.pry
+        else
+          binding.pry
         end
-      end.to_h
+      end
+      result
     end
 
     def self.plugins
@@ -60,7 +61,9 @@ module Attributable
       when option_klass == Array
         define_array_method(option_name)
       when option_klass == Hash
-        binding.pry
+        define_hash_method(option_name)
+      else
+        raise "Unsupported plugin class: #{option_klass}"
       end
     end
 
@@ -71,6 +74,21 @@ module Attributable
           options[name].push(*values)
           instance_exec(&blk) if blk || block_given?
         ensure
+          options[name].pop(values.length)
+          options.delete(name) if options[name].empty?
+        end
+      end
+    end
+
+    def self.define_hash_method(name)
+      define_method(name) do |**args, &blk|
+        begin
+          options[name] ||= {}
+          binding.pry
+          options[name].push(*values)
+          instance_exec(&blk) if blk || block_given?
+        ensure
+          binding.pry
           options[name].pop(values.length)
           options.delete(name) if options[name].empty?
         end

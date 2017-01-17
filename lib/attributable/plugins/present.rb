@@ -4,21 +4,12 @@ module Attributable
       extend Attributable::Plugin
 
       module InstanceMethods
-
+        def _present(*args)
+          _attribute_set.set.transform_values do |value|
+            send(value.name)._present(*args)
+          end
+        end
       end
-
-      # setter do |value, instance, arg|
-      #   if arg.nil_if_empty
-      #     case value
-      #     when String, Array, Hash
-      #       value unless value.empty?
-      #     else
-      #       value
-      #     end
-      #   else
-      #     value
-      #   end
-      # end
     end
   end
 end

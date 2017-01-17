@@ -1,11 +1,13 @@
 module Attributable
   module Coercions
-    refine Float.singleton_class do
+    refine Symbol.singleton_class do
       def coerce(v)
         case v
         when self then v
-        when String, Integer
-          v.to_f
+        when String
+          v.to_sym
+        when NilClass
+          nil
         else
           raise UnsupportedError
         end

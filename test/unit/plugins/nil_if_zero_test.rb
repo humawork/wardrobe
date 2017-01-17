@@ -17,8 +17,8 @@ class NilIfZeroTest < Minitest::Test
   end
 
   def test_default_literal
-    assert_equal nil, @row.some_relation_id
+    assert_nil @row.some_relation_id
     assert_equal 0, @row.some_other_relation_id
-    assert_equal nil, @row.test_in_block
+    assert_nil @row.test_in_block
   end
 end

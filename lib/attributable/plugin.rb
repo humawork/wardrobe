@@ -2,19 +2,16 @@ module Attributable
   class PluginNameTaken < StandardError; end
   class PluginOptionKeywordTaken < StandardError; end
 
-  def self.plugins
-    @plugins ||= {}
-  end
+  @plugins = {}
+  @options = {}
 
-  def self.options
-    @options ||= {}
-  end
+  def self.plugins; @plugins; end
+  def self.options; @options; end
 
   def self.register_plugin(name, mod)
     raise PluginNameTaken, "Plugin #{name} already in use" if plugins[name]
     plugins[name] = mod
   end
-
 
   module Plugin
     def self.extended(base)
@@ -25,17 +22,39 @@ module Attributable
     end
 
     def setter(&blk)
-      return @setter unless block_given?
-      @setter = blk
+      if block_given?
+        @setter = blk
+      else
+        @setter ||= nil
+      end
+      # return @setter unless block_given?
+      # @setter = blk
     end
 
     def option_klass; @option_klass; end
     def option_name; @option_name; end
 
-    def option(name, klass)
+    def instance_methods_module
+      const_get(:InstanceMethods)
+    rescue NameError
+      nil
+    end
+
+    def class_methods_module
+      const_get(:ClassMethods)
+    rescue NameError
+      nil
+    end
+
+    def option(name, klass, default: nil)
+      # TODO: Refactor this to apply only if plugin is in use
+      # THOUGHT: Should we support a set of default options enabled globaly?
+
       raise PluginOptionKeywordTaken if Attributable.options[:name]
+      # These needs to go somewhere else
       @option_name = name
       @option_klass = klass
+      @option_default = default
       Attributable.options[name] = self
       BlockRunner.add_plugin(self)
     end

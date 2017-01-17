@@ -6,6 +6,9 @@ module Attributable
         when self then v
         when String, Float
           v.to_i
+        when NilClass then nil
+        else
+          raise UnsupportedError
         end
       end
     end

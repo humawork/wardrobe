@@ -26,12 +26,12 @@ end
 class BlockSetupTest < Minitest::Test
   def test_one
     instance = BlockModel.new(name: '', status: 0, friends: [], address: '', id: 0, uuid: 0, nested_int: 0 )
-    assert_equal nil, instance.name
-    assert_equal nil, instance.status
-    assert_equal nil, instance.friends
+    assert_nil instance.name
+    assert_nil instance.status
+    assert_nil instance.friends
     assert_equal '', instance.address
     assert_equal 0, instance.id
-    assert_equal nil, instance.uuid
+    assert_nil instance.uuid
     assert_equal 0, instance.nested_int
   end
 end
