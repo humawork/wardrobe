@@ -1,7 +1,7 @@
 module Attributable
   module Plugins
-    module Validate
-      module Validations
+    module Validations
+      module Refinements
         refine String do
           def match(regex)
             super ? [ true, nil ] : [false, "\"#{self}\" does not match regex '#{regex.inspect}'" ]

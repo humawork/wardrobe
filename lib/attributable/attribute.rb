@@ -1,11 +1,12 @@
 module Attributable
   class Attribute
     using Coercions
-    attr_reader :name, :klass, :hooks
+    attr_reader :name, :klass, :options, :hooks
 
     def initialize(name, klass, **args, &blk)
       @name = name
       @klass = klass
+      @options = {}
       @hooks = {
         setter: []
       }
@@ -26,6 +27,27 @@ module Attributable
       klass.coerce(val)
     rescue Coercions::UnsupportedError
       raise Coercions::UnsupportedError, "Can't coerce #{val.class} `#{val}` into #{klass}"
+    end
+
+    def merge(other)
+      merged_options = options.dup
+      other.options.each do |key, value|
+        if merged_options[key]
+          case value
+          when Hash
+            merged_options[key] = merged_options[key].merge(value)
+          else
+            binding.pry
+          end
+        else
+          merged_options[key] = value.dup
+        end
+      end
+      self.class.new(
+        name,
+        other.klass,
+        merged_options
+      )
     end
 
     def getter_name
@@ -49,8 +71,8 @@ module Attributable
     def set_valid_options(**args)
       args.each do |k,v|
         if plugin = Attributable.options[k]
-          instance_variable_set("@#{k}", args.delete(k))
-          define_singleton_method(k) { instance_variable_get("@#{k}") }
+          @options[k] = args[k]
+          define_singleton_method(k) { @options[k] }
           add_plugin_hooks(plugin)
         else
           puts "WARN: option #{k} not supported"

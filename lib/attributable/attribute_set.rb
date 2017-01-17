@@ -56,7 +56,12 @@ module Attributable
         dup.add(name, klass, **args, &blk)
       else
         @set = set.dup
-        set[name] = Attribute.new(name, klass, **args, &blk)
+        attribute = Attribute.new(name, klass, **args, &blk)
+        if set[name]
+          set[name] = set[name].merge(attribute)
+        else
+          set[name] = attribute
+        end
         freeze
       end
     end

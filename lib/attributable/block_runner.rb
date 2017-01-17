@@ -39,7 +39,11 @@ module Attributable
                           value.dup
                         end
         when self.class.plugins[key] == Hash
-          binding.pry
+          result[key] = if result[key]
+                          result[key].merge(value)
+                        else
+                          value.dup
+                        end
         else
           binding.pry
         end
@@ -84,12 +88,10 @@ module Attributable
       define_method(name) do |**args, &blk|
         begin
           options[name] ||= {}
-          binding.pry
-          options[name].push(*values)
+          options[name].merge!(args)
           instance_exec(&blk) if blk || block_given?
         ensure
-          binding.pry
-          options[name].pop(values.length)
+          args.keys.map { |key| options[name].delete(key) }
           options.delete(name) if options[name].empty?
         end
       end

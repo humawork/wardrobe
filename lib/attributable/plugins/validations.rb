@@ -1,13 +1,13 @@
-require_relative 'validate/validations/integer'
-require_relative 'validate/validations/string'
-require_relative 'validate/validator'
+require_relative 'validations/refinements/integer'
+require_relative 'validations/refinements/string'
+require_relative 'validations/refinements/nil_class'
+require_relative 'validations/validator'
 
 module Attributable
   module Plugins
-    module Validate
+    module Validations
       extend Attributable::Plugin
-      option :validate, Hash
-      option :required, Boolean
+      option :validates, Hash
 
       module InstanceMethods
         def _validate!

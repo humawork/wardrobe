@@ -12,7 +12,7 @@ require_relative 'attributable/plugins/nil_if_zero'
 require_relative 'attributable/plugins/default_value'
 require_relative 'attributable/plugins/preset'
 require_relative 'attributable/plugins/present'
-require_relative 'attributable/plugins/validate'
+require_relative 'attributable/plugins/validations'
 require_relative 'attributable/plugins/optional_setter'
 require_relative 'attributable/plugins/optional_getter'
 

@@ -1,8 +1,8 @@
 module Attributable
   module Plugins
-    module Validate
+    module Validations
       class Validator
-        using Validations
+        using Refinements
 
         attr_reader :instance
 

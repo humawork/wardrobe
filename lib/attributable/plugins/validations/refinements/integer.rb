@@ -1,7 +1,7 @@
 module Attributable
   module Plugins
-    module Validate
-      module Validations
+    module Validations
+      module Refinements
         refine Integer do
           def gte(int)
             self >= int ? [true, nil] : [false, "integer #{self} violates greater than or equal to #{int}" ]
