@@ -12,14 +12,13 @@ module Attributable
 
         def run
           attribute_set.each do |name, options|
-            if options.respond_to?(:validate)
-              validate_validations(name, options.validate)
+            if options.respond_to?(:validates)
+              validate_validations(name, options.validates)
             elsif validateable?(name, options)
               result = @instance.send(name)._validate!
               instance._validation_errors[name] = result._validation_errors unless result._valid?
             end
           end
-          @instance._validated!
         end
 
         private
