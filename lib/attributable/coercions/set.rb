@@ -1,7 +1,7 @@
 module Attributable
   module Coercions
     refine Set.singleton_class do
-      # def coerce(v)
+      # def coerce(v, atr)
       #   case v
       #   when self then v
       #   when Integer, Float

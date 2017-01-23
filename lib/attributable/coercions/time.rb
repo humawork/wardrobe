@@ -1,10 +1,11 @@
 module Attributable
   module Coercions
-    refine Float.singleton_class do
+    refine Time.singleton_class do
       def coerce(v, atr)
         case v
-        when self then v
-        when String, Integer then v.to_f
+        when self     then v
+        when Integer  then Time.at(v)
+        when String   then Time.parse(v)
         when NilClass then nil
         else
           raise UnsupportedError

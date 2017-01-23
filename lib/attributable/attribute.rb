@@ -24,9 +24,11 @@ module Attributable
     end
 
     def coerce(val)
-      klass.coerce(val)
+      klass.coerce(val, self)
     rescue Coercions::UnsupportedError
       raise Coercions::UnsupportedError, "Can't coerce #{val.class} `#{val}` into #{klass}"
+    # rescue
+    #   binding.pry
     end
 
     def merge(other)
