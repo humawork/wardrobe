@@ -91,7 +91,7 @@ module Attributable
 
     alias remove_attribute remove_attributes
 
-    def coerce(val)
+    def coerce(val, atr)
       new(val)
     end
 

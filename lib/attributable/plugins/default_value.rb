@@ -5,8 +5,10 @@ module Attributable
 
       option :default, Boolean
 
+      #TODO: Find a way to make to get rid of setter concept...
+
       setter do |value, instance, arg|
-        if value
+        if value && ![{},[]].include?(value)
           value
         else
           default = arg.default

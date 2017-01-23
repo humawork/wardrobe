@@ -15,7 +15,8 @@ module Attributable
         case v
         when Hash
           v.map do |key, value|
-            [self.first[0].coerce(key), self.first[1].coerce(value)]
+            #TODO: Since we pass around the atr object, how should this work here? Just pass nil?
+            [self.first[0].coerce(key, nil), self.first[1].coerce(value, nil)]
           end.to_h
         when NilClass then {}
         else

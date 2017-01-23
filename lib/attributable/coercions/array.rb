@@ -14,7 +14,7 @@ module Attributable
       def coerce(v, atr)
         case v
         when Array
-          v.map { |item| self.first.coerce(item) }
+          v.map { |item| self.first.coerce(item, nil) }
         when NilClass then []
         else
           raise UnsupportedError
