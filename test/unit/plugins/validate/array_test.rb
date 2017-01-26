@@ -1,7 +1,7 @@
 # require 'test_helper'
 #
 # class ValidateTestArrayModel
-#   extend Attributable
+#   extend Atrs
 #
 #   plugin :validate
 #

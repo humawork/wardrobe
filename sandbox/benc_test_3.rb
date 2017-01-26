@@ -1,4 +1,4 @@
-require_relative '../lib/attributable'
+require_relative '../lib/atrs'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -29,14 +29,14 @@ class UserAdvancedVirtus
   end
 end
 
-class AddressAttributable
-  extend Attributable
+class AddressAtrs
+  extend Atrs
   attribute :street, String
   attribute :zip_code, String
 end
 
-class UserAdvancedAttributable
-  extend Attributable
+class UserAdvancedAtrs
+  extend Atrs
   attribute :first_name,           String
   attribute :last_name,            String
   attribute :age,                  Integer
@@ -44,7 +44,7 @@ class UserAdvancedAttributable
   attribute :with_default_literal, String, default: 'literal'
   attribute :with_default_proc,    String, default: -> { 'proc' }
   attribute :with_default_method,  String, default: :default_method
-  attribute :address,              AddressAttributable
+  attribute :address,              AddressAtrs
 
   def default_method
     'method'
@@ -61,8 +61,8 @@ test_3_hash = {
 
 
 Benchmark.ips do |x|
-  x.report('Attributable Advanced') {
-    instance = UserAdvancedAttributable.new(test_3_hash)
+  x.report('Atrs Advanced') {
+    instance = UserAdvancedAtrs.new(test_3_hash)
     instance.first_name == 'Test'
     instance.last_name == 'Person'
     instance.age == 1

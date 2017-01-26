@@ -1,9 +1,9 @@
-# Attributable (working title)
+# Atrs
 
 This is an early POC Virtus inspired attribute gem. We might aim to make a
 drop in compatible mode. (Maybe through a plugin?)
 
-Attributable should:
+Atrs should:
 
 * be faster than Virtus
 * have no dependencies (plugins may)

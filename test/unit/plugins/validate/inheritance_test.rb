@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module ValidateMixin
-  extend Attributable
+  extend Atrs
   plugin :validations
   attribute :name, String, validates: { in: %w(Two Words) }
 end

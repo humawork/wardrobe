@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 gem 'virtus'
-gem 'attributable',        path: '../'
+gem 'atrs',        path: '../'
 gem 'derailed_benchmarks', group: :development
 gem 'stackprof',           group: :development

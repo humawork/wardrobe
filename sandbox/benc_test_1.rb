@@ -1,4 +1,4 @@
-require_relative '../lib/attributable'
+require_relative '../lib/atrs'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -12,14 +12,14 @@ class SimpleVirtus
   attribute :name, String
 end
 
-class SimpleAttributable
-  extend Attributable
+class SimpleAtrs
+  extend Atrs
   attribute :name, String
 end
 
 Benchmark.ips do |x|
-  x.report('Attributable Simple') {
-    instance = SimpleAttributable.new(name: 'Test')
+  x.report('Atrs Simple') {
+    instance = SimpleAtrs.new(name: 'Test')
     instance.name == 'Test'
   }
   x.report('Virtus Simple') {

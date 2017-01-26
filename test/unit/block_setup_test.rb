@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class BlockModel
-  extend Attributable
+  extend Atrs
 
   attributes nil_if_empty: true, nil_if_zero: true do
     attribute :name,    String

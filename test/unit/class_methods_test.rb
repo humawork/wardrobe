@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class WithFourAttributes
-  extend Attributable
+  extend Atrs
   attribute :first_name,   String
   attribute :last_name,    String
   attribute :email,        String
@@ -14,12 +14,12 @@ class WithOneAttributeRemoved < WithFourAttributes
 end
 
 module Essentials
-  extend Attributable
+  extend Atrs
   attribute :id, String
 end
 
 module SomeExtraAttributes
-  extend Attributable
+  extend Atrs
   attribute :hair_style, String
 end
 
@@ -33,7 +33,7 @@ class KlassWithIncludedModule < WithFourAttributes
 end
 
 class CoerceToStringTest
-  extend Attributable
+  extend Atrs
   attribute :number, Integer
 end
 
@@ -48,7 +48,7 @@ class TestFirst < Minitest::Test
     klass = WithFourAttributes
     instance = klass.new(first_name: 'Foo', last_name: 'Bar')
 
-    assert klass.singleton_class.included_modules.include?(Attributable::ClassMethods)
+    assert klass.singleton_class.included_modules.include?(Atrs::ClassMethods)
     assert klass.attribute_set.first_name
     assert klass.attribute_set[:last_name]
     assert_equal 4, klass.attribute_set.length

@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    attributable (0.0.1)
+    atrs (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -43,7 +43,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  attributable!
+  atrs!
   derailed_benchmarks
   stackprof
   virtus

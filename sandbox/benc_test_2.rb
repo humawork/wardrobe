@@ -1,4 +1,4 @@
-require_relative '../lib/attributable'
+require_relative '../lib/atrs'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -15,8 +15,8 @@ class UserVirtus
   attribute :a_float,    Float
 end
 
-class UserAttributable
-  extend Attributable
+class UserAtrs
+  extend Atrs
   attribute :first_name, String
   attribute :last_name,  String
   attribute :age,        Integer
@@ -28,8 +28,8 @@ test_2_hash = {
 }
 
 Benchmark.ips do |x|
-  x.report('Attributable Normal') {
-    instance = UserAttributable.new(test_2_hash)
+  x.report('Atrs Normal') {
+    instance = UserAtrs.new(test_2_hash)
     instance.first_name == 'Test'
     instance.last_name == 'Person'
     instance.age == 1

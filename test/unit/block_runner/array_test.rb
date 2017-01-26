@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class BlockRunnerArray
-  extend Attributable
+  extend Atrs
 
   attributes preset: :one do
     attribute :name, String

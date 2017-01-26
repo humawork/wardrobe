@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Row
-  extend Attributable
+  extend Atrs
   attributes do
     nil_if_zero do
       attribute :test_in_block, Integer

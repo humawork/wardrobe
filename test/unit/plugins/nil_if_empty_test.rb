@@ -2,14 +2,14 @@ require 'test_helper'
 
 class NilIfEmptyTest < Minitest::Test
   class Tree
-    extend Attributable
+    extend Atrs
     attribute :name,     String, nil_if_empty: true
     attribute :branches, Hash,   nil_if_empty: true
     attribute :leaves,   Array,  nil_if_empty: true
   end
 
   class TreeFalse
-    extend Attributable
+    extend Atrs
     attribute :name,     String, nil_if_empty: false
     attribute :branches, Hash,   nil_if_empty: false
     attribute :leaves,   Array,  nil_if_empty: false
