@@ -28,7 +28,7 @@ module Atrs
           when Hash
             merged_options[key] = merged_options[key].merge(value)
           else
-            binding.pry
+            raise "Unsupported attribute operation"
           end
         else
           merged_options[key] = value.dup

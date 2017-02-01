@@ -23,7 +23,6 @@
 #   def test_validatations
 #     # assert @instance.respond_to?(:_validate!)
 #
-#     binding.pry
 #     assert @instance._valid?
 #   end
 # end

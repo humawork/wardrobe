@@ -12,9 +12,9 @@ module Atrs
     end
 
     def merge(mod)
-      @attribute_set = attribute_set.merge(mod.attribute_set)
       @plugin_set = plugin_set.merge(mod.plugin_set)
       @option_set = option_set.merge(mod.option_set)
+      @attribute_set = attribute_set.merge(mod.attribute_set)
     end
 
     def attribute(name, klass, **args, &blk)

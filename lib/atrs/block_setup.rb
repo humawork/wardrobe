@@ -73,7 +73,7 @@ module Atrs
                           value.dup
                         end
         else
-          binding.pry
+          raise "Unsupported BlockSetup class"
         end
       end
       result

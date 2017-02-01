@@ -10,7 +10,6 @@ module Atrs
       # module ClassMethods
       #   def present(&blk)
       #     sss = caller
-      #     binding.pry
       #   end
       # end
 

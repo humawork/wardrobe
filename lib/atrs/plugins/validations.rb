@@ -14,6 +14,10 @@ module Atrs
         def initialize(errors)
           @errors = errors.freeze
         end
+
+        def to_s
+          errors
+        end
       end
 
       extend Atrs::Plugin

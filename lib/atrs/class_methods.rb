@@ -14,16 +14,19 @@ module Atrs
     end
 
     def merge(mod)
-      @attribute_set = attribute_set.merge(mod.attribute_set)
-      mod.attribute_set.each do |name, atr|
-        define_getter(atr)
-        define_setter(atr)
+      if mod.const_defined?('InstanceMethods')
+        include(mod.const_get('InstanceMethods'))
       end
       @plugin_set = plugin_set.merge(mod.plugin_set)
       mod.plugin_set.each do |name, plugin|
         init_plugin_modules(name)
       end
       @option_set = option_set.merge(mod.option_set)
+      @attribute_set = attribute_set.merge(mod.attribute_set)
+      mod.attribute_set.each do |name, atr|
+        define_getter(atr)
+        define_setter(atr)
+      end
     end
 
     def define_getter(atr)
