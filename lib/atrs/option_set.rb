@@ -1,5 +1,5 @@
 module Atrs
-  class AttributeSet
+  class OptionSet
     include Enumerable
     attr_reader :set
 
@@ -52,17 +52,12 @@ module Atrs
       end
     end
 
-    def add(name, klass, defining_klass, **args, &blk)
+    def add(name, instance)
       if frozen?
-        dup.add(name, klass, defining_klass, **args, &blk)
+        dup.add(name, instance)
       else
         @set = set.dup
-        attribute = Attribute.new(name, klass, defining_klass, **args, &blk)
-        if set[name]
-          set[name] = set[name].merge(attribute, defining_klass)
-        else
-          set[name] = attribute
-        end
+        set[name] = instance
         freeze
       end
     end

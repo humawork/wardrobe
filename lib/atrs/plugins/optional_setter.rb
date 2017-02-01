@@ -12,16 +12,11 @@ module Atrs
       end
 
       module ClassMethods
-        # def define_getter(atr)
-        #   define_method(atr.getter_name) do
-        #     instance_variable_get(atr.ivar_name)
-        #   end
-        # end
-
         def define_setter(atr)
           super unless atr.respond_to?(:setter) && atr.setter == false
         end
       end
     end
   end
+  register_plugin(:optional_setter, Plugins::OptionalSetter)
 end

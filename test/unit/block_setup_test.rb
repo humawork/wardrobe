@@ -2,6 +2,8 @@ require 'test_helper'
 
 class BlockModel
   extend Atrs
+  plugin :nil_if_empty
+  plugin :nil_if_zero
 
   attributes nil_if_empty: true, nil_if_zero: true do
     attribute :name,    String

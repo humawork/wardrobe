@@ -1,37 +1,26 @@
 module Atrs
   class Attribute
     using Coercions
-    attr_reader :name, :klass, :options, :hooks
+    attr_reader :name, :klass, :options, :ivar_name, :setter_name
 
-    def initialize(name, klass, **args, &blk)
+    def initialize(name, klass, defining_klass, **args, &blk)
       @name = name
+      @ivar_name = "@#{name}"
+      @setter_name = "#{name}="
       @klass = klass
       @options = {}
-      @hooks = {
-        setter: []
-      }
-      set_valid_options(**args)
+      set_valid_options(defining_klass, **args)
+      setter_name
       freeze
-    end
-
-
-    def set_with_plugins(val, instance)
-      return val unless setter_hooks.any?
-      setter_hooks.each do |hook|
-        val = hook.call(val, instance, self)
-      end
-      val
     end
 
     def coerce(val)
       klass.coerce(val, self)
     rescue Coercions::UnsupportedError
       raise Coercions::UnsupportedError, "Can't coerce #{val.class} `#{val}` into #{klass}"
-    # rescue
-    #   binding.pry
     end
 
-    def merge(other)
+    def merge(other, defining_klass)
       merged_options = options.dup
       other.options.each do |key, value|
         if merged_options[key]
@@ -48,43 +37,25 @@ module Atrs
       self.class.new(
         name,
         other.klass,
+        defining_klass,
         merged_options
       )
     end
 
-    def getter_name
-      name
-    end
-
-    def ivar_name
-      "@#{name}"
-    end
-
-    def setter_name
-      "#{name}="
-    end
-
     private
 
-    def setter_hooks
-      hooks[:setter]
-    end
-
-    def set_valid_options(**args)
-      args.each do |k,v|
-        if plugin = Atrs.options[k]
-          @options[k] = args[k]
-          define_singleton_method(k) { @options[k] }
-          add_plugin_hooks(plugin)
+    def set_valid_options(defining_klass, **args)
+      args.each do |name, value|
+        if defining_klass.option_set[name]
+          puts name
+          # if name == :alias_setter
+          #   binding.pry
+          # end
+          @options[name] = args[name]
+          define_singleton_method(name) { @options[name] }
         else
-          puts "WARN: option #{k} not supported"
+          raise "ERROR: option #{name} not available on #{defining_klass}"
         end
-      end
-    end
-
-    def add_plugin_hooks(plugin)
-      if hook = plugin.setter
-        setter_hooks << hook
       end
     end
   end

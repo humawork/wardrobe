@@ -1,73 +1,64 @@
 module Atrs
   module ClassMethods
-    def self.extended(base)
-      base.instance_variable_set(:@attribute_set, AttributeSet.new)
-    end
-
-    # This will be invoked when a module with extended Atrs is
-    # extended into a class or another module
-    def extended(base)
-      base.extend(Atrs) unless base.respond_to?(:extend_attributes)
-      base.extend_attributes(attribute_set)
-      if @module_plugins
-        @module_plugins.each do |plugin_name|
-          base.plugin plugin_name
-        end
-      end
-    end
-
-    def extend_attributes(attribute_set_to_extend)
-      @attribute_set = attribute_set.merge(attribute_set_to_extend)
-      @attribute_set.each do |name, atr|
-        define_getter(atr)
-        define_setter(atr)
-      end
-    end
-
     def inherited(base)
       base.instance_variable_set(:@attribute_set, attribute_set)
+      base.instance_variable_set(:@plugin_set, plugin_set)
+      base.instance_variable_set(:@option_set, option_set)
     end
 
     def attribute(name, klass, **args, &blk)
-      @attribute_set = attribute_set.add(name, klass, **args, &blk)
+      @attribute_set = attribute_set.add(name, klass, self, **args, &blk)
       atr = @attribute_set[name]
-      define_getter(atr)# unless args[:getter] == false
-      define_setter(atr)# unless args[:setter] == false
+      define_getter(atr)
+      define_setter(atr)
+    end
+
+    def merge(mod)
+      @attribute_set = attribute_set.merge(mod.attribute_set)
+      mod.attribute_set.each do |name, atr|
+        define_getter(atr)
+        define_setter(atr)
+      end
+      @plugin_set = plugin_set.merge(mod.plugin_set)
+      mod.plugin_set.each do |name, plugin|
+        init_plugin_modules(name)
+      end
+      @option_set = option_set.merge(mod.option_set)
     end
 
     def define_getter(atr)
-      define_method(atr.getter_name) do
+      define_method(atr.name) do
         instance_variable_get(atr.ivar_name)
       end
     end
 
     def define_setter(atr)
-      define_method(atr.setter_name) do |val|
-        instance_variable_set(atr.ivar_name, atr.set_with_plugins(val, self))
-      end
-    end
-
-    def plugin(name)
-      if self.class == Module
-        # TEMP implementation. Needs to be tested and made imutable.
-        @module_plugins ||= []
-        @module_plugins << name
+      options_with_setters = option_set.set.values.select { |v| v.options[:setter] }
+      if options_with_setters.any?
+        define_method(atr.setter_name) do |val|
+          options_with_setters.each do |option|
+            val = option.options[:setter].call(val, atr, self)
+          end
+          instance_variable_set(atr.ivar_name, val)
+        end
       else
-        enable_plugin(name)
+        define_method(atr.setter_name) do |val|
+          instance_variable_set(atr.ivar_name, val)
+        end
       end
     end
 
     def enable_plugin(name)
-      begin
-        plugin = Atrs.plugins.fetch(name)
-      rescue KeyError
-        raise "No plugin #{name} registered"
-      end
-      if mod = plugin.instance_methods_module
-        self.include(mod)
-      end
-      if mod = plugin.class_methods_module
+      super
+      init_plugin_modules(name)
+    end
+
+    def init_plugin_modules(name)
+      if mod = plugin_set[name].class_methods_module
         self.extend(mod)
+      end
+      if mod = plugin_set[name].instance_methods_module
+        self.include(mod)
       end
     end
 
@@ -80,7 +71,8 @@ module Atrs
     alias remove_plugin remove_plugins
 
     def attributes(**kargs, &blk)
-      BlockRunner.new(self).run(**kargs, &blk)
+      # Should and could we init only once and reuse?
+      BlockSetup.new(self).run(**kargs, &blk)
     end
 
     def remove_attributes(*atrs)
@@ -93,10 +85,6 @@ module Atrs
 
     def coerce(val, atr)
       new(val)
-    end
-
-    def attribute_set
-      @attribute_set
     end
   end
 end

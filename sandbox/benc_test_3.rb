@@ -37,6 +37,7 @@ end
 
 class UserAdvancedAtrs
   extend Atrs
+  plugin :default
   attribute :first_name,           String
   attribute :last_name,            String
   attribute :age,                  Integer

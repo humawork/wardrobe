@@ -54,4 +54,5 @@ module Atrs
 
     end
   end
+  register_plugin(:validations, Plugins::Validations)
 end

@@ -2,6 +2,8 @@ require 'test_helper'
 
 class Row
   extend Atrs
+  plugin :nil_if_zero
+
   attributes do
     nil_if_zero do
       attribute :test_in_block, Integer

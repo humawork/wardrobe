@@ -7,4 +7,5 @@ module Atrs
 
     end
   end
+  register_plugin(:optional_getter, Plugins::OptionalGetter)
 end

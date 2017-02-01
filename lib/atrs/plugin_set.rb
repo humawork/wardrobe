@@ -1,6 +1,5 @@
 module Atrs
-  class AttributeSet
-    include Enumerable
+  class PluginSet
     attr_reader :set
 
     def initialize
@@ -52,17 +51,17 @@ module Atrs
       end
     end
 
-    def add(name, klass, defining_klass, **args, &blk)
+    def add(name)
+      begin
+        plugin = Atrs.plugins.fetch(name)
+      rescue KeyError
+        raise "No plugin #{name} registered"
+      end
       if frozen?
-        dup.add(name, klass, defining_klass, **args, &blk)
+        dup.add(name)
       else
         @set = set.dup
-        attribute = Attribute.new(name, klass, defining_klass, **args, &blk)
-        if set[name]
-          set[name] = set[name].merge(attribute, defining_klass)
-        else
-          set[name] = attribute
-        end
+        set[name] = plugin
         freeze
       end
     end

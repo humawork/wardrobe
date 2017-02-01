@@ -2,6 +2,7 @@ require 'test_helper'
 
 class House
   extend Atrs
+  plugin :default
   attribute :floors,    Integer, default: 2
   attribute :bedrooms,  Integer, default: :bedrooms_default
   attribute :bathrooms, Integer, default: ->() { 1 + 3 }

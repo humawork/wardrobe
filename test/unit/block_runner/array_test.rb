@@ -2,6 +2,7 @@ require 'test_helper'
 
 class BlockRunnerArray
   extend Atrs
+  plugin :presenter
 
   attributes preset: :one do
     attribute :name, String

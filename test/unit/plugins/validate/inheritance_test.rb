@@ -13,6 +13,7 @@ end
 class KlassTwo
   extend ValidateMixin
   attribute :name, String, validates: { length: 10..100}
+  attribute :name1, String, validates: { length: 10..100}
 end
 
 class KlassThree < KlassTwo

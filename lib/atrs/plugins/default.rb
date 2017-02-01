@@ -1,17 +1,13 @@
 module Atrs
   module Plugins
-    module DefaultValue
+    module Default
       extend Atrs::Plugin
 
-      option :default, Boolean
-
-      #TODO: Find a way to make to get rid of setter concept...
-
-      setter do |value, instance, arg|
+      option :default, Boolean, setter: ->(value, atr, instance) do
         if value && ![{},[]].include?(value)
           value
         else
-          default = arg.default
+          default = atr.default
           case default
           when Symbol then instance.send(default)
           when Proc
@@ -23,4 +19,5 @@ module Atrs
       end
     end
   end
+  register_plugin(:default, Plugins::Default)
 end

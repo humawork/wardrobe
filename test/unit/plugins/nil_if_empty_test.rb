@@ -3,6 +3,7 @@ require 'test_helper'
 class NilIfEmptyTest < Minitest::Test
   class Tree
     extend Atrs
+    plugin :nil_if_empty
     attribute :name,     String, nil_if_empty: true
     attribute :branches, Hash,   nil_if_empty: true
     attribute :leaves,   Array,  nil_if_empty: true
@@ -10,6 +11,7 @@ class NilIfEmptyTest < Minitest::Test
 
   class TreeFalse
     extend Atrs
+    plugin :nil_if_empty
     attribute :name,     String, nil_if_empty: false
     attribute :branches, Hash,   nil_if_empty: false
     attribute :leaves,   Array,  nil_if_empty: false
