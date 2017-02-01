@@ -47,10 +47,6 @@ module Atrs
     def set_valid_options(defining_klass, **args)
       args.each do |name, value|
         if defining_klass.option_set[name]
-          puts name
-          # if name == :alias_setter
-          #   binding.pry
-          # end
           @options[name] = args[name]
           define_singleton_method(name) { @options[name] }
         else

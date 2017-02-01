@@ -3,9 +3,10 @@ require 'test_helper'
 class House
   extend Atrs
   plugin :default
-  attribute :floors,    Integer, default: 2
-  attribute :bedrooms,  Integer, default: :bedrooms_default
-  attribute :bathrooms, Integer, default: ->() { 1 + 3 }
+  attribute :floors,     Integer, default: 2
+  attribute :bedrooms,   Integer, default: :bedrooms_default
+  attribute :bathrooms,  Integer, default: ->() { 1 + 3 }
+  attribute :no_default, String
 
   def bedrooms_default
     10
@@ -29,5 +30,9 @@ class DefaultValueTest < Minitest::Test
 
   def test_default_proc
     assert_equal 4, @house.bathrooms
+  end
+
+  def test_no_default
+    assert_equal nil, @house.no_default
   end
 end

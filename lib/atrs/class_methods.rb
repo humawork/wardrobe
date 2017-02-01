@@ -33,7 +33,9 @@ module Atrs
     end
 
     def define_setter(atr)
-      options_with_setters = option_set.set.values.select { |v| v.options[:setter] }
+      options_with_setters = option_set.set.values.select do |v|
+        v.options[:setter] && atr.options[v.name]
+      end
       if options_with_setters.any?
         define_method(atr.setter_name) do |val|
           options_with_setters.each do |option|
@@ -84,7 +86,7 @@ module Atrs
     alias remove_attribute remove_attributes
 
     def coerce(val, atr)
-      new(val)
+      new(**val) if val
     end
   end
 end
