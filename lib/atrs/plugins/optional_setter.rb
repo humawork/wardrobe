@@ -6,7 +6,7 @@ module Atrs
       option :setter, Boolean, default: true
 
       module InstanceMethods
-        def _attribute_init(atr, value)
+        def _attribute_init(atr, hash, name)
           super unless atr.respond_to?(:setter) && atr.setter == false
         end
       end

@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = Atrs::VERSION
   spec.authors       = ['Eigil Sagafos']
   spec.email         = ['eigil@agens.no']
-  spec.summary       = 'Attributes'
-  spec.description   = 'Attributes'
+  spec.summary       = 'Atrs'
+  spec.description   = 'Atrs'
   spec.homepage      = ''
   spec.license       = ''
 
