@@ -10,7 +10,7 @@ module Atrs
           default = atr.default
           case default
           when Symbol
-            instance.respond_to?(default) ? instance.send(default) : default
+            default.=~(/default$/) ? instance.send(default) : default
           when Proc
             default.arity == 0 ? default.call : default.call(instance)
           else
