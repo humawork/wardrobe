@@ -19,6 +19,7 @@ class House
   attribute :floors,     Integer, default: 2
   attribute :bedrooms,   Integer, default: :bedrooms_default
   attribute :bathrooms,  Integer, default: ->() { 1 + 3 }
+  attribute :condition,  Symbol, default: :new
   attribute :no_default, String
 
   def bedrooms_default
@@ -47,7 +48,11 @@ class DefaultValueTest < Minitest::Test
     assert_equal 4, @house.bathrooms
   end
 
+  def test_symbol_default
+    assert_equal :new, @house.condition
+  end
+
   def test_no_default
-    assert_equal nil, @house.no_default
+    assert_nil @house.no_default
   end
 end

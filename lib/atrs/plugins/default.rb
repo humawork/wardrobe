@@ -9,7 +9,8 @@ module Atrs
         else
           default = atr.default
           case default
-          when Symbol then instance.send(default)
+          when Symbol
+            instance.respond_to?(default) ? instance.send(default) : default
           when Proc
             default.arity == 0 ? default.call : default.call(instance)
           else
