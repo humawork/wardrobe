@@ -10,14 +10,14 @@ class MethodPolutionTest < Minitest::Test
 
   class AtrsClassWithCleanPlugins
     include Atrs
-    plugin *(Atrs.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys)
+    plugin(*(Atrs.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys))
   end
 
   class AtrsClassWithAllowedPolutingPlugins
     include Atrs
-    plugin *(ALLOWED_POLUTING_PLUGINS.keys)
+    plugin(*(ALLOWED_POLUTING_PLUGINS.keys))
   end
-  
+
   def methods_class_without_plugins
     AtrsClassWithoutPlugins.new.methods - Object.methods
   end
