@@ -1,6 +1,6 @@
 module Atrs
   module Plugins
-    module Validations
+    module Validation
       module Refinements
         refine NilClass do
           def in(arr)

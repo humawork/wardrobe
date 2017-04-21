@@ -2,9 +2,9 @@ module Atrs
   module Plugins
     module Presenter
       module Refinements
-        refine String do
+        refine Hash do
           def _present(*args)
-            self
+            transform_values(&:_present)
           end
         end
       end

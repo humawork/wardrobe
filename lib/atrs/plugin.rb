@@ -1,6 +1,6 @@
 module Atrs
-  class PluginNameTaken < StandardError; end
-  class PluginOptionKeywordTaken < StandardError; end
+  class PluginNameTakenError < StandardError; end
+  class PluginOptionKeywordTakenError < StandardError; end
 
   @plugins = {}
   @options = {}
@@ -9,9 +9,10 @@ module Atrs
   def self.options; @options; end
 
   def self.register_plugin(name, mod)
-    raise PluginNameTaken, "Plugin #{name} already in use" if plugins[name]
+    raise PluginNameTakenError, "Plugin #{name} already in use" if plugins[name]
     plugins[name] = mod
   end
+
 
   module Plugin
 

@@ -1,21 +1,19 @@
 require 'test_helper'
 
 module DefaultMixin
-  extend Atrs
+  include Atrs
   plugin :default
   attribute :name,     String, default: 'missing name'
   attribute :address,  String, default: :address_default
   attribute :zip_code, String, default: -> { '0' + '1' }
 
-  module InstanceMethods
-    def address_default
-      'missing address'
-    end
+  def address_default
+    'missing address'
   end
 end
 
 class House
-  extend DefaultMixin
+  include DefaultMixin
   attribute :floors,     Integer, default: 2
   attribute :bedrooms,   Integer, default: :bedrooms_default
   attribute :bathrooms,  Integer, default: ->() { 1 + 3 }
@@ -27,9 +25,14 @@ class House
   end
 end
 
+class HouseWithAddressDefaultOverride < House
+  def address_default
+    'overridden'
+  end
+end
+
 
 class DefaultValueTest < Minitest::Test
-
   def setup
     @house = House.new
   end
@@ -54,5 +57,9 @@ class DefaultValueTest < Minitest::Test
 
   def test_no_default
     assert_nil @house.no_default
+  end
+
+  def test_default_method_override
+    assert_equal 'overridden', HouseWithAddressDefaultOverride.new.address
   end
 end

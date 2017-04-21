@@ -1,8 +1,8 @@
 module Atrs
   module Coercions
+    TRUE_STRINGS = Set.new(['1', 'yes', 'true']).freeze
+    FALSE_STRINGS = Set.new(['0', 'no', 'false']).freeze
     refine Atrs::Boolean.singleton_class do
-      TRUE_STRINGS = Set.new(['1', 'yes', 'true']).freeze
-      FALSE_STRINGS = Set.new(['0', 'no', 'false']).freeze
       def coerce(v, atr)
         case v
         when TrueClass, FalseClass then v

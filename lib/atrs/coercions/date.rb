@@ -3,9 +3,13 @@ module Atrs
     refine Date.singleton_class do
       def coerce(v, atr)
         case v
+        # DateTime has to be first. `DateTime.new === Date.new # => true`
+        when DateTime then v.to_date
         when self     then v
-        # when Integer  then Time.at(v)
-        # when String   then Time.parse(v)
+        when String   then Date.parse(v)
+        when Time     then v.to_date
+        when Integer  then Time.at(v).to_date
+        when Float    then Time.at(v).to_date
         when NilClass then nil
         else
           raise UnsupportedError

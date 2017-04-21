@@ -1,61 +1,65 @@
-require_relative 'atrs/version'
-require_relative 'atrs/plugin'
-require_relative 'atrs/boolean'
-require_relative 'atrs/coercions'
-require_relative 'atrs/block_setup'
-require_relative 'atrs/attribute'
-require_relative 'atrs/attribute_set'
-require_relative 'atrs/option'
-require_relative 'atrs/option_set'
-require_relative 'atrs/plugin_set'
-require_relative 'atrs/class_methods'
-require_relative 'atrs/instance_methods'
-require_relative 'atrs/module_methods'
-require_relative 'atrs/plugins/nil_if_empty'
-require_relative 'atrs/plugins/nil_if_zero'
-require_relative 'atrs/plugins/default'
-require_relative 'atrs/plugins/presenter'
-require_relative 'atrs/plugins/validations'
-require_relative 'atrs/plugins/optional_setter'
-require_relative 'atrs/plugins/optional_getter'
-require_relative 'atrs/plugins/dirty_tracker'
-require_relative 'atrs/plugins/alias_setters'
+require 'atrs/version'
+require 'atrs/boolean'
+require 'atrs/store'
+require 'atrs/coercions'
+require 'atrs/attribute'
+require 'atrs/attribute_store'
+require 'atrs/option'
+require 'atrs/option_store'
+require 'atrs/plugin'
+require 'atrs/plugin_store'
+require 'atrs/config'
+require 'atrs/block_setup'
+require 'atrs/class_methods'
+require 'atrs/instance_methods'
+require 'atrs/plugins/alias_setters'
+require 'atrs/plugins/configurable'
+require 'atrs/plugins/default'
+require 'atrs/plugins/dirty_tracker'
+require 'atrs/plugins/immutable'
+require 'atrs/plugins/nil_if_empty'
+require 'atrs/plugins/nil_if_zero'
+require 'atrs/plugins/presenter'
+require 'atrs/plugins/validation'
+require 'atrs/plugins/optional_setter'
+require 'atrs/plugins/optional_getter'
+require 'atrs/plugins/ivy_presenter'
 
 module Atrs
-  attr_reader :attribute_set, :plugin_set, :option_set
+  class RootConfig
+    attr_reader :default_plugins
+    def initialize
+      @default_plugins = Set.new
+    end
 
-  def self.extended(base)
-    base.instance_variable_set(:@attribute_set, AttributeSet.new)
-    base.instance_variable_set(:@plugin_set, PluginSet.new)
-    base.instance_variable_set(:@option_set, OptionSet.new)
-    case base
-    when Class
-      base.extend(ClassMethods)
-      base.include(InstanceMethods)
-    when Module
-      base.extend(ModuleMethods)
+    def register_default_plugin(name)
+      raise "error" unless Atrs.plugins.has_key?(name)
+      @default_plugins.add(name)
     end
   end
 
-  def plugin(*plugin_names)
-    plugin_names.each { |name| enable_plugin(name) }
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.include(InstanceMethods)
+    base.plugin(*config.default_plugins)
   end
 
-  def enable_plugin(name)
-    @plugin_set = plugin_set.add(name)
-    enable_plugin_options(*@plugin_set[name].options)
+  def self.config
+    @config ||= RootConfig.new
   end
 
-  def enable_plugin_options(*options)
-    options.each do |option|
-      @option_set = option_set.add(option.name, option)
+  def self.configure
+    yield config
+  end
+
+  def self.create_class(plugins: [], attributes: [])
+    Class.new.class_exec do
+      include Atrs
+      plugin(*plugins)
+      attributes.each do |atr|
+        attribute(atr[:name], const_get(atr[:class]), atr.fetch(:options, {}))
+      end
+      self
     end
   end
-
-
-  # load_deafult_plugins(base)
-  # def self.load_deafult_plugins(base)
-  #   base.plugin(:optional_setter)
-  #   base.plugin(:optional_getter)
-  # end
 end

@@ -1,5 +1,3 @@
 require_relative 'refinements/array'
-require_relative 'refinements/integer'
-require_relative 'refinements/nil_class'
-require_relative 'refinements/string'
-require_relative 'refinements/symbol'
+require_relative 'refinements/hash'
+require_relative 'refinements/object'

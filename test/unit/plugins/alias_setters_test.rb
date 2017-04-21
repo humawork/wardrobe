@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AliasPerson
-  extend Atrs
+  include Atrs
   plugin :alias_setters
   attributes do
     alias_setter :profile_name do

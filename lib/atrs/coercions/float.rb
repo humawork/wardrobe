@@ -5,6 +5,8 @@ module Atrs
         case v
         when self then v
         when String, Integer then v.to_f
+        when Time then v.to_f
+        when Date then v.to_time.to_f
         when NilClass then nil
         else
           raise UnsupportedError

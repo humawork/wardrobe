@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Row
-  extend Atrs
+  include Atrs
   plugin :nil_if_zero
 
   attributes do

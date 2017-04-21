@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class BlockModel
-  extend Atrs
+  include Atrs
   plugin :nil_if_empty
   plugin :nil_if_zero
 

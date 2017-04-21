@@ -4,21 +4,16 @@ module Atrs
     module Presenter
       extend Atrs::Plugin
 
-      option :preset, Array
-      # option :present, Proc
-
-      # module ClassMethods
-      #   def present(&blk)
-      #     sss = caller
-      #   end
-      # end
-
       module InstanceMethods
         using Refinements
-        def _present(*args)
-          _attribute_set.set.transform_values do |value|
-            send(value.name)._present(*args)
+        def _present(atrs: nil)
+          result = {}
+          _attribute_store.store.each do |key, atr|
+            if atrs.nil? || (atrs && atrs.key?(key))
+              result[key] = send(atr.name)._present(atrs: (atrs[key] if atrs))
+            end
           end
+          result
         end
       end
     end

@@ -5,12 +5,14 @@ module Atrs
     def initialize(calling_klass)
       @calling_klass = calling_klass
       # TODO: Refactor!!!
-      calling_klass.plugin_set.each do |key, value|
+      calling_klass.plugin_store.each do |key, value|
         value.options.each do |option|
           case
           when option.klass == Boolean
             define_boolean_method(option.name)
           when option.klass == Array
+            define_array_method(option.name)
+          when option.klass == Set
             define_array_method(option.name)
           when option.klass == Hash
             define_hash_method(option.name)
@@ -43,8 +45,8 @@ module Atrs
       raise e
     end
 
-    def attribute(name, klass, **args, &blk)
-      calling_klass.attribute(name, klass, **merged_options_for_attribute(args), &blk)
+    def attribute(name, klass, **keyargs, &blk)
+      calling_klass.attribute(name, klass, **merged_options_for_attribute(keyargs), &blk)
     end
 
     def attributes(**kargs, &blk)
@@ -57,6 +59,15 @@ module Atrs
         case
         when Atrs.options[key].klass == Boolean
           result[key] = value.last unless result[key]
+        when Atrs.options[key].klass == Set
+          if result[key] && !result[key].is_a?(Array)
+            result[key] = [result[key]]
+          end
+          result[key] = if result[key]
+                          Set.new(value.dup + result[key])
+                        else
+                          Set.new(value.dup)
+                        end
         when Atrs.options[key].klass == Array
           if result[key] && !result[key].is_a?(Array)
             result[key] = [result[key]]

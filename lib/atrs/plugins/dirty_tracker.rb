@@ -3,42 +3,53 @@ module Atrs
     module DirtyTracker
       extend Atrs::Plugin
 
-      option :track, Boolean, default: true,
-        setter: ->(value, atr, instance) do
-          return value unless instance.initialized?
-          instance.dirty! if value != instance.instance_variable_get(atr.ivar_name)
-          value
-        end
 
-      module ClassMethods
-        def define_getter(atr)
-          define_method(atr.name) do
-            value = instance_variable_get(atr.ivar_name)
-            _fetched_attributes[atr] ||= if value.respond_to?(:changed?)
-                                           :changed?
-                                         else
-                                           value.hash
-                                         end
-            value
-          end
-        end
-      end
+      Atrs.register_setter(
+        name: :dirty_tracker,
+        priority: 25,
+        use_if: ->(atr) { atr.options[:track] },
+        setter: ->(value, atr, instance) {
+          return value if instance._initializing?
+          instance._dirty! if value != instance.instance_variable_get(atr.ivar_name)
+          value
+        }
+      )
+
+      Atrs.register_getter(
+        name: :dirty_tracker,
+        priority: 5,
+        use_if: ->(atr) { atr.options[:track] },
+        getter: ->(value, atr, instance) {
+          instance._register_get(atr, value)
+          value
+        }
+      )
+
+      option :track, Boolean, default: true, setter: :dirty_tracker, getter: :dirty_tracker#setter(10,&setter_proc)
 
       module InstanceMethods
-        def changed?
+        def _changed?
           _fetched_attributes.delete_if do |atr, val|
-            if val == :changed?
-              dirty! if instance_variable_get(atr.ivar_name).changed?
+            if val == :atrs_instance
+              _dirty! if instance_variable_get(atr.ivar_name)._changed?
             else
-              dirty! if instance_variable_get(atr.ivar_name).hash != val
+              _dirty! if instance_variable_get(atr.ivar_name).hash != val
             end
             true
           end
           @changed ||= false
         end
 
-        def dirty!
+        def _dirty!
           @changed = true
+        end
+
+        def _register_get(atr, value)
+          _fetched_attributes[atr] ||= if value.respond_to?(:_changed?)
+                                         :atrs_instance
+                                       else
+                                        value.hash
+                                       end
         end
 
         private
