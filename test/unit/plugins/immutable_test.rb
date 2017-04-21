@@ -72,14 +72,14 @@ class ImmutableTest < Minitest::Test
 
   def test_immutable_string
     old_object_id = @tree.object_id
-    new_tree = @tree.set(name: 'ChangedTree')
+    new_tree = @tree.mutate(name: 'ChangedTree')
     assert_equal 'CleanTree', @tree.name
     assert_equal 'ChangedTree', new_tree.name
     refute_equal new_tree.object_id, @tree.object_id
   end
 
   def test_mutate_block
-    new_tree = @tree.set do |tree|
+    new_tree = @tree.mutate do |tree|
       tree.name = 'In Mutate Block'
       tree.leaves << 'Another Leave'
     end

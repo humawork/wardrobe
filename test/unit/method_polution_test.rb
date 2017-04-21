@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MethodPolutionTest < Minitest::Test
 
-  ALLOWED_POLUTING_PLUGINS = { immutable: [:set] }
+  ALLOWED_POLUTING_PLUGINS = { immutable: [:mutate] }
 
   class AtrsClassWithoutPlugins
     include Atrs

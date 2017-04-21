@@ -49,7 +49,7 @@ module Atrs
             raise NoMethodError.new(
               <<~eos
                 undefined method `#{atr.name}=' for #{instance}.
-                The instance is immutable. Use `#set(key, value)' or `#set { |obj| obj.#{atr.name} = #{value.inspect}}'
+                The instance is immutable. Use `#mutate(key, value)' or `#mutate { |obj| obj.#{atr.name} = #{value.inspect}}'
               eos
             )
           end
@@ -80,7 +80,7 @@ module Atrs
           freeze
         end
 
-        def set(**args, &blk)
+        def mutate(**args, &blk)
           dup.instance_exec do
             if block_given?
               blk.call(self)
