@@ -1,3 +1,4 @@
+require 'time'
 module Atrs
   module Coercions
     refine Time.singleton_class do
