@@ -100,7 +100,7 @@ module Atrs
 
     def coerce(val)
       klass.coerce(val, self)
-    rescue Coercions::UnsupportedError => e
+    rescue Coercions::UnsupportedError
       raise Coercions::UnsupportedError, "Can't coerce #{val.class} `#{val}` into #{klass}"
     end
 
