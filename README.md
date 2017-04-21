@@ -1,4 +1,6 @@
+[![Code Climate](https://codeclimate.com/github/agensdev/atrs.png)](https://codeclimate.com/github/agensdev/atrs)
 # Atrs
+
 
 This is an early POC Virtus inspired attribute gem. We might aim to make a
 drop in compatible mode. (Maybe through a plugin?)
