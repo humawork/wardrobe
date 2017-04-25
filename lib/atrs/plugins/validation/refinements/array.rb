@@ -2,10 +2,8 @@ module Atrs
   module Plugins
     module Validation
       module Refinements
-        refine Array do
+        refine ::Array do
           alias_method :orig_each, :each
-
-
 
           def each(some)
             other_each(some)

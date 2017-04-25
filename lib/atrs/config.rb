@@ -47,8 +47,12 @@ module Atrs
       if frozen?
         dup.merge(other, calling_object)
       else
+        (other.stores.keys - stores.keys).each do |name|
+          add_store(name, other.stores[name], initializer: true)
+        end
         stores.each do |name, klass|
-          instance_variable_set("@#{name}", send(name).merge(other.send(name), calling_object, self ))
+          instance = respond_to?(name) ? send(name) : klass.new
+          instance_variable_set("@#{name}", instance.merge(other.send(name), calling_object, self ))
         end
         freeze
       end

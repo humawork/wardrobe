@@ -43,12 +43,11 @@ class ArrayCoercionTest < Minitest::Test
   end
 
   def test_array_with_multiple_items
-    klass = Class.new do
-      include Atrs
-      attribute :array, Array[Integer, Hash]
-    end
     assert_raises(StandardError) do
-      klass.new(array: ['1'])
+      Class.new do
+        include Atrs
+        attribute :array, Array[Integer, Hash]
+      end
     end
   end
 

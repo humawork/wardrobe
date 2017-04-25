@@ -1,3 +1,4 @@
+require 'set'
 module Atrs
   module Coercions
     refine Set.singleton_class do

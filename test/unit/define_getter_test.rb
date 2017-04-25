@@ -1,68 +1,68 @@
 require 'test_helper'
-
-class Zero
-  include Atrs
-  plugin :optional_getter
-  attribute :name, String, getter: false
-end
-
-class One
-  include Atrs
-  attribute :name,   String
-end
-
-class Two < One
-  def name
-    'overridden in two'
-  end
-end
-
-module ModOne
-  def name
-    'overridden in mod one'
-  end
-end
-
-class Three < Two
-  include ModOne
-end
-
-module Part1
-  def name
-    'overridden in mod part_1'
-  end
-end
-
-module Part2
-  def name
-    'overridden in mod part_2'
-  end
-  def email
-    'email overridden in mod part_2'
-  end
-end
-
-module Part3
-  include Atrs
-  attribute :email, String
-end
-
-module ComposedModule
-  include Part1
-  include Part2
-  include Part3
-end
-
-class Four < Three
-  include ComposedModule
-end
-
-class Five < Three
-  include Part3
-  include Part2
-end
-
 class TestDefineGetter < Minitest::Test
+  class Zero
+    include Atrs
+    plugin :optional_getter
+    attribute :name, String, getter: false
+  end
+
+  class One
+    include Atrs
+    attribute :name,   String
+  end
+
+  class Two < One
+    def name
+      'overridden in two'
+    end
+  end
+
+  module ModOne
+    def name
+      'overridden in mod one'
+    end
+  end
+
+  class Three < Two
+    include ModOne
+  end
+
+  module Part1
+    def name
+      'overridden in mod part_1'
+    end
+  end
+
+  module Part2
+    def name
+      'overridden in mod part_2'
+    end
+    def email
+      'email overridden in mod part_2'
+    end
+  end
+
+  module Part3
+    include Atrs
+    attribute :email, String
+  end
+
+  module ComposedModule
+    include Part1
+    include Part2
+    include Part3
+  end
+
+  class Four < Three
+    include ComposedModule
+  end
+
+  class Five < Three
+    include Part3
+    include Part2
+  end
+
+
   def test_class_zero
     assert_raises(NoMethodError) {
       Zero.new.name

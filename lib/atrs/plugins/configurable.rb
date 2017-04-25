@@ -1,41 +1,9 @@
+require_relative 'configurable/configurable_store'
+
 module Atrs
   module Plugins
     module Configurable
       extend Atrs::Plugin
-
-      class Runner
-        def initialize(klass, blk)
-          @klass = klass
-          @blk = blk
-        end
-
-        def call
-          self.instance_exec(self, &@blk)
-        end
-
-        def method_missing(name, other)
-          binding.pry
-        end
-      end
-
-      class ConfigurableStore < Store
-        def register(name, klass)
-          mutate do
-            store.merge!(name => klass.new.freeze)
-          end
-        end
-
-        def update(name, &blk)
-          if frozen?
-            dup.update(name, &blk)
-          else
-            duplicate = @store[name].dup
-            blk.call(duplicate)
-            @store = @store.merge(name => duplicate.freeze)
-            freeze
-          end
-        end
-      end
 
       module ClassMethods
         def self.extended(base)

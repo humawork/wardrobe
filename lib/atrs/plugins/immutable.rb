@@ -1,6 +1,38 @@
 module Atrs
   module Plugins
-    module DeepFreeze
+    module ImmutableInstanceMethods
+      refine Object do
+        def _mutating?
+          instance_variable_defined?(:@_mutating) && @_mutating
+        end
+
+        def mutate(**args, &blk)
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            blk.call(self) if block_given?
+            args.each do |name, value|
+              if atr = _attribute_store[name]
+                _attribute_init(atr, args, name)
+              end
+            end
+            remove_instance_variable(:@_mutating)
+            deep_freeze
+          end
+        end
+        #
+        # def deep_freeze
+        #   remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
+        #   freeze
+        # end
+
+        def mutate!
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            self
+          end
+        end
+      end
+
       refine Hash do
         def deep_freeze
           each { |k,v| v.deep_freeze }
@@ -15,7 +47,15 @@ module Atrs
       refine Array do
         def deep_freeze
           each(&:deep_freeze)
+          remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
+        end
+        def mutate!
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            map!(&:mutate!)
+            self
+          end
         end
       end
       [Integer, Symbol, NilClass].each do |klass|
@@ -28,6 +68,7 @@ module Atrs
           _attribute_store.each do |name,atr|
             instance_variable_get(atr.ivar_name).deep_freeze
           end
+          remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
         end
       end
@@ -61,10 +102,11 @@ module Atrs
         priority: 100,
         use_if: ->(atr) { true },
         getter: ->(value, atr, instance) {
+          using ImmutableInstanceMethods
           if instance._initializing?
             value
-          elsif !instance.frozen?
-            instance.instance_variable_set(atr.ivar_name, value.dup)
+          elsif instance._mutating?
+            instance.instance_variable_set(atr.ivar_name, value.mutate!)
           else
             value
           end
@@ -74,24 +116,14 @@ module Atrs
       option :immutable, Boolean, default: true, setter: :disable_setter_for_immutable_plugin, getter: :dup_when_using_set_block
 
       module InstanceMethods
-        using DeepFreeze
+        using ImmutableInstanceMethods
         def initialize(**hash)
           super
           freeze
         end
 
         def mutate(**args, &blk)
-          dup.instance_exec do
-            if block_given?
-              blk.call(self)
-            end
-            if args.any?
-              _initialize {
-                _atrs_init(args)
-              }
-            end
-            deep_freeze
-          end
+          super
         end
 
         def _attribute_init(atr, hash, name)

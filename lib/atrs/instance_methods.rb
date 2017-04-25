@@ -8,22 +8,8 @@ module Atrs
     end
 
     def _initializing?
-      instance_variable_defined?(:@initializing) && @initializing == true
+      instance_variable_defined?(:@_initializing) && @_initializing
     end
-
-    # def initialize(**hash)
-    #   binding.pry
-    #   # raise "POC: More than one arg not supported..." if args.length > 1
-    #   # kargs = args.first.merge(kargs) if args.any?
-    #   @initialized = false
-    #   _atrs_init(hash)
-    #   @initialized = true
-    # end
-    # def initialize(*args, **kargs)
-    #   raise "POC: More than one arg not supported..." if args.length > 1
-    #   kargs = args.first.merge(kargs) if args.any?
-    #   _atrs_init(kargs.dup)
-    # end
 
     def _attribute_store
       _attribute_store_singleton || self.class.attribute_store
@@ -36,9 +22,9 @@ module Atrs
     private
 
     def _initialize
-      instance_variable_set(:@initializing, true)
+      instance_variable_set(:@_initializing, true)
       yield
-      remove_instance_variable(:@initializing)
+      remove_instance_variable(:@_initializing)
     end
 
     def _attribute_store_singleton

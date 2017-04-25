@@ -1,3 +1,4 @@
+require 'date'
 module Atrs
   module Coercions
     refine Date.singleton_class do

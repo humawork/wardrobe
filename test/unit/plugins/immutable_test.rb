@@ -1,91 +1,151 @@
 require 'test_helper'
 
-# class DirtyRoot
-#   include Atrs
-#   plugin :dirty_tracker
-#   attribute :depth, Integer
-# end
-#
-# class DirtyTree
-#   include Atrs
-#   plugin :dirty_tracker
-#   attribute :name,     String
-#   attribute :branches, Hash
-#   attribute :leaves,   Array
-#   attribute :colors,   Set
-#   attribute :root,     DirtyRoot
-#   # TODO: Test sub atrs class
-# end
-
 class ImmutableTest < Minitest::Test
 
-  class Friend
+  class Person
     include Atrs
     attribute :name, String
   end
 
-  class ImmutableTree
+  class ImmutableClass
     include Atrs
     plugin :immutable
-    attribute :name, String
-    attribute :branches, Hash
-    attribute :leaves, Array
-    attribute :friends, Array[Friend]
+    attribute :string, String
+    attribute :hash, Hash
+    attribute :array, Array
+    attribute :array_of_people, Array[Person]
   end
 
 
   def setup
-    @tree = ImmutableTree.new(name: 'CleanTree', branches: {one: 'value'}, leaves: ['one'], friends: [{ name: 'Oak'}],)
+    @object = ImmutableClass.new(
+      string: 'Clean',
+      hash: { one: 'value' },
+      array: [
+        'one'
+      ],
+      array_of_people: [
+        { name: 'Person 1'}
+      ]
+    )
   end
-
-  # def test_setter_order
-  #   binding.pry
-  # end
 
   def test_setter_no_method_error
     assert_raises(NoMethodError) {
-      @tree.name = 'ChangedTree'
+      @object.string = 'Changed'
     }
   end
 
   def test_immutable_hash_raises_error
     assert_raises(RuntimeError) {
-      @tree.branches[:two] = 'another_value'
+      @object.hash[:two] = 'another_value'
     }
   end
 
   def test_immutable_array_raises_error
     assert_raises(RuntimeError) {
-      @tree.leaves << 'Another Leave'
+      @object.array << 'two'
     }
   end
 
   def test_child_atrs_object_raises_error
     assert_raises(RuntimeError) {
-      @tree.friends.first.name = 'Birch'
+      @object.array_of_people.first.name = 'Person 2'
     }
   end
 
   def test_instance_frozen
-    assert @tree.frozen?
+    assert @object.frozen?
   end
 
-  def test_immutable_string
-    old_object_id = @tree.object_id
-    new_tree = @tree.mutate(name: 'ChangedTree')
-    assert_equal 'CleanTree', @tree.name
-    assert_equal 'ChangedTree', new_tree.name
-    refute_equal new_tree.object_id, @tree.object_id
+  def mutate_test
+    @mutated_object = yield
+    refute_equal @mutated_object.object_id, @object.object_id
+  end
+
+  def test_immutable_args_only_changes_given_pairs
+    mutate_test do
+      @object.mutate(string: 'Changed')
+    end
+    assert_equal @object.array, @mutated_object.array
+  end
+
+  def test_immutable_string_args
+    mutate_test do
+      @object.mutate(string: 'Changed')
+    end
+    assert_equal 'Clean', @object.string
+    assert_equal 'Changed', @mutated_object.string
+  end
+
+  def test_immutable_string_block
+    mutate_test do
+      @object.mutate do |o|
+        o.string = 'Changed'
+      end
+    end
+    assert_equal 'Changed', @mutated_object.string
+    assert_equal 'Clean', @object.string
+  end
+
+  def test_immutable_hash_args
+    mutate_test do
+      @object.mutate(hash: @object.hash.merge(added: 'key'))
+    end
+    assert_equal({one: 'value', added: 'key'}, @mutated_object.hash)
+    assert_equal({one: 'value'}, @object.hash)
+    assert_raises(RuntimeError) { @mutated_object.hash[:should] = 'fail'}
+    assert_raises(RuntimeError) { @object.hash[:should] = 'fail'}
+  end
+
+  def test_immutable_hash_block
+    mutate_test do
+      @object.mutate do |o|
+        o.hash[:added] = 'key'
+      end
+    end
+    assert_equal({one: 'value', added: 'key'}, @mutated_object.hash)
+    assert_equal({one: 'value'}, @object.hash)
+    assert_raises(RuntimeError) { @mutated_object.hash[:should] = 'fail'}
+    assert_raises(RuntimeError) { @object.hash[:should] = 'fail'}
+  end
+
+  def test_immutable_array_args
+    mutate_test do
+      @object.mutate(array: @object.array + ['added element'])
+    end
+    assert_equal(['one', 'added element'], @mutated_object.array)
+    assert_equal(['one'], @object.array)
+    assert_raises(RuntimeError) { @mutated_object.array << 'Should fail'}
+    assert_raises(RuntimeError) { @object.array << 'Should fail'}
+  end
+
+  def test_immutable_array_block
+    mutate_test do
+      @object.mutate do |o|
+        o.array << 'added element'
+      end
+    end
+    assert_equal(['one', 'added element'], @mutated_object.array)
+    assert_equal(['one'], @object.array)
+    assert_raises(RuntimeError) { @mutated_object.array << 'Should fail'}
+    assert_raises(RuntimeError) { @object.array << 'Should fail'}
   end
 
   def test_mutate_block
-    new_tree = @tree.mutate do |tree|
-      tree.name = 'In Mutate Block'
-      tree.leaves << 'Another Leave'
+    new_object = @object.mutate do |o|
+      o.string = 'In Mutate Block'
+      o.array << 'Another Leave'
+      o.hash[:added_key] = 'From mutate block'
+      o.array_of_people.first.name = 'Changed child instance name'
+      o.array_of_people << { name: 'Added friend in mutate block' }
     end
-    assert @tree.frozen?
-    assert @tree.friends.frozen?
-    assert new_tree.frozen?
-    assert new_tree.friends.frozen?
+    assert @object.frozen?
+    assert @object.array_of_people.frozen?
+    assert_equal 2, new_object.array.count
+    assert new_object.frozen?
+    assert new_object.array_of_people.frozen?
+    assert_equal 2, new_object.array_of_people.count
+    refute new_object.array_of_people.instance_variable_defined?(:@_mutating)
   end
 end

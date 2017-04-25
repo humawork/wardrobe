@@ -75,28 +75,36 @@ module Atrs
   class Attribute
 
     using Coercions
-    attr_reader :name, :klass, :options, :ivar_name, :setter_name, :store
+    attr_reader :name, :klass, :options, :ivar_name, :setter_name, :store, :setters, :getters
 
     def initialize(name, klass, defining_object, config, store, **options, &blk)
       @name = name
       @ivar_name = "@#{name}"
       @setter_name = "#{name}="
-      @klass = klass
+      @klass = validate_klass(klass)
       @options = validate_options(options, defining_object, config, store)
+      @getters ||= build_getter_array(defining_object)
+      @setters ||= build_setter_array(defining_object)
+      # getters(defining_object)
+      # setters(defining_object)
       freeze
     end
 
-    def getters(instance)
-      (instance.class.atrs_config.option_store.values.map do |option|
-        option.getter if option.use_getter_for_atr?(self)
-      end + DEFAULT_GETTERS).compact.sort_by(&:priority)
+    def validate_klass(klass)
+      if klass.is_a?(Array)
+        raise StandardError, "`Array#{klass.map(&:name)}' contains two many classes. No more than one is allowed." if klass.count != 1
+      elsif klass.is_a?(Hash)
+      end
+      klass
     end
 
-    def setters(instance)
-      (instance.class.atrs_config.option_store.values.map do |option|
-        option.setter if option.use_setter_for_atr?(self)
-      end + DEFAULT_SETTERS).compact.sort_by(&:priority)
-    end
+    # def getters(instance)
+    #   @getters ||= build_getter_array(instance)
+    # end
+    #
+    # def setters(instance)
+    #   @setters ||= build_setter_array(instance)
+    # end
 
     def coerce(val)
       klass.coerce(val, self)
@@ -129,6 +137,18 @@ module Atrs
     end
 
     private
+
+    def build_getter_array(klass)
+      (klass.atrs_config.option_store.values.map do |option|
+        option.getter if option.use_getter_for_atr?(self)
+      end + DEFAULT_GETTERS).compact.sort_by(&:priority)
+    end
+
+    def build_setter_array(klass)
+      (klass.atrs_config.option_store.values.map do |option|
+        option.setter if option.use_setter_for_atr?(self)
+      end + DEFAULT_SETTERS).compact.sort_by(&:priority)
+    end
 
     def validate_options(options, defining_object, config, store)
       options.each do |name, _|

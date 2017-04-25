@@ -1,15 +1,22 @@
+require 'forwardable'
+
 module Atrs
   module ClassMethods
     extend Forwardable
     def_delegators :@atrs_config, :attribute_store, :plugin_store, :option_store
 
     def self.extended(base)
+      # binding.pry
+      atrs_methods = base.instance_variable_set(:@atrs_methods, Module.new)
+      base.include(atrs_methods)
       base.instance_variable_set(:@atrs_config, Config.new)
     end
 
     # This is called when included in another module/class
     def included(base)
       base.include(Atrs) unless base.respond_to? :atrs_config
+      # base.instance_variable_set(:@atrs_method, Module.new)
+      # binding.pry
       base.merge(atrs_config)
     end
 
@@ -21,7 +28,25 @@ module Atrs
       end
     end
 
+    # def method_added(method_name)
+    #   if !caller_locations[0].path[/atrs\/lib\/atrs\/class_methods.rb$/]
+    #     puts "method #{method_name}. We have to solve this so super will work..."
+    #     something = method(method_name).unbind
+    #     ancestors.first.instance_exec do
+    #       binding.pry
+    #
+    #     end
+    #     # one = caller.first
+    #     # two = caller_locations.first
+    #     #
+    #     # puts "Adding #{method_name.inspect}"
+    #   end
+    # end
+
     def inherited(child)
+      # binding.pry
+      atrs_methods = child.instance_variable_set(:@atrs_methods, Module.new)
+      child.include(atrs_methods)
       child.instance_variable_set(:@atrs_config, Config.new)
       child.merge(atrs_config)
     end
@@ -31,21 +56,27 @@ module Atrs
     end
 
     def define_getter(atr)
-      # getters = getters_for_atr(atr)
-      define_method(atr.name) do
-        atr.getters(self).inject(nil) { |val, getter|
-          getter.block.call(val, atr, self)
-        }
+      # binding.pry
+      @atrs_methods.instance_exec do
+        define_method(atr.name) do
+          atr.getters.inject(nil) { |val, getter|
+            getter.block.call(val, atr, self)
+          }
+        end
       end
+      # ancestors[2].instance_exec do
+      # end
     end
 
     def define_setter(atr)
-      # setters = setters_for_atr(atr)
-      define_method(atr.setter_name) do |input|
-        atr.setters(self).inject(input) { |val, setter|
-          setter.block.call(val, atr, self)
-        }
-      end
+      # ancestors[2].instance_exec do
+        define_method(atr.setter_name) do |input|
+          atr.setters.inject(input) { |val, setter|
+            setter.block.call(val, atr, self)
+          }
+        end
+      # end
+      # binding.pry
     end
 
     def attribute(name, klass, **args, &blk)
