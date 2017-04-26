@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'set'
 module Atrs
   module Coercions
     refine Set.singleton_class do
-      def coerce(v, atr)
+      def coerce(v, _atr)
         case v
         when self then v
         when Array then v.to_set
@@ -13,13 +15,13 @@ module Atrs
       end
     end
     refine Set do
-      def coerce(v, atr)
+      def coerce(v, _atr)
         case v
         when NilClass then self.class.new
         when Array, Set
           v.to_set.map! { |i| first.coerce(i, nil) }
         else
-          # binding.pry
+          raise UnsupportedError
         end
       end
     end

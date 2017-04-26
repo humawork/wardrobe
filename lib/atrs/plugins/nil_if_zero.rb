@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Plugins
     module NilIfZero
@@ -7,9 +9,9 @@ module Atrs
         name: :nil_if_zero,
         priority: 10,
         use_if: ->(atr) { atr.options[:nil_if_zero] },
-        setter: ->(value, atr, instance) {
+        setter: lambda do |value, _atr, _instance|
           value == 0 ? nil : value
-        }
+        end
       )
 
       option :nil_if_zero, Boolean, setter: :nil_if_zero

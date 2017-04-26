@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Atrs
   module Coercions
     refine Integer.singleton_class do
-      def coerce(v, atr)
+      def coerce(v, _atr)
         case v
         when self          then v
         when String, Float then v.to_i

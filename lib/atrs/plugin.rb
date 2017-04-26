@@ -1,21 +1,21 @@
+# frozen_string_literal: true
+
 module Atrs
   class PluginNameTakenError < StandardError; end
   class PluginOptionKeywordTakenError < StandardError; end
 
+  class << self
+    attr_reader :plugins, :options
+  end
   @plugins = {}
   @options = {}
-
-  def self.plugins; @plugins; end
-  def self.options; @options; end
 
   def self.register_plugin(name, mod)
     raise PluginNameTakenError, "Plugin #{name} already in use" if plugins[name]
     plugins[name] = mod
   end
 
-
   module Plugin
-
     def instance_methods_module
       const_get(:InstanceMethods)
     rescue NameError

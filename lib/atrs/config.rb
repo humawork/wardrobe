@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 module Atrs
   class Config
-
     def self.registered_stores
       @registered_stores ||= {}.freeze
     end
 
     def self.register_store(name, klass)
-      @registered_stores = self.registered_stores.merge(name => klass).freeze
+      @registered_stores = registered_stores.merge(name => klass).freeze
     end
 
     register_store(:attribute_store, AttributeStore)
@@ -38,7 +39,7 @@ module Atrs
       else
         @stores = stores.merge(name => klass)
         instance_variable_set("@#{name}", klass.new)
-        self.define_singleton_method(name) {  instance_variable_get("@#{name}") }
+        define_singleton_method(name) { instance_variable_get("@#{name}") }
         freeze unless initializer
       end
     end
@@ -52,7 +53,9 @@ module Atrs
         end
         stores.each do |name, klass|
           instance = respond_to?(name) ? send(name) : klass.new
-          instance_variable_set("@#{name}", instance.merge(other.send(name), calling_object, self ))
+          instance_variable_set(
+            "@#{name}", instance.merge(other.send(name), calling_object, self)
+          )
         end
         freeze
       end
@@ -60,8 +63,10 @@ module Atrs
 
     def dup
       duplicate = super
-      duplicate.stores.each do |name, klass|
-        duplicate.define_singleton_method(name) {  instance_variable_get("@#{name}") }
+      duplicate.stores.each do |name, _klass|
+        duplicate.define_singleton_method(name) do
+          instance_variable_get("@#{name}")
+        end
       end
       duplicate
     end
@@ -82,7 +87,9 @@ module Atrs
       if frozen?
         dup.add_attribute(name, klass, defining_object, **merged_args, &blk)
       else
-        @attribute_store = attribute_store.add(name, klass, defining_object, self, **merged_args, &blk)
+        @attribute_store = attribute_store.add(
+          name, klass, defining_object, self, **merged_args, &blk
+        )
         freeze
       end
     end

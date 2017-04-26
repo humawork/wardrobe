@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Coercions
     refine Array.singleton_class do
@@ -41,12 +43,12 @@ module Atrs
 
       def coerce(v, atr)
         res = case v
-        when Array
-          v.map! { |item| first.coerce(item, nil) }
-        when NilClass then Array.new
-        else
-          raise UnsupportedError
-        end
+              when Array
+                v.map! { |item| first.coerce(item, nil) }
+              when NilClass then []
+              else
+                raise UnsupportedError
+              end
         res.singleton_class.include(ArrayInstanceCoercer)
         res._atrs_init(atr, coercer: first)
       end

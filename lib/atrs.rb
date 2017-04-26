@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'atrs/version'
 require 'atrs/boolean'
 require 'atrs/store'

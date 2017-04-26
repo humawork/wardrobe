@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'date'
 module Atrs
   module Coercions
     refine Date.singleton_class do
-      def coerce(v, atr)
+      def coerce(v, _atr)
         case v
         # DateTime has to be first. `DateTime.new === Date.new # => true`
         when DateTime then v.to_date

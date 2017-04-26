@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Plugins
     module ImmutableInstanceMethods
@@ -19,11 +21,6 @@ module Atrs
             deep_freeze
           end
         end
-        #
-        # def deep_freeze
-        #   remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
-        #   freeze
-        # end
 
         def mutate!
           dup.instance_exec do
@@ -35,7 +32,7 @@ module Atrs
 
       refine Hash do
         def deep_freeze
-          each { |k,v| v.deep_freeze }
+          each { |_k, v| v.deep_freeze }
           freeze
         end
       end
@@ -50,6 +47,7 @@ module Atrs
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
         end
+
         def mutate!
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
@@ -73,6 +71,7 @@ module Atrs
         end
       end
     end
+
     module Immutable
       extend Atrs::Plugin
 
@@ -82,26 +81,24 @@ module Atrs
       Atrs.register_setter(
         name: :disable_setter_for_immutable_plugin,
         priority: -101,
-        use_if: ->(atr) { true },
-        setter: ->(value, atr, instance) {
+        use_if: ->(_atr) { true },
+        setter: lambda do |value, atr, instance|
           if instance._initializing? || !instance.frozen?
             value
           else
-            raise NoMethodError.new(
-              <<~eos
-                undefined method `#{atr.name}=' for #{instance}.
-                The instance is immutable. Use `#mutate(key, value)' or `#mutate { |obj| obj.#{atr.name} = #{value.inspect}}'
-              eos
-            )
+            raise NoMethodError, <<~eos
+              undefined method `#{atr.name}=' for #{instance}.
+              The instance is immutable. Use `#mutate(key, value)' or `#mutate { |obj| obj.#{atr.name} = #{value.inspect}}'
+            eos
           end
-        }
+        end
       )
 
       Atrs.register_getter(
         name: :dup_when_using_set_block,
         priority: 100,
         use_if: ->(atr) { true },
-        getter: ->(value, atr, instance) {
+        getter: lambda do |value, atr, instance|
           using ImmutableInstanceMethods
           if instance._initializing?
             value
@@ -110,10 +107,12 @@ module Atrs
           else
             value
           end
-        }
+        end
       )
 
-      option :immutable, Boolean, default: true, setter: :disable_setter_for_immutable_plugin, getter: :dup_when_using_set_block
+      option :immutable, Boolean, default: true,
+             setter: :disable_setter_for_immutable_plugin,
+             getter: :dup_when_using_set_block
 
       module InstanceMethods
         using ImmutableInstanceMethods

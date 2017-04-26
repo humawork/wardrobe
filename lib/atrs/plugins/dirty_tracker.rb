@@ -1,31 +1,33 @@
+# frozen_string_literal: true
+
 module Atrs
   module Plugins
     module DirtyTracker
       extend Atrs::Plugin
 
-
       Atrs.register_setter(
         name: :dirty_tracker,
         priority: 25,
         use_if: ->(atr) { atr.options[:track] },
-        setter: ->(value, atr, instance) {
+        setter: lambda do |value, atr, instance|
           return value if instance._initializing?
           instance._dirty! if value != instance.instance_variable_get(atr.ivar_name)
           value
-        }
+        end
       )
 
       Atrs.register_getter(
         name: :dirty_tracker,
         priority: 5,
         use_if: ->(atr) { atr.options[:track] },
-        getter: ->(value, atr, instance) {
+        getter: lambda do |value, atr, instance|
           instance._register_get(atr, value)
           value
-        }
+        end
       )
 
-      option :track, Boolean, default: true, setter: :dirty_tracker, getter: :dirty_tracker#setter(10,&setter_proc)
+      option :track, Boolean, default: true, setter: :dirty_tracker,
+             getter: :dirty_tracker#setter(10,&setter_proc)
 
       module InstanceMethods
         def _changed?
@@ -48,14 +50,14 @@ module Atrs
           _fetched_attributes[atr] ||= if value.respond_to?(:_changed?)
                                          :atrs_instance
                                        else
-                                        value.hash
+                                         value.hash
                                        end
         end
 
         private
 
         def _fetched_attributes
-          @_fetched_attributes ||= Hash.new
+          @_fetched_attributes ||= {}
         end
       end
     end

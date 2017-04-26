@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Plugins
     module AliasSetters
@@ -16,6 +18,7 @@ module Atrs
 
       module InstanceMethods
         private
+        
         def _attribute_init(atr, hash, name)
           return super if atr.alias_setter.empty?
           keys_in_hash = atr.alias_setter.select { |key| hash.key?(key) }

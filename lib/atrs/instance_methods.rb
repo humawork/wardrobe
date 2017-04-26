@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Atrs
   module InstanceMethods
-
     def initialize(**hash)
       # raise "POC: More than one arg not supported..." if args.length > 1
       # kargs = args.first.merge(kargs) if args.any?

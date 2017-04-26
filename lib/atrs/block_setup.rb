@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   class BlockSetup
     attr_reader :calling_klass, :block_options
@@ -36,8 +38,8 @@ module Atrs
     rescue NoMethodError => e
       if karg
         puts "Option #{karg.first} is not a valid option."
-        if option = Atrs.options[karg.first]
-          if name = Atrs.plugins.key(option.plugin)
+        if (option = Atrs.options[karg.first])
+          if (name = Atrs.plugins.key(option.plugin))
             puts "  enable the plugin `#{name}` to enable this option"
           end
         end
@@ -84,7 +86,7 @@ module Atrs
                           value.dup
                         end
         else
-          raise "Unsupported BlockSetup class"
+          raise 'Unsupported BlockSetup class'
         end
       end
       result

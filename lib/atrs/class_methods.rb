@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'forwardable'
 
 module Atrs
@@ -28,21 +30,6 @@ module Atrs
       end
     end
 
-    # def method_added(method_name)
-    #   if !caller_locations[0].path[/atrs\/lib\/atrs\/class_methods.rb$/]
-    #     puts "method #{method_name}. We have to solve this so super will work..."
-    #     something = method(method_name).unbind
-    #     ancestors.first.instance_exec do
-    #       binding.pry
-    #
-    #     end
-    #     # one = caller.first
-    #     # two = caller_locations.first
-    #     #
-    #     # puts "Adding #{method_name.inspect}"
-    #   end
-    # end
-
     def inherited(child)
       # binding.pry
       atrs_methods = child.instance_variable_set(:@atrs_methods, Module.new)
@@ -56,27 +43,23 @@ module Atrs
     end
 
     def define_getter(atr)
-      # binding.pry
       @atrs_methods.instance_exec do
         define_method(atr.name) do
-          atr.getters.inject(nil) { |val, getter|
+          atr.getters.inject(nil) do |val, getter|
             getter.block.call(val, atr, self)
-          }
+          end
         end
       end
-      # ancestors[2].instance_exec do
-      # end
     end
 
     def define_setter(atr)
-      # ancestors[2].instance_exec do
+      @atrs_methods.instance_exec do
         define_method(atr.setter_name) do |input|
-          atr.setters.inject(input) { |val, setter|
+          atr.setters.inject(input) do |val, setter|
             setter.block.call(val, atr, self)
-          }
+          end
         end
-      # end
-      # binding.pry
+      end
     end
 
     def attribute(name, klass, **args, &blk)
@@ -113,7 +96,7 @@ module Atrs
       end
     end
 
-    def coerce(val, atr)
+    def coerce(val, _atr)
       val ? new(**val) : new
     end
   end

@@ -1,23 +1,22 @@
+# frozen_string_literal: true
+
 module Atrs
   class OptionStore < Store
     attr_reader :store, :defaults
 
     def freeze
-      init_defaults
+      @defaults = select_defaults
       super
     end
 
     def add(name, instance)
-      mutate {
-        store[name] = instance
-      }
+      mutate { store[name] = instance }
     end
 
     private
 
-    def init_defaults
-      @defaults = store.select { |k,v| !v.default.nil? }
-                     .transform_values { |v| v.default }
+    def select_defaults
+      store.reject { |_k, v| v.default.nil? }.transform_values(&:default)
     end
   end
 end

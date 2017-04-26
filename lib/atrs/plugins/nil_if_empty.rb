@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Plugins
     module NilIfEmpty
@@ -7,7 +9,7 @@ module Atrs
         name: :nil_if_empty,
         priority: 20,
         use_if: ->(atr) { atr.options[:nil_if_empty] },
-        setter: ->(value, atr, instance) {
+        setter: lambda do |value, atr, _instance|
           return value unless atr.nil_if_empty
           case value
           when String, Array, Hash
@@ -15,7 +17,7 @@ module Atrs
           else
             value
           end
-        }
+        end
       )
 
       option :nil_if_empty, Boolean, setter: :nil_if_empty

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'refinements/array'
 require_relative 'refinements/integer'
 require_relative 'refinements/string'

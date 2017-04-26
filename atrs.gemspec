@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-utils', '~> 0.3'
   spec.add_development_dependency 'pry',            '~> 0.10.4'
   spec.add_development_dependency 'pry-byebug',     '~> 3.4'
+  spec.add_development_dependency 'rubocop',        '~> 0.48'
 end

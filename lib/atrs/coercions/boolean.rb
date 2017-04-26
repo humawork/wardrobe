@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   module Coercions
     TRUE_STRINGS = Set.new(['1', 'yes', 'true']).freeze

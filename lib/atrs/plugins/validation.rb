@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'validation/refinements'
 require_relative 'validation/validator'
 require_relative 'validation/validation_error'

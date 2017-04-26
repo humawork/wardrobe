@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   class PluginStore < Store
     attr_reader :store

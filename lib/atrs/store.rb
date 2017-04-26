@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atrs
   class Store
     include Enumerable
@@ -26,17 +28,18 @@ module Atrs
     end
 
     def method_missing(name, *args, **key_args, &block)
-      if atr = store[name]
+      if (atr = store[name])
         atr
       else
         super
       end
     end
 
-    def merge(other, calling_object, config)
+    def merge(other, _calling_object, _config)
       mutate do
         @store = store.merge(other.store)
-        # I guess we have to loop through each item and do a custom merge...maybe not use Hash#merge?
+        # I guess we have to loop through each item and do a custom merge...
+        # maybe not use Hash#merge?
       end
     end
 
