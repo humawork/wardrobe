@@ -11,7 +11,7 @@ module Atrs
         use_if: ->(atr) { atr.options[:track] },
         setter: lambda do |value, atr, instance|
           return value if instance._initializing?
-          instance._dirty! if value != instance.instance_variable_get(atr.ivar_name)
+          instance._dirty! if value != instance._get_attribute_value(atr)
           value
         end
       )
@@ -33,9 +33,9 @@ module Atrs
         def _changed?
           _fetched_attributes.delete_if do |atr, val|
             if val == :atrs_instance
-              _dirty! if instance_variable_get(atr.ivar_name)._changed?
+              _dirty! if _get_attribute_value(atr)._changed?
             else
-              _dirty! if instance_variable_get(atr.ivar_name).hash != val
+              _dirty! if _get_attribute_value(atr).hash != val
             end
             true
           end

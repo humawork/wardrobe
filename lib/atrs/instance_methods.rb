@@ -17,7 +17,21 @@ module Atrs
     end
 
     def _add_attribute(name, klass, **args, &blk)
-      @_atrs_set_singleton = _attribute_store.add(name, klass, self.class, self.class.atrs_config, **args, &blk)
+      @_atrs_set_singleton = _attribute_store.add(
+        name, klass, self.class, self.class.atrs_config, **args, &blk
+      )
+    end
+
+    def _data
+      @_data ||= {}
+    end
+
+    def _set_attribute_value(atr, value)
+      instance_variable_set(atr.ivar_name, value)
+    end
+
+    def _get_attribute_value(atr)
+      instance_variable_get(atr.ivar_name)
     end
 
     private
@@ -33,6 +47,7 @@ module Atrs
     end
 
     def _atrs_init(hash)
+      # Should we also loop over the hash and report on missing or additional attributes?
       _attribute_store.each do |name, atr|
         _attribute_init(atr, hash, name)
       end

@@ -4,6 +4,7 @@ require 'atrs/version'
 require 'atrs/boolean'
 require 'atrs/store'
 require 'atrs/coercions'
+require 'atrs/getter_setter'
 require 'atrs/attribute'
 require 'atrs/attribute_store'
 require 'atrs/option'
@@ -14,7 +15,7 @@ require 'atrs/config'
 require 'atrs/block_setup'
 require 'atrs/class_methods'
 require 'atrs/instance_methods'
-require 'atrs/root_config'
+require 'atrs/module_methods'
 
 require 'atrs/plugins/immutable'
 require 'atrs/plugins/alias_setters'
@@ -29,29 +30,19 @@ require 'atrs/plugins/optional_setter'
 require 'atrs/plugins/optional_getter'
 require 'atrs/plugins/ivy_presenter'
 
+# Top level Atrs module
 module Atrs
-  def self.included(base)
-    base.extend(ClassMethods)
-    base.include(InstanceMethods)
-    base.plugin(*config.default_plugins)
-  end
-
-  def self.config
-    @config ||= RootConfig.new
-  end
-
-  def self.configure
-    yield config
-  end
-
-  def self.create_class(plugins: [], attributes: [])
-    Class.new.class_exec do
-      include Atrs
-      plugin(*plugins)
-      attributes.each do |atr|
-        attribute(atr[:name], const_get(atr[:class]), atr.fetch(:options, {}))
-      end
-      self
-    end
-  end
+  extend ModuleMethods
 end
+
+require 'atrs/root_config'
+
+# rubocop:disable Style/MethodName
+def Atrs(**options)
+  mod = Module.new do
+    extend Atrs::ModuleMethods
+  end
+  mod.configure { |config| config.build(options) }
+  mod
+end
+# rubocop:enable Style/MethodName

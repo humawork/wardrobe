@@ -3,6 +3,10 @@
 module Atrs
   module Plugins
     module ImmutableInstanceMethods
+      IMMUTABLE_CORE_CLASSES = Set.new(
+        [NilClass, TrueClass, FalseClass, Integer, Symbol]
+      )
+
       refine Object do
         def _mutating?
           instance_variable_defined?(:@_mutating) && @_mutating
@@ -11,18 +15,23 @@ module Atrs
         def mutate(**args, &blk)
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
+            # if _storage_type == :hash
+            #   @_data = @_data.dup
+            # end
             blk.call(self) if block_given?
-            args.each do |name, value|
+            args.each do |name, _value|
               if atr = _attribute_store[name]
                 _attribute_init(atr, args, name)
               end
             end
             remove_instance_variable(:@_mutating)
             deep_freeze
+            self
           end
         end
 
         def mutate!
+          return self if IMMUTABLE_CORE_CLASSES.include?(self.class)
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
             self
@@ -41,6 +50,14 @@ module Atrs
           freeze
         end
       end
+      refine Set do
+        def deep_freeze
+          # Refinements does not work here when using &:deep_freeze like in array
+          each { |item| item.deep_freeze }
+          remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
+          freeze
+        end
+      end
       refine Array do
         def deep_freeze
           each(&:deep_freeze)
@@ -56,15 +73,29 @@ module Atrs
           end
         end
       end
-      [Integer, Symbol, NilClass].each do |klass|
+      IMMUTABLE_CORE_CLASSES.each do |klass|
         refine klass do
-          def deep_freeze; end
+          def deep_freeze
+            freeze
+          end
         end
       end
       refine Atrs::InstanceMethods do
+        def mutate!
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            # @_data = @_data.dup if _storage_type == :hash
+            self
+          end
+        end
+
         def deep_freeze
-          _attribute_store.each do |name,atr|
-            instance_variable_get(atr.ivar_name).deep_freeze
+          if instance_variable_defined?(:@_data)
+            @_data.deep_freeze
+          else
+            _attribute_store.each do |name,atr|
+              instance_variable_get(atr.ivar_name).deep_freeze
+            end
           end
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
@@ -97,13 +128,14 @@ module Atrs
       Atrs.register_getter(
         name: :dup_when_using_set_block,
         priority: 100,
-        use_if: ->(atr) { true },
+        use_if: ->(_atr) { true },
         getter: lambda do |value, atr, instance|
           using ImmutableInstanceMethods
           if instance._initializing?
             value
           elsif instance._mutating?
-            instance.instance_variable_set(atr.ivar_name, value.mutate!)
+            instance._set_attribute_value(atr, value.mutate!)
+            # instance.instance_variable_set(atr.ivar_name, value.mutate!)
           else
             value
           end
@@ -111,13 +143,14 @@ module Atrs
       )
 
       option :immutable, Boolean, default: true,
-             setter: :disable_setter_for_immutable_plugin,
-             getter: :dup_when_using_set_block
+                                  setter: :disable_setter_for_immutable_plugin,
+                                  getter: :dup_when_using_set_block
 
       module InstanceMethods
         using ImmutableInstanceMethods
         def initialize(**hash)
           super
+          _data.deep_freeze if instance_variable_defined?(:@_data)
           freeze
         end
 

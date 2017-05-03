@@ -8,7 +8,6 @@ module Atrs
     def_delegators :@atrs_config, :attribute_store, :plugin_store, :option_store
 
     def self.extended(base)
-      # binding.pry
       atrs_methods = base.instance_variable_set(:@atrs_methods, Module.new)
       base.include(atrs_methods)
       base.instance_variable_set(:@atrs_config, Config.new)
@@ -17,9 +16,15 @@ module Atrs
     # This is called when included in another module/class
     def included(base)
       base.include(Atrs) unless base.respond_to? :atrs_config
-      # base.instance_variable_set(:@atrs_method, Module.new)
-      # binding.pry
       base.merge(atrs_config)
+    end
+
+    def inherited(child)
+      atrs_methods = child.instance_variable_set(:@atrs_methods, Module.new)
+      child.include(atrs_methods)
+      child.instance_variable_set(:@atrs_config, Config.new)
+      child.merge(atrs_config)
+      child.root_config = root_config
     end
 
     def atrs_config(&blk)
@@ -30,12 +35,29 @@ module Atrs
       end
     end
 
-    def inherited(child)
-      # binding.pry
-      atrs_methods = child.instance_variable_set(:@atrs_methods, Module.new)
-      child.include(atrs_methods)
-      child.instance_variable_set(:@atrs_config, Config.new)
-      child.merge(atrs_config)
+    def configure_atrs(&blk)
+      @root_config = root_config.mutate(&blk)
+    end
+
+    def root_config=(input)
+      @root_config = input
+    end
+
+    def root_config
+      @root_config if instance_variable_defined?(:@root_config)
+    end
+
+    def default_getters
+      [
+        Atrs.getters[:getter]
+      ]
+    end
+
+    def default_setters
+      [
+        Atrs.setters[:coercer],
+        Atrs.setters[:setter]
+      ]
     end
 
     def merge(config)
@@ -64,7 +86,9 @@ module Atrs
 
     def attribute(name, klass, **args, &blk)
       merged_args = option_store.defaults.merge(args)
-      @atrs_config = atrs_config.add_attribute(name, klass, self, **merged_args, &blk)
+      @atrs_config = atrs_config.add_attribute(
+        name, klass, self, **merged_args, &blk
+      )
       define_getter(attribute_store[name])
       define_setter(attribute_store[name])
     end

@@ -2,6 +2,7 @@ require 'benchmark/ips'
 require 'pry'
 require 'pry-byebug'
 require 'ostruct'
+require 'middleware'
 
 procs = [
   Proc.new { |val, instance| instance.name + val },
@@ -51,6 +52,12 @@ classes = [
   }
 ]
 
+mid = Middleware::Builder.new { |b|
+  b.use lambda { |data| data[:val] = data[:instance].name + data[:val]; data }
+  b.use lambda { |data| data[:val] = data[:instance].name + data[:val]; data }
+  b.use lambda { |data| data[:val] = data[:instance].name + data[:val]; data }
+}
+
 instance = OpenStruct.new(name: 'Yes! ')
 
 procs.inject('') do |val, item|
@@ -82,6 +89,9 @@ Benchmark.ips do |x|
     classes.inject('') do |val, item|
       item.new.call(val, instance)
     end
+  }
+  x.report('Middleware Gem') {
+    mid.call({val: '', instance: instance})[:val]
   }
   x.compare!
 end
