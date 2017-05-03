@@ -46,10 +46,10 @@ module Atrs
       @_atrs_set_singleton if instance_variable_defined?('@_atrs_set_singleton')
     end
 
-    def _atrs_init(hash)
+    def _atrs_init(data)
       # Should we also loop over the hash and report on missing or additional attributes?
       _attribute_store.each do |name, atr|
-        _attribute_init(atr, hash, name)
+        _attribute_init(atr, data, name)
       end
     end
 

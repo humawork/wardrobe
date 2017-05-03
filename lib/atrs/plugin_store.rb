@@ -7,7 +7,11 @@ module Atrs
       begin
         plugin = Atrs.plugins.fetch(name)
       rescue KeyError
-        raise "No plugin #{name} registered"
+        if require "atrs/plugins/#{name}"
+          retry
+        else
+          raise "No plugin #{name} registered"
+        end
       end
       mutate do
         store[name] = plugin
