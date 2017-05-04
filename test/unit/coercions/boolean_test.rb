@@ -39,7 +39,6 @@ class BooleanCoercionTest < Minitest::Test
       string_0: '0',
       string_false: 'false'
     )
-
     assert_equal false, object.false
     assert_equal false, object.integer_zero
     assert_equal false, object.no
@@ -47,9 +46,12 @@ class BooleanCoercionTest < Minitest::Test
     assert_equal false, object.string_false
   end
 
+
   def test_coercion_from_setter
     object = BooleanObject.new
+    object.false = false
     object.integer_zero = 0
+    assert_equal false, object.false
     assert_equal false, object.integer_zero
   end
 end

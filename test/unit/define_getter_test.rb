@@ -1,5 +1,5 @@
 require 'test_helper'
-class TestDefineGetter < Minitest::Test
+class DefineGetterTest < Minitest::Test
   class Zero
     include Atrs
     plugin :optional_getter
