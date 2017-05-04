@@ -28,4 +28,8 @@ Rake::TestTask.new(:bench) do |t|
   t.pattern = 'test/**/*_bench.rb'
 end
 
+task :console do
+  sh "irb -I #{File.dirname(__FILE__)}/lib -r atrs"
+end
+
 task default: :test
