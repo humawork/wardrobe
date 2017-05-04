@@ -15,9 +15,6 @@ module Atrs
         def mutate(**args, &blk)
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
-            # if _storage_type == :hash
-            #   @_data = @_data.dup
-            # end
             blk.call(self) if block_given?
             args.each do |name, _value|
               if atr = _attribute_store[name]
@@ -84,7 +81,6 @@ module Atrs
         def mutate!
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
-            # @_data = @_data.dup if _storage_type == :hash
             self
           end
         end
