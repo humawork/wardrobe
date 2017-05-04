@@ -18,13 +18,13 @@ class AtrsConfigTest < Minitest::Test
   end
 
   def test_plugin_added_to_class
-    assert Person.atrs_config.plugin_store[:default]
-    assert Person.atrs_config.option_store[:default]
+    assert Person.plugin_store[:default]
+    assert Person.option_store[:default]
   end
 
   def test_correct_plugin_and_option_count
-    assert_equal 1, Person.atrs_config.option_store.store.count
-    assert_equal 1, Person.atrs_config.plugin_store.store.count
+    assert_equal 1, Person.option_store.store.count
+    assert_equal 1, Person.plugin_store.store.count
   end
 
   def test_one

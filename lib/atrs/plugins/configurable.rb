@@ -8,24 +8,27 @@ module Atrs
       extend Atrs::Plugin
 
       module ClassMethods
+        extend Forwardable
+        def_delegators :@atrs_stores, :configurable_store
+        
         def self.extended(base)
           super
-          base.atrs_config do
+          base.atrs_stores do
             add_store(:configurable_store, ConfigurableStore)
           end
         end
 
         def configurable(name, blk_name, klass)
-          atrs_config do
+          atrs_stores do
             @configurable_store = configurable_store.register(name, klass)
           end
 
           define_singleton_method(name) do
-            atrs_config.configurable_store[name]
+            atrs_stores.configurable_store[name]
           end
 
           define_singleton_method(blk_name) do |&blk|
-            atrs_config do
+            atrs_stores do
               @configurable_store = configurable_store.update(name, &blk)
             end
           end

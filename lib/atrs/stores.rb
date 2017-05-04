@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Atrs
-  class Config
+  class Stores
     def self.registered_stores
       @registered_stores ||= {}.freeze
     end

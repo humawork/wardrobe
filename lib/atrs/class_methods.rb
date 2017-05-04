@@ -5,33 +5,33 @@ require 'forwardable'
 module Atrs
   module ClassMethods
     extend Forwardable
-    def_delegators :@atrs_config, :attribute_store, :plugin_store, :option_store
+    def_delegators :@atrs_stores, :attribute_store, :plugin_store, :option_store
 
     def self.extended(base)
       atrs_methods = base.instance_variable_set(:@atrs_methods, Module.new)
       base.include(atrs_methods)
-      base.instance_variable_set(:@atrs_config, Config.new)
+      base.instance_variable_set(:@atrs_stores, Stores.new)
     end
 
     # This is called when included in another module/class
     def included(base)
-      base.include(Atrs) unless base.respond_to? :atrs_config
-      base.merge(atrs_config)
+      base.include(Atrs) unless base.respond_to? :atrs_stores
+      base.merge(atrs_stores)
     end
 
     def inherited(child)
       atrs_methods = child.instance_variable_set(:@atrs_methods, Module.new)
       child.include(atrs_methods)
-      child.instance_variable_set(:@atrs_config, Config.new)
-      child.merge(atrs_config)
+      child.instance_variable_set(:@atrs_stores, Stores.new)
+      child.merge(atrs_stores)
       child.root_config = root_config
     end
 
-    def atrs_config(&blk)
+    def atrs_stores(&blk)
       if block_given?
-        @atrs_config = atrs_config.update(&blk)
+        @atrs_stores = atrs_stores.update(&blk)
       else
-        @atrs_config
+        @atrs_stores
       end
     end
 
@@ -52,16 +52,15 @@ module Atrs
         Atrs.getters[:getter]
       ]
     end
-
     def default_setters
-      [
-        Atrs.setters[:coercer],
-        Atrs.setters[:setter]
-      ]
+      arr = []
+      arr << Atrs.setters[:coercer] unless root_config&.coerce == false
+      arr << Atrs.setters[:setter]
+      arr
     end
 
     def merge(config)
-      @atrs_config = atrs_config.merge(config, self)
+      @atrs_stores = atrs_stores.merge(config, self)
     end
 
     def define_getter(atr)
@@ -86,7 +85,7 @@ module Atrs
 
     def attribute(name, klass, **args, &blk)
       merged_args = option_store.defaults.merge(args)
-      @atrs_config = atrs_config.add_attribute(
+      @atrs_stores = atrs_stores.add_attribute(
         name, klass, self, **merged_args, &blk
       )
       define_getter(attribute_store[name])
@@ -99,7 +98,7 @@ module Atrs
 
     def remove_attributes(*atrs)
       atrs.each do |name|
-        @atrs_config = atrs_config.remove_attribute(name)
+        @atrs_stores = atrs_stores.remove_attribute(name)
       end
     end
 
@@ -110,7 +109,7 @@ module Atrs
     end
 
     def enable_plugin(name)
-      @atrs_config = atrs_config.enable_plugin(name)
+      @atrs_stores = atrs_stores.enable_plugin(name)
       plugin = plugin_store[name]
       if plugin.const_defined?(:ClassMethods)
         extend(plugin.const_get(:ClassMethods))

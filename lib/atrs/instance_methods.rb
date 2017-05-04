@@ -18,7 +18,7 @@ module Atrs
 
     def _add_attribute(name, klass, **args, &blk)
       @_atrs_set_singleton = _attribute_store.add(
-        name, klass, self.class, self.class.atrs_config, **args, &blk
+        name, klass, self.class, self.class.atrs_stores, **args, &blk
       )
     end
 

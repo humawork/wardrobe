@@ -22,8 +22,8 @@ class InheritanceCompositionTest < Minitest::Test
   end
 
   def test_plugin_registered_on_inherited_class_only
-    assert_nil SimpleClass.atrs_config.plugin_store[:default]
-    assert InheritedClass.atrs_config.plugin_store[:default]
+    assert_nil SimpleClass.plugin_store[:default]
+    assert InheritedClass.plugin_store[:default]
   end
 
   def test_inherited_class

@@ -60,13 +60,13 @@ module Atrs
     end
 
     def build_getter_array(klass)
-      (klass.atrs_config.option_store.values.map do |option|
+      (klass.option_store.values.map do |option|
         option.getter if option.use_getter_for_atr?(self)
       end + klass.default_getters).compact.sort_by(&:priority)
     end
 
     def build_setter_array(klass)
-      (klass.atrs_config.option_store.values.map do |option|
+      (klass.option_store.values.map do |option|
         option.setter if option.use_setter_for_atr?(self)
       end + klass.default_setters).compact.sort_by(&:priority)
     end

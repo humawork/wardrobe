@@ -48,8 +48,8 @@ end
 
 class ConfigurableTest < Minitest::Test
   def test_store_created_in_config
-    assert Base.atrs_config.stores[:configurable_store]
-    assert Child.atrs_config.stores[:configurable_store]
+    assert Base.configurable_store
+    assert Child.configurable_store
   end
 
   def test_child_class
