@@ -3,8 +3,30 @@
 [![Code Climate](https://codeclimate.com/github/agensdev/atrs.png)](https://codeclimate.com/github/agensdev/atrs)
 
 
-This is an early POC Virtus inspired attribute gem. We might aim to make a
-drop in compatible mode. (Maybe through a plugin?)
+Atrs was inspired by Virtus. It offers a plugin system with multiple included plugins like Immutable, Configurable and Validations. See wiki for full list.
+
+## Requirements
+
+Atrs requires Ruby 2.4.0+. Support for older versions of ruby is not planned.
+
+## Installation
+
+```
+gem install atrs (Not available yet)
+```
+
+## Getting started
+
+```ruby
+class User
+  include Atrs
+  attribute :name, String
+end
+
+User.new(name: 'Atrs User')
+```
+
+
 
 Atrs should:
 
