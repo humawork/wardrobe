@@ -8,7 +8,7 @@ module Atrs
       Atrs.register_setter(
         name: :default_setter,
         priority: 5,
-        use_if: ->(atr) { atr.options[:default] },
+        use_if: ->(atr) { !atr.options[:default].nil? },
         setter: lambda do |value, atr, instance|
           if value && ![{},[]].include?(value)
             value
@@ -26,7 +26,7 @@ module Atrs
         end
       )
 
-      option :default, Boolean, setter: :default_setter
+      option :default, Object, setter: :default_setter
     end
   end
   register_plugin(:default, Plugins::Default)

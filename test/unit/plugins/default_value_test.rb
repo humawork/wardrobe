@@ -6,6 +6,8 @@ module DefaultMixin
   attribute :name,     String, default: 'missing name'
   attribute :address,  String, default: :address_default
   attribute :zip_code, String, default: -> { '0' + '1' }
+  attribute :for_sale, Boolean, default: false
+  attribute :for_rent, Boolean, default: true
 
   def address_default
     'missing address'
@@ -40,6 +42,13 @@ class DefaultValueTest < Minitest::Test
   def test_default_literal
     assert_equal 2, @house.floors
     assert_equal 'missing name', @house.name
+  end
+
+  def test_default_boolean
+    assert_equal 3,House.attribute_store[:for_rent].setters.length
+    assert_equal 3,House.attribute_store[:for_sale].setters.length
+    assert_equal true, @house.for_rent
+    assert_equal false, @house.for_sale
   end
 
   def test_default_symbol
