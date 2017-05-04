@@ -6,6 +6,7 @@ module Atrs
     include Atrs
     plugin :immutable
     plugin :default
+    attribute :coerce, Boolean, default: true
     attribute :default_plugins, Set[Symbol]
 
     def register_default_plugin(name)
