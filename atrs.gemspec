@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.version       = Atrs::VERSION
   spec.authors       = ['Eigil Sagafos']
   spec.email         = ['eigil@agens.no']
-  spec.summary       = 'Atrs'
-  spec.description   = 'Atrs'
-  spec.homepage      = ''
-  spec.license       = ''
+  spec.description   = 'Plugin based attribute system for ruby objects'
+  spec.summary       = spec.description
+  spec.homepage      = 'https://github.com/agensdev/atrs'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
