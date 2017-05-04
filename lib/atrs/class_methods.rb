@@ -121,7 +121,8 @@ module Atrs
     end
 
     def coerce(val, _atr)
-      val ? new(**val) : new
+      return new unless val
+      new(**val)
     end
   end
 end
