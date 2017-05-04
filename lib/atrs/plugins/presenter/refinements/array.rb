@@ -6,7 +6,7 @@ module Atrs
       module Refinements
         refine Array do
           def _present(*args)
-            each(&:_present)
+            map(&:_present)
           end
         end
       end
