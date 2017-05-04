@@ -1,6 +1,6 @@
 # Atrs
 [![Build Status](https://travis-ci.org/agensdev/atrs.svg?branch=master)](https://travis-ci.org/agensdev/atrs)
-[![Code Climate](https://codeclimate.com/github/agensdev/atrs.png)](https://codeclimate.com/github/agensdev/atrs)
+[![Code Climate](https://codeclimate.com/github/agensdev/atrs.svg)](https://codeclimate.com/github/agensdev/atrs)
 
 
 Atrs was inspired by Virtus. It offers a plugin system with multiple included plugins like Immutable, Configurable and Validations. See wiki for full list.
