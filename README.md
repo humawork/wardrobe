@@ -1,22 +1,25 @@
 # Atrs
 [![Build Status](https://travis-ci.org/agensdev/atrs.svg?branch=master)](https://travis-ci.org/agensdev/atrs)
 [![Code Climate](https://codeclimate.com/github/agensdev/atrs.svg)](https://codeclimate.com/github/agensdev/atrs)
+[![Gem Version](https://badge.fury.io/rb/virtus.svg)](https://rubygems.org/gems/atrs)
 
 Atrs is a library that simplifies creating ruby models with attributes and coercion. Atrs includes a multitude of plugins. See list of bundled plugins below. Atrs was made with inspiration from and years of using Virtus. Atrs aims at being easier to extend and include more tools out of the box.
 
 ## Requirements
 
-Atrs requires Ruby 2.4.0+. Support for older versions of ruby is not planned.
+Atrs requires Ruby 2.4.0 or later. Read more about why here.
 
 ## Installation
 
 ```
-gem install atrs (Not available yet)
+gem install atrs
 ```
 
 ## Getting started
 
 ```ruby
+require 'atrs'
+
 class User
   include Atrs
   attribute :name, String
@@ -179,3 +182,7 @@ Atrs should:
 * should be immutable in the config layer allowing subclasses or singleton classes to modify the setup
 * include a plugin system
 * simplify coercions through refinements
+
+## Ruby 2.4
+
+When developing the first proof of concept for atrs I wanted to use refinements for coercion. This was just before Ruby 2.4 was released and I remember getting stuck when trying to use Kernel#send to call a method defined in a refined class. This was fixed in Ruby 2.4, and is the reason why atrs requires Ruby 2.4 or later.
