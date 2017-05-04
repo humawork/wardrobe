@@ -152,20 +152,22 @@ User.new(first_name: '', last_name: '', friends: [])
 
 Atrs comes with numerous plugins and aims at making it easy to write your own.
 
-* validation
-* immutable
-* dirty_tracker
-* default
-* presenter
-* configurable
-* nil_if_empty
-* nil_if_zero
-* alias_setters
-* json_initializer
-* html_initializer
-* xml_initializer
-* optional_setter
-* optional_getter
+|Name               |Exposed options      |Development state  |Description       |
+|-------------------|---------------------|-------------------|------------------|
+|validation         |`validates`          |POC                |dry-validation inspired validations for your attributes|
+|immutable          |`immutable`          |BETA               |makes your modle immutable. Exposes a #mutate method that will return a new object|
+|dirty_tracker      |`track`              |BETA               |tracks instances and exposes a #_changed? method|
+|default            |`default`            |BETA               |default values for attributes|
+|presenter          |                     |POC                |presents your instance as a hash|
+|configurable       |                     |BETA               |allows you to add class level immutable configuration to your modles|
+|nil_if_empty       |`nil_if_empty`       |BETA               |
+|nil_if_zero        |`nil_if_zero`        |BETA               |
+|alias_setters      |`alias_setter(Array)`|BETA               |
+|json_initializer   |                     |POC                |initialize your model with a json string|
+|html_initializer   |                     |POC                |initialize your model with a html string|
+|xml_initializer    |                     |NOT IMPLEMENTED    |initialize your model with a xml string|
+|optional_setter    |`setter`             |BETA               |disable the setter|
+|optional_getter    |`getter`             |BETA               |disable the getter|
 
 ## Goals
 
