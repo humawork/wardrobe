@@ -7,11 +7,17 @@ module Atrs
     plugin :immutable
     plugin :default
     attribute :coerce, Boolean, default: true
-    attribute :default_plugins, Set[Symbol]
+    attribute :default_plugins, Set[Symbol], default: Set.new([:coercible])
 
     def register_default_plugin(name)
       raise 'error' unless Atrs.plugins.key?(name)
       default_plugins.add(name)
+    end
+
+    def coerce=(value)
+      if super == false
+        default_plugins.delete(:coercible)
+      end
     end
 
     def build(**args)

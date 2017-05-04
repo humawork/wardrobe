@@ -34,7 +34,6 @@ module Atrs
 
         def _attribute_init(atr, html, name)
           return super if html.is_a?(Hash)
-          binding.pry
           send(atr.setter_name, html)
         end
       end

@@ -16,7 +16,6 @@ module Atrs
             dup.update(name, &blk)
           else
             duplicate = @store[name].mutate(&blk)
-            # binding.pry
             @store = @store.merge(name => duplicate)
             freeze
           end

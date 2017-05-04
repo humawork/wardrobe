@@ -5,7 +5,6 @@ module Atrs
 
   # Attribute class
   class Attribute
-    using Coercions
     attr_reader :name, :klass, :options, :ivar_name, :setter_name, :store,
                 :setters, :getters
 
@@ -32,13 +31,6 @@ module Atrs
       klass
     end
 
-    def coerce(val)
-      klass.coerce(val, self)
-    rescue Coercions::UnsupportedError
-      raise Coercions::UnsupportedError,
-            "Can't coerce #{val.class} `#{val}` into #{klass}"
-    end
-
     def merge(other, defining_object, config)
       merged_options = merge_options(other.options)
       self.class.new(name, other.klass, defining_object, config, merged_options)
@@ -49,8 +41,9 @@ module Atrs
     def merge_options(other)
       merged_options = options.dup
       other.each do |key, value|
+        next if merged_options[key] == value
         if merged_options[key]
-          raise 'Unsupported attribute operation' unless value.is_a?(Hash)
+          raise 'FIX ME! Currently only hash merge is supported' unless value.is_a?(Hash)
           merged_options[key] = merged_options[key].merge(value)
         else
           merged_options[key] = value.dup
@@ -77,7 +70,13 @@ module Atrs
           Atrs.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
           raise UnavailableOptionError
         end
-        define_singleton_method(name) { @options[name] }
+        unless name == :coerce
+          define_singleton_method(name) do
+            puts caller_locations.first
+            puts "NO! Don't do this! #{name}"
+            @options[name]
+          end
+        end
       end
     end
   end

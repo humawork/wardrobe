@@ -52,13 +52,13 @@ module Atrs
         Atrs.getters[:getter]
       ]
     end
-    def default_setters
-      arr = []
-      arr << Atrs.setters[:coercer] unless root_config&.coerce == false
-      arr << Atrs.setters[:setter]
-      arr
-    end
 
+    def default_setters
+      [
+        Atrs.setters[:setter]
+      ]
+    end
+    
     def merge(config)
       @atrs_stores = atrs_stores.merge(config, self)
     end
@@ -117,11 +117,6 @@ module Atrs
       if plugin.const_defined?(:InstanceMethods)
         include(plugin.const_get(:InstanceMethods))
       end
-    end
-
-    def coerce(val, _atr)
-      return new if val.nil?
-      new(**val)
     end
   end
 end

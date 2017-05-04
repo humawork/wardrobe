@@ -16,18 +16,6 @@ module Atrs
   end
 
   module Plugin
-    def instance_methods_module
-      const_get(:InstanceMethods)
-    rescue NameError
-      nil
-    end
-
-    def class_methods_module
-      const_get(:ClassMethods)
-    rescue NameError
-      nil
-    end
-
     def options
       @options ||= []
     end

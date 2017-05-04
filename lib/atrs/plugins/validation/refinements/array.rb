@@ -9,10 +9,6 @@ module Atrs
 
           def each(some)
             other_each(some)
-            # puts some
-            # some
-            # binding.pry
-            # some
           end
 
           def other_each(some)

@@ -13,7 +13,7 @@ module Atrs
           if !value.nil? && ![{},[]].include?(value)
             value
           else
-            default = atr.default
+            default = atr.options[:default]
             case default
             when Symbol
               default.match?(/default$/) ? instance.send(default) : default

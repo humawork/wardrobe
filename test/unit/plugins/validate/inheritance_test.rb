@@ -27,10 +27,10 @@ end
 class InheritanceTest < Minitest::Test
   def test_inheritance
     instance = KlassOne.new(name: 'Lorem')
-    assert_equal [:in], instance._attribute_store.name.validates.keys
+    assert_equal [:in], instance._attribute_store.name.options[:validates].keys
     instance = KlassTwo.new(name: 'Lorem')
-    assert_equal [:in, :length], instance._attribute_store.name.validates.keys
+    assert_equal [:in, :length], instance._attribute_store.name.options[:validates].keys
     instance = KlassThree.new(name: 'Lorem')
-    assert_equal [:in, :length, :match], instance._attribute_store.name.validates.keys
+    assert_equal [:in, :length, :match], instance._attribute_store.name.options[:validates].keys
   end
 end

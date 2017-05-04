@@ -23,7 +23,6 @@ module Atrs
   def self.register_setter(name:, priority:, setter:, use_if: ->(_atr) { true })
     raise 'Name taken' if setters[name]
     # if (res = setters.find { |_k, v| v.priority == priority })
-    #   binding.pry
     #   raise "Prioriy #{priority} in use by #{res.name}"
     # end
     setters[name] = SetterGetter.new(name, priority, setter, use_if)
@@ -41,15 +40,6 @@ module Atrs
     use_if: ->(_atr) { true },
     getter: lambda do |_value, atr, instance|
       instance.instance_variable_get(atr.ivar_name)
-    end
-  )
-
-  Atrs.register_setter(
-    name: :coercer,
-    priority: -100,
-    use_if: ->(_atr) { true },
-    setter: lambda do |value, atr, _instance|
-      atr.coerce(value)
     end
   )
 
