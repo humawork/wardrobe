@@ -185,4 +185,4 @@ Atrs should:
 
 ## Ruby 2.4
 
-When developing the first proof of concept for atrs I wanted to use refinements for coercion. This was just before Ruby 2.4 was released and I remember getting stuck when trying to use Kernel#send to call a method defined in a refined class. This was fixed in Ruby 2.4, and is the reason why atrs requires Ruby 2.4 or later.
+When working on the first proof of concept for Atrs I wanted to use refinements for coercion. This was right before Ruby 2.4 was released that added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Atrs requires ruby 2.4 or above.
