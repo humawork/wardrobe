@@ -49,6 +49,10 @@ class DefaultValueTest < Minitest::Test
     assert_equal 3,House.attribute_store[:for_sale].setters.length
     assert_equal true, @house.for_rent
     assert_equal false, @house.for_sale
+    @house.for_rent = false
+    @house.for_sale = true
+    assert_equal false, @house.for_rent
+    assert_equal true, @house.for_sale
   end
 
   def test_default_symbol

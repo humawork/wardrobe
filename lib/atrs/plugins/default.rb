@@ -10,7 +10,7 @@ module Atrs
         priority: 5,
         use_if: ->(atr) { !atr.options[:default].nil? },
         setter: lambda do |value, atr, instance|
-          if value && ![{},[]].include?(value)
+          if !value.nil? && ![{},[]].include?(value)
             value
           else
             default = atr.default
