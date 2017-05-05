@@ -1,7 +1,7 @@
 # Atrs
 [![Build Status](https://travis-ci.org/agensdev/atrs.svg?branch=master)](https://travis-ci.org/agensdev/atrs)
 [![Code Climate](https://codeclimate.com/github/agensdev/atrs.svg)](https://codeclimate.com/github/agensdev/atrs)
-[![Gem Version](https://badge.fury.io/agensdev/atrs.svg)](https://rubygems.org/gems/atrs)
+<!-- [![Gem Version](https://badge.fury.io/agensdev/atrs.svg)](https://rubygems.org/gems/atrs) -->
 
 Atrs is a library that simplifies creating ruby models with attributes and coercion. Atrs includes a multitude of plugins. See list of bundled plugins below. Atrs was made with inspiration from and years of using Virtus. Atrs aims at being easier to extend and include more tools out of the box.
 
