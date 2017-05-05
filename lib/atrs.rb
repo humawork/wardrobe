@@ -3,7 +3,6 @@
 require 'atrs/version'
 require 'atrs/boolean'
 require 'atrs/store'
-require 'atrs/coercions'
 require 'atrs/getter_setter'
 require 'atrs/attribute'
 require 'atrs/attribute_store'

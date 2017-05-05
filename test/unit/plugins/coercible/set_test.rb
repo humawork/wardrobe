@@ -31,10 +31,10 @@ class SetCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
       SetObject.new(set: Time.now)
     end
-    assert_raises Atrs::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
       SetObject.new(array: 'string')
     end
   end

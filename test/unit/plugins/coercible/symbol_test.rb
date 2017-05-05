@@ -20,10 +20,10 @@ class SymbolCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
       SymbolObject.new(string: [1,2])
     end
-    assert_raises Atrs::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
       SymbolObject.new(symbol: Time.now)
     end
   end
