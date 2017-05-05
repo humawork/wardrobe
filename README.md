@@ -7,7 +7,8 @@ Atrs is a library that simplifies creating ruby models with attributes and coerc
 
 ## Requirements
 
-Atrs requires Ruby 2.4.0 or later. Read more about why here.
+Atrs requires Ruby 2.4.0 or later. Read more about why [here](#ruby-2.4).
+JRuby should be supported once [9.2.0.0](https://github.com/jruby/jruby/milestone/53) is released
 
 ## Installation
 
