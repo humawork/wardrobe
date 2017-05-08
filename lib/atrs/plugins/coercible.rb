@@ -42,7 +42,8 @@ module Atrs
       module ClassMethods
         def coerce(val, _atr)
           return new if val.nil?
-          new(**val)
+          return new(**val) if val.is_a?(Hash)
+          new(val)
         end
       end
     end
