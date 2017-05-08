@@ -172,6 +172,7 @@ Wardrobe comes with numerous plugins and aims at making it easy to write your ow
 |xml_initializer    |                     |NOT IMPLEMENTED    |initialize your model with a xml string|
 |optional_setter    |`setter`             |BETA               |disable the setter|
 |optional_getter    |`getter`             |BETA               |disable the getter|
+|equality           |`include_in_equality`|BETA               |check if to wardrobe instances are equal|
 
 ## Goals
 
