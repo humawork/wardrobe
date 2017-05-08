@@ -21,8 +21,8 @@ module Atrs
       module InstanceMethods
         def initialize(html = nil, **args)
           if html
-            define_singleton_method(:_attribute_init) do |atr, html, name|
-              value = atr.options[:html_selector].call(html, atr, self)
+            define_singleton_method(:_attribute_init) do |atr, doc, name|
+              value = atr.options[:html_selector].call(doc, atr, self)
               send(atr.setter_name, value)
             end
             html = HtmlInitializer.parse(html) if html.is_a?(String)
