@@ -25,13 +25,13 @@ class JsonInitializerTest < Minitest::Test
       read.close
       result = yield
       Marshal.dump(result, write)
-      exit!(0) # skips exit handlers.
+      exit!(0)
     end
 
     write.close
     result = read.read
     Process.wait(pid)
-    raise "child failed" if result.empty?
+    raise 'child failed' if result.empty?
     Marshal.load(result)
   end
 
