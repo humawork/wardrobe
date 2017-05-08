@@ -1,28 +1,28 @@
 require 'test_helper'
 
 class ParamConfig
-  include Atrs
+  include Wardrobe
   plugin :immutable
   attribute :name, String
   attribute :klass, Symbol
 end
 
 class ChildTestConfig
-  include Atrs
+  include Wardrobe
   plugin :immutable
   attribute :name, String
   attribute :params, Array[ParamConfig]
 end
 
 class TestConfig
-  include Atrs
+  include Wardrobe
   plugin :immutable
   attribute :title, String
   attribute :child, ChildTestConfig
 end
 
 class Base
-  include Atrs
+  include Wardrobe
   plugin :configurable
   configurable :config, :configure, TestConfig
   configure do |config|

@@ -1,20 +1,20 @@
 require 'test_helper'
 
 class DirtyRoot
-  include Atrs
+  include Wardrobe
   plugin :dirty_tracker
   attribute :depth, Integer
 end
 
 class DirtyTree
-  include Atrs
+  include Wardrobe
   plugin :dirty_tracker
   attribute :name,     String
   attribute :branches, Hash
   attribute :leaves,   Array
   attribute :colors,   Set
   attribute :root,     DirtyRoot
-  # TODO: Test sub atrs class
+  # TODO: Test sub wardrobe class
 end
 
 class DirtyTrackerTest < Minitest::Test

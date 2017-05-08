@@ -1,7 +1,7 @@
 # require 'test_helper'
 #
 # class ValidateTestArrayModel
-#   include Atrs
+#   include Wardrobe
 #
 #   plugin :validate
 #
@@ -32,7 +32,7 @@
 #
 # class ArrayValidationTest < Minitest::Test
 #   class ArrayObject
-#     include Atrs
+#     include Wardrobe
 #     plugin :validation
 #     attribute :one, Array, validates: { and: [ { array?: true }, { min_size: 3 }, { each: { min_length: 3 }} ]}
 #     # This can work!

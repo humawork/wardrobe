@@ -1,13 +1,13 @@
 require 'test_helper'
 class DefineGetterTest < Minitest::Test
   class Zero
-    include Atrs
+    include Wardrobe
     plugin :optional_getter
     attribute :name, String, getter: false
   end
 
   class One
-    include Atrs
+    include Wardrobe
     attribute :name,   String
   end
 
@@ -43,7 +43,7 @@ class DefineGetterTest < Minitest::Test
   end
 
   module Part3
-    include Atrs
+    include Wardrobe
     attribute :email, String
   end
 

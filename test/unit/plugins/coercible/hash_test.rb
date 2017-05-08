@@ -2,12 +2,12 @@ require 'test_helper'
 
 class HashCoercionTest < Minitest::Test
   class Person
-    include Atrs
+    include Wardrobe
     attribute :name, String
   end
 
   class HashObject
-    include Atrs
+    include Wardrobe
     attribute :hash,           Hash
     attribute :string_symbol,  Hash[String => Symbol]
     attribute :integer_float,  Hash[Integer => Float]
@@ -52,10 +52,10 @@ class HashCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(string_symbol: [1,2])
     end
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(integer_float: Time.now)
     end
   end

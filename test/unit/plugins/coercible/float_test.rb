@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FlaotCoercionTest < Minitest::Test
   class FloatObject
-    include Atrs
+    include Wardrobe
     attribute :float,    Float
     attribute :string,   Float
     attribute :integer,  Float

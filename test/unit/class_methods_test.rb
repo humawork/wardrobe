@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class WithFourAttributes
-  include Atrs
+  include Wardrobe
   attribute :first_name,   String
   attribute :last_name,    String
   attribute :email,        String
@@ -14,12 +14,12 @@ class WithOneAttributeRemoved < WithFourAttributes
 end
 
 module Essentials
-  include Atrs
+  include Wardrobe
   attribute :id, String
 end
 
 module SomeExtraAttributes
-  include Atrs
+  include Wardrobe
   attribute :hair_style, String
 end
 
@@ -33,7 +33,7 @@ class KlassWithIncludedModule < WithFourAttributes
 end
 
 class CoerceToStringTest
-  include Atrs
+  include Wardrobe
   attribute :number, Integer
 end
 
@@ -48,7 +48,7 @@ class ClassMethodsTest < Minitest::Test
     klass = WithFourAttributes
     instance = klass.new(first_name: 'Foo', last_name: 'Bar')
 
-    assert klass.singleton_class.included_modules.include?(Atrs::ClassMethods)
+    assert klass.singleton_class.included_modules.include?(Wardrobe::ClassMethods)
     assert klass.attribute_store.first_name
     assert klass.attribute_store[:last_name]
     assert_equal 4, klass.attribute_store.count

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class IvyPresenterTest < Minitest::Test
   class Article
-    include Atrs
+    include Wardrobe
     plugin :presenter
     plugin :ivy_presenter
     attributes source: true do

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AliasPerson
-  include Atrs
+  include Wardrobe
   plugin :alias_setters
   attributes do
     alias_setter :profile_name do

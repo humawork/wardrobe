@@ -21,7 +21,7 @@ class CreateClassFromHashTest < Minitest::Test
       ]
     }
 
-    klass = Atrs.create_class(config)
+    klass = Wardrobe.create_class(config)
     instance = klass.new
     assert_equal 'test@example.com', instance.email
   end

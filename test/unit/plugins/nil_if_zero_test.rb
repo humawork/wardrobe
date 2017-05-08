@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Row
-  include Atrs
+  include Wardrobe
   plugin :nil_if_zero
 
   attributes do

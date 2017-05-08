@@ -3,9 +3,9 @@
 require 'test_helper'
 
 class InheritanceCompositionTest < Minitest::Test
-  # Test a simple class with Atrs included
+  # Test a simple class with Wardrobe included
   class SimpleClass
-    include Atrs
+    include Wardrobe
     attribute :name, String
   end
 

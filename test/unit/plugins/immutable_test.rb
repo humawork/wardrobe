@@ -2,12 +2,12 @@ require 'test_helper'
 
 class ImmutableTest < Minitest::Test
   class Person
-    include Atrs
+    include Wardrobe
     attribute :name, String
   end
 
   class ImmutableClass
-    include Atrs
+    include Wardrobe
     plugin :immutable
     attribute :string, String
     attribute :hash, Hash
@@ -46,7 +46,7 @@ class ImmutableTest < Minitest::Test
     end
   end
 
-  def test_child_atrs_object_raises_error
+  def test_child_wardrobe_object_raises_error
     assert_raises(RuntimeError) do
       @object.array_of_people.first.name = 'Person 2'
     end

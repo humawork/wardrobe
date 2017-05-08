@@ -1,11 +1,11 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
-require_relative '../lib/atrs'
+require_relative '../lib/wardrobe'
 require 'http'
 require 'pry'
 require 'pry-byebug'
 
 class Article
-  include Atrs
+  include Wardrobe
   plugin :html_initializer
   attribute :title, String, html_selector: ->(h) { h.at_xpath('//h1[@class="pg-headline"]').text }
 

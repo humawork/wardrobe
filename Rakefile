@@ -29,7 +29,7 @@ Rake::TestTask.new(:bench) do |t|
 end
 
 task :console do
-  sh "irb -I #{File.dirname(__FILE__)}/lib -r atrs"
+  sh "irb -I #{File.dirname(__FILE__)}/lib -r wardrobe"
 end
 
 task default: :test

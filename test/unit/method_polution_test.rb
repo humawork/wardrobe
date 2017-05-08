@@ -4,30 +4,30 @@ class MethodPolutionTest < Minitest::Test
 
   ALLOWED_POLUTING_PLUGINS = { immutable: [:mutate] }
 
-  class AtrsClassWithoutPlugins
-    include Atrs
+  class WardrobeClassWithoutPlugins
+    include Wardrobe
   end
 
-  class AtrsClassWithCleanPlugins
-    include Atrs
-    plugin(*(Atrs.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys))
+  class WardrobeClassWithCleanPlugins
+    include Wardrobe
+    plugin(*(Wardrobe.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys))
   end
 
-  class AtrsClassWithAllowedPolutingPlugins
-    include Atrs
+  class WardrobeClassWithAllowedPolutingPlugins
+    include Wardrobe
     plugin(*(ALLOWED_POLUTING_PLUGINS.keys))
   end
 
   def methods_class_without_plugins
-    AtrsClassWithoutPlugins.new.methods - Object.methods
+    WardrobeClassWithoutPlugins.new.methods - Object.methods
   end
 
   def methods_class_with_clean_plugins
-    AtrsClassWithCleanPlugins.new.methods - Object.methods
+    WardrobeClassWithCleanPlugins.new.methods - Object.methods
   end
 
   def methods_class_with_polution_allowed_plugins
-    AtrsClassWithAllowedPolutingPlugins.new.methods - Object.methods
+    WardrobeClassWithAllowedPolutingPlugins.new.methods - Object.methods
   end
 
   def test_without_plugins

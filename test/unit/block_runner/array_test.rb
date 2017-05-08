@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class BlockRunnerArray
-  include Atrs
+  include Wardrobe
   plugin :ivy_presenter
 
   attributes preset: :one do

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module DefaultMixin
-  include Atrs
+  include Wardrobe
   plugin :default
   attribute :name,     String, default: 'missing name'
   attribute :address,  String, default: :address_default

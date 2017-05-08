@@ -1,12 +1,12 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
-require 'atrs'
+require 'wardrobe'
 require 'http'
 require 'pry'
 require 'pry-byebug'
 require 'awesome_print'
 
 class Image
-  include Atrs
+  include Wardrobe
   plugin :html_initializer
   plugin :presenter
   attribute :caption, String, html_selector: proc { |doc| doc.at_css('figcaption span.caption-text')&.text }
@@ -15,7 +15,7 @@ class Image
 end
 
 class Article
-  include Atrs
+  include Wardrobe
   plugin :html_initializer
   plugin :presenter
   attribute :title, String, html_selector: proc { |doc| doc.at_css('header div#story-meta h1#headline')&.text }

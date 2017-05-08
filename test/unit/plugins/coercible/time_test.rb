@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TimeCoercionTest < Minitest::Test
   class TimeObject
-    include Atrs
+    include Wardrobe
     attribute :string,         Time
     attribute :string_utc,     Time
     attribute :string_iso8601, Time

@@ -1,14 +1,14 @@
 require 'test_helper'
 class PresenterTest < Minitest::Test
   class Address
-    include Atrs
+    include Wardrobe
     plugin :presenter
     attribute :zip_code, String
     attribute :street,   String
   end
 
   class User
-    include Atrs
+    include Wardrobe
     plugin :presenter
     attribute :name,     String
     attribute :email,    String
@@ -43,7 +43,7 @@ class PresenterTest < Minitest::Test
   end
 
   def test_selection
-    result = @user._present(atrs: { name: nil, address: { street: nil }})
+    result = @user._present(wardrobe: { name: nil, address: { street: nil }})
     assert_equal 'Test Person', result[:name]
     assert_equal 'No Where Street', result[:address][:street]
     assert_nil result[:address][:zip_code]

@@ -1,4 +1,4 @@
-require_relative '../lib/atrs'
+require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -29,14 +29,14 @@ class UserAdvancedVirtus
   end
 end
 
-class AddressAtrs
-  extend Atrs
+class AddressWardrobe
+  extend Wardrobe
   attribute :street, String
   attribute :zip_code, String
 end
 
-class UserAdvancedAtrs
-  extend Atrs
+class UserAdvancedWardrobe
+  extend Wardrobe
   plugin :default
   attribute :first_name,           String
   attribute :last_name,            String
@@ -45,7 +45,7 @@ class UserAdvancedAtrs
   attribute :with_default_literal, String, default: 'literal'
   attribute :with_default_proc,    String, default: -> { 'proc' }
   attribute :with_default_method,  String, default: :default_method
-  attribute :address,              AddressAtrs
+  attribute :address,              AddressWardrobe
 
   def default_method
     'method'
@@ -62,8 +62,8 @@ test_3_hash = {
 
 
 Benchmark.ips do |x|
-  x.report('Atrs Advanced') {
-    instance = UserAdvancedAtrs.new(test_3_hash)
+  x.report('Wardrobe Advanced') {
+    instance = UserAdvancedWardrobe.new(test_3_hash)
     instance.first_name == 'Test'
     instance.last_name == 'Person'
     instance.age == 1

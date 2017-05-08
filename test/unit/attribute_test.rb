@@ -3,7 +3,7 @@ require 'test_helper'
 
 class AttributeTest < Minitest::Test
   class One
-    include Atrs
+    include Wardrobe
     attribute :name, String
   end
 
@@ -30,13 +30,13 @@ class AttributeTest < Minitest::Test
   end
 
   def test_getter
-    assert_instance_method_call_count(2, Atrs::Attribute, :build_getter_array) do
+    assert_instance_method_call_count(2, Wardrobe::Attribute, :build_getter_array) do
       klass = Class.new do
-        include Atrs
+        include Wardrobe
         attribute :name, String
       end
       Class.new(klass) do
-        include Atrs
+        include Wardrobe
         attribute :name, String
       end
     end

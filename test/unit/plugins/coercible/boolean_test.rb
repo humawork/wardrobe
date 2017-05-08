@@ -2,17 +2,17 @@ require 'test_helper'
 
 class BooleanCoercionTest < Minitest::Test
   class BooleanObject
-    include Atrs
-    attribute :true,         Atrs::Boolean
-    attribute :false,        Atrs::Boolean
-    attribute :integer_one,  Atrs::Boolean
-    attribute :integer_zero, Atrs::Boolean
-    attribute :yes,          Atrs::Boolean
-    attribute :no,           Atrs::Boolean
-    attribute :string_1,     Atrs::Boolean
-    attribute :string_0,     Atrs::Boolean
-    attribute :string_true,  Atrs::Boolean
-    attribute :string_false, Atrs::Boolean
+    include Wardrobe
+    attribute :true,         Wardrobe::Boolean
+    attribute :false,        Wardrobe::Boolean
+    attribute :integer_one,  Wardrobe::Boolean
+    attribute :integer_zero, Wardrobe::Boolean
+    attribute :yes,          Wardrobe::Boolean
+    attribute :no,           Wardrobe::Boolean
+    attribute :string_1,     Wardrobe::Boolean
+    attribute :string_0,     Wardrobe::Boolean
+    attribute :string_true,  Wardrobe::Boolean
+    attribute :string_false, Wardrobe::Boolean
   end
 
   def test_coercion_to_true

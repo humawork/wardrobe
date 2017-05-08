@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+module Wardrobe
+  class PluginStore < Store
+    attr_reader :store
+    def add(name)
+      begin
+        plugin = Wardrobe.plugins.fetch(name)
+      rescue KeyError
+        if require "wardrobe/plugins/#{name}"
+          retry
+        else
+          raise "No plugin #{name} registered"
+        end
+      end
+      mutate do
+        store[name] = plugin
+      end
+    end
+  end
+end

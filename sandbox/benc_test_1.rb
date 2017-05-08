@@ -1,4 +1,4 @@
-require_relative '../lib/atrs'
+require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -22,8 +22,8 @@ class SimpleVirtus
   attribute :name, String
 end
 
-class SimpleAtrs
-  extend Atrs
+class SimpleWardrobe
+  extend Wardrobe
   attribute :name, String
 end
 
@@ -38,8 +38,8 @@ Benchmark.ips do |x|
     instance = VanillaClass.new(name: 'Test')
     instance.name == 'Test'
   }
-  x.report('Atrs Simple') {
-    instance = SimpleAtrs.new(name: 'Test')
+  x.report('Wardrobe Simple') {
+    instance = SimpleWardrobe.new(name: 'Test')
     instance.name == 'Test'
   }
   x.report('Virtus Simple') {

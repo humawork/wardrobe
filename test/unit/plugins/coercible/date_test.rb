@@ -2,7 +2,7 @@ require 'test_helper'
 
 class DateCoercionTest < Minitest::Test
   class DateObject
-    include Atrs
+    include Wardrobe
     attribute :string,   Date
     attribute :date,     Date
     attribute :time,     Date

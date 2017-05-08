@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module ValidateMixin
-  include Atrs
+  include Wardrobe
   plugin :validation
   attribute :name, String, validates: { in: %w(Two Words) }
 end

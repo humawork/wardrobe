@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SymbolCoercionTest < Minitest::Test
   class SymbolObject
-    include Atrs
+    include Wardrobe
     attribute :symbol,  Symbol
     attribute :string,  Symbol
     attribute :nil,     Symbol
@@ -20,10 +20,10 @@ class SymbolCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SymbolObject.new(string: [1,2])
     end
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SymbolObject.new(symbol: Time.now)
     end
   end

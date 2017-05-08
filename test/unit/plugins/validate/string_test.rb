@@ -1,13 +1,13 @@
 require 'test_helper'
 class StringValidationTest < Minitest::Test
   class StringObject
-    include Atrs
+    include Wardrobe
     plugin :validation
     # This can work!
     # attribute :one, Array, validates { array? }
     attribute :name, String, validates: { min_length: 3 }
     attribute :zip_code, String, validates: { match: /[0-9]{5}/ }
-    attribute :admin, Atrs::Boolean, validates: {
+    attribute :admin, Wardrobe::Boolean, validates: {
       if: {
         check: { eq: true },
         true => ->(one, two) { binding.pry }

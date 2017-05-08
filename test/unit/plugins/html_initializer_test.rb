@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HtmlInitializerTest < Minitest::Test
   class Article
-    include Atrs
+    include Wardrobe
     plugin :html_initializer
     attribute :title, String, html_selector: proc { |doc| doc.at_xpath('//div/h1')&.text }
   end

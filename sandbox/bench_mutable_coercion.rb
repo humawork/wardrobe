@@ -2,7 +2,7 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 class AlmostArray < Array
 
 end
-module Atrs
+module Wardrobe
   module Coercions
     refine AlmostArray.singleton_class do
       def coerce(v, atr)
@@ -34,7 +34,7 @@ module Atrs
   end
 end
 
-require 'atrs'
+require 'wardrobe'
 require 'benchmark/ips'
 require 'pry'
 require 'pry-byebug'
@@ -48,17 +48,17 @@ require 'ostruct'
 
 
 class Embedded
-  include Atrs
+  include Wardrobe
   attribute :name, String
 end
 
 class One
-  include Atrs
+  include Wardrobe
   attribute :array, Array[Embedded]
 end
 
 class Two
-  include Atrs
+  include Wardrobe
   attribute :array, AlmostArray[Embedded]
 end
 

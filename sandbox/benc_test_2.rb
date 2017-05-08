@@ -1,4 +1,4 @@
-require_relative '../lib/atrs'
+require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
 require 'pry'
@@ -15,8 +15,8 @@ class UserVirtus
   attribute :a_float,    Float
 end
 
-class UserAtrs
-  extend Atrs
+class UserWardrobe
+  extend Wardrobe
   attribute :first_name, String
   attribute :last_name,  String
   attribute :age,        Integer
@@ -28,8 +28,8 @@ test_2_hash = {
 }
 
 Benchmark.ips do |x|
-  x.report('Atrs Normal') {
-    instance = UserAtrs.new(test_2_hash)
+  x.report('Wardrobe Normal') {
+    instance = UserWardrobe.new(test_2_hash)
     instance.first_name == 'Test'
     instance.last_name == 'Person'
     instance.age == 1

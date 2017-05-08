@@ -2,14 +2,14 @@ require 'test_helper'
 
 class JsonInitializerTest < Minitest::Test
   class Article
-    include Atrs
+    include Wardrobe
     plugin :json_initializer
     attribute :title, String
   end
 
   def setup
-    if Atrs::Plugins::JsonInitializer.instance_variable_defined?(:@parser)
-      Atrs::Plugins::JsonInitializer.remove_instance_variable(:@parser)
+    if Wardrobe::Plugins::JsonInitializer.instance_variable_defined?(:@parser)
+      Wardrobe::Plugins::JsonInitializer.remove_instance_variable(:@parser)
     end
   end
 
@@ -38,7 +38,7 @@ class JsonInitializerTest < Minitest::Test
   def test_multi_json_loaded
     res = do_in_child do
       require 'multi_json'
-      assert_equal MultiJson, Atrs::Plugins::JsonInitializer.parser
+      assert_equal MultiJson, Wardrobe::Plugins::JsonInitializer.parser
       initiate_articles
       {
         json: @article_json.title,
@@ -53,7 +53,7 @@ class JsonInitializerTest < Minitest::Test
   def test_json_loaded
     res = do_in_child do
       require 'json'
-      assert_equal JSON, Atrs::Plugins::JsonInitializer.parser
+      assert_equal JSON, Wardrobe::Plugins::JsonInitializer.parser
       initiate_articles
       {
         json: @article_json.title,

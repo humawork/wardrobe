@@ -2,7 +2,7 @@ require 'test_helper'
 
 class NilIfEmptyTest < Minitest::Test
   class Tree
-    include Atrs
+    include Wardrobe
     plugin :nil_if_empty
     attribute :name,     String, nil_if_empty: true
     attribute :branches, Hash,   nil_if_empty: true
@@ -10,7 +10,7 @@ class NilIfEmptyTest < Minitest::Test
   end
 
   class TreeFalse
-    include Atrs
+    include Wardrobe
     plugin :nil_if_empty
     attribute :name,     String, nil_if_empty: false
     attribute :branches, Hash,   nil_if_empty: false

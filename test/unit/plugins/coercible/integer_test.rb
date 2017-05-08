@@ -2,7 +2,7 @@ require 'test_helper'
 
 class IntegerCoercionTest < Minitest::Test
   class IntegerObject
-    include Atrs
+    include Wardrobe
     attribute :integer,      Integer
     attribute :float,        Integer
     attribute :string,       Integer

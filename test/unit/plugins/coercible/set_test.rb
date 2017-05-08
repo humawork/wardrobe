@@ -2,12 +2,12 @@ require 'test_helper'
 
 class SetCoercionTest < Minitest::Test
   class Person
-    include Atrs
+    include Wardrobe
     attribute :name, String
   end
 
   class SetObject
-    include Atrs
+    include Wardrobe
     attribute :set,   Set
     attribute :array, Set
     attribute :nil,   Set
@@ -31,10 +31,10 @@ class SetCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SetObject.new(set: Time.now)
     end
-    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SetObject.new(array: 'string')
     end
   end

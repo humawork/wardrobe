@@ -1,7 +1,7 @@
 require 'test_helper'
 class DisableCoercionTest < Minitest::Test
   class NoCoercion
-    include Atrs(coerce: false)
+    include Wardrobe(coerce: false)
     attribute :name, String
   end
 

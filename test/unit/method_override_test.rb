@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MethodOverrideTest < Minitest::Test
   class Person
-    include Atrs
+    include Wardrobe
     plugin :nil_if_empty
     attribute :name, String, nil_if_empty: true
 

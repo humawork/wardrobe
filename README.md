@@ -1,40 +1,40 @@
-# Atrs
-[![Build Status](https://travis-ci.org/agensdev/atrs.svg?branch=master)](https://travis-ci.org/agensdev/atrs)
-[![Code Climate](https://codeclimate.com/github/agensdev/atrs.svg)](https://codeclimate.com/github/agensdev/atrs)
-<!-- [![Gem Version](https://badge.fury.io/agensdev/atrs.svg)](https://rubygems.org/gems/atrs) -->
+# Wardrobe
+[![Build Status](https://travis-ci.org/agensdev/wardrobe.svg?branch=master)](https://travis-ci.org/agensdev/wardrobe)
+[![Code Climate](https://codeclimate.com/github/agensdev/wardrobe.svg)](https://codeclimate.com/github/agensdev/wardrobe)
+<!-- [![Gem Version](https://badge.fury.io/agensdev/wardrobe.svg)](https://rubygems.org/gems/wardrobe) -->
 
-Atrs is a library that simplifies creating ruby models with attributes and coercion. Atrs includes a multitude of plugins. See list of bundled plugins below. Atrs was made with inspiration from and years of using Virtus. Atrs aims at being easier to extend and include more tools out of the box.
+Wardrobe is a library that simplifies creating ruby models with attributes and coercion. Wardrobe includes a multitude of plugins. See list of bundled plugins below. Wardrobe was made with inspiration from and years of using Virtus. Wardrobe aims at being easier to extend and include more tools out of the box.
 
 ## Requirements
 
-Atrs requires Ruby 2.4.0 or later. Read more about why [here](#ruby-24).
+Wardrobe requires Ruby 2.4.0 or later. Read more about why [here](#ruby-24).
 JRuby should be supported once [9.2.0.0](https://github.com/jruby/jruby/milestone/53) is released
 
 ## Installation
 
 ```
-gem install atrs
+gem install wardrobe
 ```
 
 ## Getting started
 
 ```ruby
-require 'atrs'
+require 'wardrobe'
 
 class User
-  include Atrs
+  include Wardrobe
   attribute :name, String
 end
 
-User.new(name: 'Atrs User')
+User.new(name: 'Wardrobe User')
 ```
 
 ## Composition
 
-Atrs allow you to compose models based on multiple modules for reuse.
+Wardrobe allow you to compose models based on multiple modules for reuse.
 ```ruby
 module Name
-  include Atrs
+  include Wardrobe
   attribute :first_name, String
   attribute :last_name, String
 end
@@ -52,7 +52,7 @@ Coercion is enabled by default and works with most of the types available in Rub
 Example:
 ```ruby
 class User
-  include Atrs
+  include Wardrobe
   attribute :id, Integer
   attribute :name, String
   attribute :status, Symbol
@@ -123,7 +123,7 @@ Many plugins expose options for attributes. These can be enabled on each attribu
 Per attribute syntax:
 ```ruby
 class User
-  include Atrs
+  include Wardrobe
   plugin :nil_if_empty
 
   attribute :first_name, String, nil_if_empty: true
@@ -137,7 +137,7 @@ User.new(first_name: '', last_name: '', friends: [])
 Block syntax:
 ```ruby
 class User
-  include Atrs
+  include Wardrobe
   plugin :nil_if_empty
 
   attributes do
@@ -154,7 +154,7 @@ User.new(first_name: '', last_name: '', friends: [])
 
 ## Plugins
 
-Atrs comes with numerous plugins and aims at making it easy to write your own.
+Wardrobe comes with numerous plugins and aims at making it easy to write your own.
 
 |Name               |Exposed options      |Development state  |Description       |
 |-------------------|---------------------|-------------------|------------------|
@@ -175,7 +175,7 @@ Atrs comes with numerous plugins and aims at making it easy to write your own.
 
 ## Goals
 
-Atrs should:
+Wardrobe should:
 
 * be faster than Virtus
 * have no dependencies (plugins may)
@@ -186,4 +186,4 @@ Atrs should:
 
 ## Ruby 2.4
 
-When working on the first proof of concept for Atrs I wanted to use refinements for coercion. This was right before Ruby 2.4 was released that added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Atrs requires ruby 2.4 or above.
+When working on the first proof of concept for Wardrobe I wanted to use refinements for coercion. This was right before Ruby 2.4 was released that added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Wardrobe requires ruby 2.4 or above.
