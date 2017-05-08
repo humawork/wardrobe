@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         TRUE_STRINGS = Set.new(['1', 'yes', 'true']).freeze
         FALSE_STRINGS = Set.new(['0', 'no', 'false']).freeze
         refine Atrs::Boolean.singleton_class do

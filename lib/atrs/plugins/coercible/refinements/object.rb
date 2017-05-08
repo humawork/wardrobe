@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         refine Object.singleton_class do
           def coerce(v, _atr)
             # What should be default behaivor? Add option to use nil?

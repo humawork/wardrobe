@@ -51,7 +51,7 @@ class ArrayCoercionTest < Minitest::Test
     end
   end
 
-  def test_coercion_when_modifying_array
+  def test_coercion_when_modifying_person_array
     @object.array_atrs_objects << { name: '1' }
     assert Person === @object.array_atrs_objects[1]
     @object.array_atrs_objects.push({ name: '2' })
@@ -60,5 +60,14 @@ class ArrayCoercionTest < Minitest::Test
     assert Person === @object.array_atrs_objects[3]
     assert_equal 4, @object.array_atrs_objects.count
     assert @object.array_atrs_objects.all? { |item| Person === item }
+  end
+
+  def test_coercion_return_value
+    @object.array_integer << '5'
+    @object.array_string << 4.1
+    @object.array_hash_integer_symbol << { '3.1' => 'three' }
+    assert_equal 5, @object.array_integer.last
+    assert_equal '4.1', @object.array_string.last
+    assert_equal({ 3 => :three }, @object.array_hash_integer_symbol.last)
   end
 end

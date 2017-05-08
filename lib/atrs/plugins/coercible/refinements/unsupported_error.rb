@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         class UnsupportedError < StandardError; end
       end
     end

@@ -52,10 +52,10 @@ class HashCoercionTest < Minitest::Test
   end
 
   def test_error
-    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(string_symbol: [1,2])
     end
-    assert_raises Atrs::Plugins::Coercible::Coercions::UnsupportedError do
+    assert_raises Atrs::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(integer_float: Time.now)
     end
   end

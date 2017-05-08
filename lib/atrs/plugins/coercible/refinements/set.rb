@@ -4,7 +4,7 @@ require 'set'
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         refine Set.singleton_class do
           def coerce(v, _atr)
             case v

@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         refine Array.singleton_class do
           def coerce(v, atr)
             case v
@@ -16,32 +16,36 @@ module Atrs
           end
         end
 
-        module ArrayInstanceCoercer
-          def _atrs_init(atr, coercer: nil)
-            @_atrs_atr = atr
-            @_atrs_coercer = coercer
-            self
-          end
 
-          def _coerce(item)
-            @_atrs_coercer.coerce(item, @_atrs_atr)
-          end
-
-          def <<(item)
-            super(_coerce(item))
-          end
-
-          def push(*items)
-            super(*items.map { |i| _coerce(i) })
-          end
-
-          def unshift(*items)
-            super(*items.map { |i| _coerce(i) })
-          end
-        end
 
         refine Array do
           class WrongNumberOfItemsError < StandardError; end
+
+          module ArrayInstanceCoercer
+            def _atrs_init(atr, coercer: nil)
+              @_atrs_atr = atr
+              @_atrs_coercer = coercer
+              self
+            end
+
+            def _coerce(item)
+              @_atrs_coercer.coerce(item, @_atrs_atr)
+            rescue => e
+              binding.pry
+            end
+
+            def <<(item)
+              super(_coerce(item))
+            end
+
+            def push(*items)
+              super(*items.map { |i| _coerce(i) })
+            end
+
+            def unshift(*items)
+              super(*items.map { |i| _coerce(i) })
+            end
+          end
 
           def coerce(v, atr)
             res = case v

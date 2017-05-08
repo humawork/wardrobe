@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         refine DateTime.singleton_class do
           def coerce(v, atr)
             case v

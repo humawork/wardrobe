@@ -3,7 +3,7 @@
 module Atrs
   module Plugins
     module Coercible
-      module Coercions
+      module Refinements
         refine String.singleton_class do
           def coerce(v, _atr)
             case v
