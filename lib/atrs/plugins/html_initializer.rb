@@ -19,13 +19,13 @@ module Atrs
       end
 
       module InstanceMethods
-        def initialize(html_string = nil, **args)
-          if html_string
+        def initialize(html = nil, **args)
+          if html
             define_singleton_method(:_attribute_init) do |atr, html, name|
-              value = atr.options[:html_selector].call(html)
+              value = atr.options[:html_selector].call(html, atr, self)
               send(atr.setter_name, value)
             end
-            html = HtmlInitializer.parse(html_string)
+            html = HtmlInitializer.parse(html) if html.is_a?(String)
             _atrs_init(html)
           else
             super(**args)
