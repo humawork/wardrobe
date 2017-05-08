@@ -8,3 +8,4 @@ gem 'pry',                '~> 0.10.4'
 gem 'pry-byebug',         '~> 3.4', platforms: :mri
 gem 'pry-debugger-jruby', '~> 1.1', platforms: :jruby
 gem 'rubocop',            '~> 0.48', platforms: :mri
+gem 'multi_json',         '~> 1.12'

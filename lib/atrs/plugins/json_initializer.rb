@@ -7,7 +7,12 @@ module Atrs
 
       def self.parse(json)
         raise InvalidJsonError unless json.match(/\A[\[{].+[\]}]\z/m)
-        parser.parse(json, symbolize_names: true)
+        case parser.to_s
+        when 'JSON'
+          parser.parse(json, symbolize_names: true)
+        when 'MultiJson'
+          parser.load(json, symbolize_keys: true)
+        end
       end
 
       def self.parser
@@ -15,14 +20,10 @@ module Atrs
       end
 
       def self.select_parser
-        if defined? MutliJson
-          binding.pry
-        elsif defined? JSON
-          binding.pry
-        else
-          require 'json'
-          JSON
-        end
+        return MultiJson if defined? MultiJson
+        return JSON if defined? JSON
+        require 'json'
+        JSON
       end
 
       module InstanceMethods
