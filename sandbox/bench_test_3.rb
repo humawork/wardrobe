@@ -1,3 +1,5 @@
+$:.unshift File.expand_path('../../lib', __FILE__)
+
 require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
@@ -30,13 +32,13 @@ class UserAdvancedVirtus
 end
 
 class AddressWardrobe
-  extend Wardrobe
+  include Wardrobe
   attribute :street, String
   attribute :zip_code, String
 end
 
 class UserAdvancedWardrobe
-  extend Wardrobe
+  include Wardrobe
   plugin :default
   attribute :first_name,           String
   attribute :last_name,            String

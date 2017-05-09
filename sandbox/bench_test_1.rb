@@ -1,8 +1,10 @@
+require 'pry'
+require 'pry-byebug'
+
+$:.unshift File.expand_path('../../lib', __FILE__)
 require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
-require 'pry'
-require 'pry-byebug'
 
 # Test 1: Simple object
 # Simple class with one attribute where input does not need coercion.
@@ -23,11 +25,9 @@ class SimpleVirtus
 end
 
 class SimpleWardrobe
-  extend Wardrobe
+  include Wardrobe
   attribute :name, String
 end
-
-binding.pry
 
 Benchmark.ips do |x|
   x.report('Vanilla Struct') {

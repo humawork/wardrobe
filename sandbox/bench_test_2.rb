@@ -1,3 +1,5 @@
+$:.unshift File.expand_path('../../lib', __FILE__)
+
 require_relative '../lib/wardrobe'
 require 'virtus'
 require 'benchmark/ips'
@@ -16,7 +18,7 @@ class UserVirtus
 end
 
 class UserWardrobe
-  extend Wardrobe
+  include Wardrobe
   attribute :first_name, String
   attribute :last_name,  String
   attribute :age,        Integer
