@@ -8,7 +8,7 @@ module Wardrobe
       @calling_klass = calling_klass
       # TODO: Refactor!!!
       calling_klass.plugin_store.each do |key, value|
-        value.options.each do |option|
+        value[:klass].options.each do |option|
           case
           when option.klass == Boolean
             define_boolean_method(option.name)

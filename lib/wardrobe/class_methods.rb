@@ -106,7 +106,7 @@ module Wardrobe
 
     def plugin(name, **args)
       @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
-      plugin = plugin_store[name]
+      plugin = plugin_store[name][:klass]
       if plugin.const_defined?(:ClassMethods)
         extend(plugin.const_get(:ClassMethods))
       end

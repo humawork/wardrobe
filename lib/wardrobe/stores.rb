@@ -73,10 +73,10 @@ module Wardrobe
 
     def enable_plugin(name, **args)
       if frozen?
-        dup.enable_plugin(name)
+        dup.enable_plugin(name, **args)
       else
-        @plugin_store = plugin_store.add(name)
-        plugin_store[name].options.each do |option|
+        @plugin_store = plugin_store.add(name, **args)
+        plugin_store[name][:klass].options.each do |option|
           @option_store = option_store.add(option.name, option)
         end
         freeze

@@ -14,7 +14,10 @@ module Wardrobe
         end
       end
       mutate do
-        store[name] = plugin
+        store[name] = {
+          klass: plugin,
+          options: args
+        }
       end
     end
   end
