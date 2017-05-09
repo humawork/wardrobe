@@ -10,12 +10,16 @@ class MethodPolutionTest < Minitest::Test
 
   class WardrobeClassWithCleanPlugins
     include Wardrobe
-    plugin(*(Wardrobe.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys))
+    (Wardrobe.plugins.keys - ALLOWED_POLUTING_PLUGINS.keys).each do |plugin_name|
+      plugin plugin_name
+    end
   end
 
   class WardrobeClassWithAllowedPolutingPlugins
     include Wardrobe
-    plugin(*(ALLOWED_POLUTING_PLUGINS.keys))
+    ALLOWED_POLUTING_PLUGINS.keys.each do |plugin_name|
+      plugin plugin_name
+    end
   end
 
   def methods_class_without_plugins

@@ -58,7 +58,7 @@ module Wardrobe
         Wardrobe.setters[:setter]
       ]
     end
-    
+
     def merge(config)
       @wardrobe_stores = wardrobe_stores.merge(config, self)
     end
@@ -104,12 +104,8 @@ module Wardrobe
 
     alias remove_attribute remove_attributes
 
-    def plugin(*plugin_names)
-      plugin_names.each { |name| enable_plugin(name) }
-    end
-
-    def enable_plugin(name)
-      @wardrobe_stores = wardrobe_stores.enable_plugin(name)
+    def plugin(name, **args)
+      @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
       plugin = plugin_store[name]
       if plugin.const_defined?(:ClassMethods)
         extend(plugin.const_get(:ClassMethods))

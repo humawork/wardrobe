@@ -3,7 +3,7 @@
 module Wardrobe
   class PluginStore < Store
     attr_reader :store
-    def add(name)
+    def add(name, **args)
       begin
         plugin = Wardrobe.plugins.fetch(name)
       rescue KeyError

@@ -10,7 +10,10 @@ module Wardrobe
       base.extend(ClassMethods)
       unless base.to_s == 'Wardrobe::RootConfig'
         base.root_config = config
-        base.plugin(*config.default_plugins)
+        config.default_plugins.each do |plugin|
+          # TODO: Support k_args
+          base.plugin plugin
+        end
       end
       base.include(InstanceMethods)
     end

@@ -71,7 +71,7 @@ module Wardrobe
       duplicate
     end
 
-    def enable_plugin(name)
+    def enable_plugin(name, **args)
       if frozen?
         dup.enable_plugin(name)
       else
