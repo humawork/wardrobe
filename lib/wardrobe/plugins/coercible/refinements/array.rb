@@ -30,8 +30,6 @@ module Wardrobe
 
             def _coerce(item)
               @_wardrobe_coercer.coerce(item, @_wardrobe_atr)
-            rescue => e
-              binding.pry
             end
 
             def <<(item)
