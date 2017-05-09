@@ -11,8 +11,8 @@ module Wardrobe
 
       module InstanceMethods
         def _ivy_present(**args)
-          wardrobe_hash = IvyPresenter.build_wardrobe_hash(_attribute_store, **args)
-          _present(wardrobe: wardrobe_hash)
+          attributes_hash = IvyPresenter.build_attributes_hash(_attribute_store, **args)
+          _present(attributes: attributes_hash)
         end
 
 
@@ -28,7 +28,7 @@ module Wardrobe
         # end
       end
 
-      def self.build_wardrobe_hash(set, preset: nil, source: nil)
+      def self.build_attributes_hash(set, preset: nil, source: nil)
         result = {}
         set.each do |key, atr|
           next unless atr.options[:preset]&.include?(preset) || atr.options[:source] == source
