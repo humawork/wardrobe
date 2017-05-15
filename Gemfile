@@ -9,3 +9,8 @@ gem 'pry-byebug',         '~> 3.4', platforms: :mri
 gem 'pry-debugger-jruby', '~> 1.1', platforms: :jruby
 gem 'rubocop',            '~> 0.48', platforms: :mri
 gem 'multi_json',         '~> 1.12'
+
+group :test do
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
+end

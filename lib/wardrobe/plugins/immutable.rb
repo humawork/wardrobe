@@ -92,12 +92,8 @@ module Wardrobe
         end
 
         def deep_freeze
-          if instance_variable_defined?(:@_data)
-            @_data.deep_freeze
-          else
-            _attribute_store.each do |name,atr|
-              instance_variable_get(atr.ivar_name).deep_freeze
-            end
+          _attribute_store.each do |name,atr|
+            instance_variable_get(atr.ivar_name).deep_freeze
           end
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
