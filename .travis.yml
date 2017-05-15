@@ -7,3 +7,5 @@ matrix:
     - rvm: ruby-head
 before_install:
   - gem install bundler
+after_success:
+  - bundle exec codeclimate-test-reporter
