@@ -1,6 +1,7 @@
 # Wardrobe
 [![Build Status](https://travis-ci.org/agensdev/wardrobe.svg?branch=master)](https://travis-ci.org/agensdev/wardrobe)
 [![Code Climate](https://codeclimate.com/github/agensdev/wardrobe.svg)](https://codeclimate.com/github/agensdev/wardrobe)
+[![Test Coverage](https://codeclimate.com/github/agensdev/wardrobe/badges/coverage.svg)](https://codeclimate.com/github/agensdev/wardrobe/coverage)
 <!-- [![Gem Version](https://badge.fury.io/agensdev/wardrobe.svg)](https://rubygems.org/gems/wardrobe) -->
 
 Wardrobe is a library that simplifies creating ruby models with attributes and coercion. Wardrobe includes a multitude of plugins. See list of bundled plugins below. Wardrobe was made with inspiration from and years of using Virtus. Wardrobe aims at being easier to extend and include more tools out of the box.
