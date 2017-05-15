@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HtmlInitializerTest < Minitest::Test
+class HtmlInitializerTest < TestBase
   class Article
     include Wardrobe
     plugin :html_initializer

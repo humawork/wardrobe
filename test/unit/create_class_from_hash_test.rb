@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CreateClassFromHashTest < Minitest::Test
+class CreateClassFromHashTest < TestBase
   def test_one
     config = {
       plugins: [

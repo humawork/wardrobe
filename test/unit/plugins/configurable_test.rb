@@ -46,7 +46,7 @@ end
 # end
 
 
-class ConfigurableTest < Minitest::Test
+class ConfigurableTest < TestBase
   def test_store_created_in_config
     assert Base.configurable_store
     assert Child.configurable_store

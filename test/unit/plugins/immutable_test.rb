@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ImmutableTest < Minitest::Test
+class ImmutableTest < TestBase
   class Person
     include Wardrobe
     attribute :name, String

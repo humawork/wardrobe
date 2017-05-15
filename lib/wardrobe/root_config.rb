@@ -7,6 +7,7 @@ module Wardrobe
     plugin :immutable
     plugin :default
     attribute :coerce, Boolean, default: true
+    attribute :logger, Object, default: ->() { Logger.new(STDOUT) }
     attribute :default_plugins, Set[Symbol], default: Set.new([:coercible])
 
     def register_default_plugin(name)

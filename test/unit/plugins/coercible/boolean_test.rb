@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BooleanCoercionTest < Minitest::Test
+class BooleanCoercionTest < TestBase
   class BooleanObject
     include Wardrobe
     attribute :true,         Wardrobe::Boolean

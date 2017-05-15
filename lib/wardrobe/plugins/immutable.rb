@@ -48,6 +48,11 @@ module Wardrobe
           freeze
         end
       end
+      refine Logger do
+        def deep_freeze
+          freeze
+        end
+      end
       refine Set do
         def deep_freeze
           # Refinements does not work here when using &:deep_freeze like in array

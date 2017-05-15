@@ -25,7 +25,7 @@ class BlockModel
 end
 
 
-class BlockSetupTest < Minitest::Test
+class BlockSetupTest < TestBase
   def test_one
     instance = BlockModel.new(name: '', status: 0, friends: [], address: '', id: 0, uuid: 0, nested_int: 0 )
     assert_nil instance.name

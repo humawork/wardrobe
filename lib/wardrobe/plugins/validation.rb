@@ -3,6 +3,15 @@
 require_relative 'validation/refinements'
 require_relative 'validation/validator'
 require_relative 'validation/validation_error'
+require_relative 'validation/block_handler'
+
+# TODO:
+# - Setting to run validations automatically
+# - Support all Hanami/Dry validations
+# - Support advanced predicates
+
+
+
 
 module Wardrobe
   module Plugins
@@ -10,39 +19,9 @@ module Wardrobe
       extend Wardrobe::Plugin
       option :validates, Hash
 
-      class BlockHashCreator
-        def initialize
-          @result = {}
-        end
-
-        def call(&blk)
-          instance_exec(&blk)
-        end
-
-        private
-
-        def array?(&blk)
-          call(&blk)
-        end
-
-        def min_size?(val, &blk)
-          call(&blk)
-        end
-
-        def str?(&blk)
-          call(&blk)
-        end
-
-        def each(&blk)
-          call(&blk)
-        end
-      end
-
       module ClassMethods
         def validates(&blk)
-          BlockHashCreator.new.call(&blk)
-          # TODO: Create hash!
-          # return { validates: { each: { length_min: 3 }} }
+          { validates: BlockHandler.new(&blk).result }
         end
       end
 

@@ -24,7 +24,7 @@ class KlassThree < KlassTwo
   end
 end
 
-class InheritanceTest < Minitest::Test
+class InheritanceTest < TestBase
   def test_inheritance
     instance = KlassOne.new(name: 'Lorem')
     assert_equal [:in], instance._attribute_store.name.options[:validates].keys

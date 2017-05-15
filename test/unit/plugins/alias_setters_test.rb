@@ -11,7 +11,7 @@ class AliasPerson
 end
 
 
-class AliasSetterTest < Minitest::Test
+class AliasSetterTest < TestBase
   def test_block_setup_alias_setter
     person = AliasPerson.new(profile_name: 'Test Person')
     assert_equal 'Test Person', person.name

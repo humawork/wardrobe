@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class WardrobeRootModuleTest < Minitest::Test
+class WardrobeRootModuleTest < TestBase
   def test_wardrobe_module
     assert Wardrobe.config.is_a?(Wardrobe::RootConfig)
     assert Wardrobe.respond_to?(:create_class)

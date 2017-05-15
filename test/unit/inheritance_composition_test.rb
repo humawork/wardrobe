@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class InheritanceCompositionTest < Minitest::Test
+class InheritanceCompositionTest < TestBase
   # Test a simple class with Wardrobe included
   class SimpleClass
     include Wardrobe

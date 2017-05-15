@@ -13,7 +13,7 @@ class Row
   attribute :some_other_relation_id, Integer, nil_if_zero: false
 end
 
-class NilIfZeroTest < Minitest::Test
+class NilIfZeroTest < TestBase
   def setup
     @row = Row.new(some_relation_id: 0, some_other_relation_id: 0, test_in_block: 0)
   end

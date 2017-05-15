@@ -3,6 +3,45 @@
 module Wardrobe
   module Plugins
     module Validation
+
+      module DeepMerge
+        refine Array do
+          def deep_merge!(other)
+            self.push(*other)
+          end
+        end
+        refine Hash do
+          def deep_merge!(other)
+            other.each do |key, value|
+              if has_key?(key)
+                self[key].deep_merge!(value)
+              else
+                self[key] = value
+              end
+            end
+          end
+        end
+      end
+
+      class ErrorStore
+        attr_reader :store
+
+        using DeepMerge
+        def initialize
+          @store = Hash.new { |hash, key| hash[key] = Array.new }
+        end
+
+        def add(atr, *errors)
+          errors.each do |error|
+            if error.is_a? String
+              @store[atr.name] << error
+            else
+              @store[atr.name].unshift({}) unless @store[atr.name].first.is_a?(Hash)
+              @store[atr.name].first.deep_merge!(error)
+            end
+          end
+        end
+      end
       class Validator
         using Refinements
 
@@ -21,16 +60,23 @@ module Wardrobe
           self
         end
 
+        def error_store
+          @error_store ||= ErrorStore.new#Hash.new { |hash, key| hash[key] = [] }
+        end
+
         def errors
-          @errors ||= Hash.new { |hash, key| hash[key] = [] }
+          error_store.store
         end
 
         private
 
         def validate_attribute(atr)
           if validations = atr.options[:validates]
-            validations.each { |method, value| validate(atr, method, value)}
+            validations.each do |method, value|
+              validate(atr, method, value)
+            end
           else
+            # TODO: Support nested Wardrobe instance???
             binding.pry
           # elsif atr_model?(attribute)
           #   result = @instance.send(name)._validate
@@ -39,69 +85,50 @@ module Wardrobe
           end
         end
 
-        # def atr_model?(atr)
-        #   atr.options.klass.respond_to?(:attribute_store) &&
-        #     @instance.send(atr.name).respond_to?(:_validate!)
-        # end
-
-        # def validate_validation(atr_name, validation, log_error: true)
-        #   validation.map do |method, value|
-        #     validate_one(atr_name, method, value, log_error: log_error)
-        #   end
-        # end
-
-        def validate(atr, method, value)
+        def validate(atr, method, value, **args)
           case method
-          when :if then validate_if(atr, value)
-          when :and then validate_and(atr, value)
-          when :or then validate_or(atr, value)
+          when :if then validate_if(atr, value, **args)
+          when :and then validate_and(atr, value, **args)
+          when :or then validate_or(atr, value, **args)
           else
-            if error = validate_other(atr, method, value)
-              errors[atr.name] << error
-            end
+            validate_other(atr, method, value, **args)
           end
         end
 
-        def validate_other(atr, method, value)
-          instance.send(atr.name).send(method, value)
+        def validate_other(atr, method, value, report_error: true)
+          instance_value = instance.send(atr.name)
+          begin
+            error = if value.nil?
+                      instance_value.send(method)
+                    else
+                      instance_value.send(method, value)
+                    end
+            error_store.add(atr, error) if error && report_error == true
+            error
+          rescue NoMethodError => e
+            Wardrobe.logger.error("Prediciate #{method} not supported for #{instance_value.class}")
+            raise e
+          end
         end
 
-        def validate_if(atr, value)
+        def validate_if(atr, value, **args)
           # binding.pry
         end
 
-        def validate_and(atr, validations)
+        def validate_or(atr, validations, **args)
           result = validations.map do |validation|
             validate_other(atr, *validation.to_a.first)
           end.compact
-          errors[atr.name].push(*result) if result.any?
+          if result.count == validations.count
+            error_store.add(atr, *result)
+          end
         end
 
-        def validate_one(atr_name, method, value, log_error: true)
-          case method
-          when :if
-            value.map do |validation|
-
-            end
-            binding.pry
-          when :and
-            value.each do |part|
-
-            end
-            binding.pry
-          when :or
-            result = value.flat_map do |validation|
-              validate_validation(atr_name, validation, log_error: false)
-            end
-            binding.pry
-            unless result.any? { |item| item[0] }
-              errors[atr_name].unshift(*(result.select{ |res| res[0] == false }.map{ |error| error[1] }))
-            end
-          else
-            if error = instance.send(atr_name).send(method, value)
-              errors[atr_name] << error if error
-            end
-          end
+        def validate_and(atr, validations, **args)
+          result = validations.flat_map do |validation|
+            validate(atr, *validation.to_a.first, report_error: false)
+          end.compact
+          error_store.add(atr, *result) if result.any?
         end
       end
     end

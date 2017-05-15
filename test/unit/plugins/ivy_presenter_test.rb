@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class IvyPresenterTest < Minitest::Test
+class IvyPresenterTest < TestBase
   class Article
     include Wardrobe
     plugin :presenter

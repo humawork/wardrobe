@@ -17,7 +17,7 @@ class DirtyTree
   # TODO: Test sub wardrobe class
 end
 
-class DirtyTrackerTest < Minitest::Test
+class DirtyTrackerTest < TestBase
   def setup
     @tree = DirtyTree.new(name: 'CleanTree', branches: {one: 'value'}, leaves: ['one'], colors: ['yellow', 'brown'], root: { depth: 5})
   end

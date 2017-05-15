@@ -17,7 +17,7 @@ class BlockRunnerArray
 end
 
 
-class BlockRunnerArrayTest < Minitest::Test
+class BlockRunnerArrayTest < TestBase
   def test_one
     instance = BlockRunnerArray.new(name: 'Name',  address: 'Address', uuid: 1, id: 123 )
     set = instance._attribute_store

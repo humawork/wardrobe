@@ -1,5 +1,5 @@
 require 'test_helper'
-class DefineGetterTest < Minitest::Test
+class DefineGetterTest < TestBase
   class Zero
     include Wardrobe
     plugin :optional_getter

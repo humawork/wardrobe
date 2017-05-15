@@ -1,7 +1,7 @@
 require 'test_helper'
 
 
-class AttributeTest < Minitest::Test
+class AttributeTest < TestBase
   class One
     include Wardrobe
     attribute :name, String

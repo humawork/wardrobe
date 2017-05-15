@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class JsonInitializerTest < Minitest::Test
+class JsonInitializerTest < TestBase
   class Article
     include Wardrobe
     plugin :json_initializer

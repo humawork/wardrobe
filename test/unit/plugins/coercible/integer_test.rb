@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class IntegerCoercionTest < Minitest::Test
+class IntegerCoercionTest < TestBase
   class IntegerObject
     include Wardrobe
     attribute :integer,      Integer

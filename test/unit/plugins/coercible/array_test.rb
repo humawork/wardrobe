@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ArrayCoercionTest < Minitest::Test
+class ArrayCoercionTest < TestBase
   class Person
     include Wardrobe
     attribute :name, String

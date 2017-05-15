@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HashCoercionTest < Minitest::Test
+class HashCoercionTest < TestBase
   class Person
     include Wardrobe
     attribute :name, String

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SymbolCoercionTest < Minitest::Test
+class SymbolCoercionTest < TestBase
   class SymbolObject
     include Wardrobe
     attribute :symbol,  Symbol

@@ -1,5 +1,5 @@
 require 'test_helper'
-class PresenterTest < Minitest::Test
+class PresenterTest < TestBase
   class Address
     include Wardrobe
     plugin :presenter

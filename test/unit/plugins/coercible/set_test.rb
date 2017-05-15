@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SetCoercionTest < Minitest::Test
+class SetCoercionTest < TestBase
   class Person
     include Wardrobe
     attribute :name, String
@@ -25,7 +25,7 @@ class SetCoercionTest < Minitest::Test
     )
     assert_equal Set.new([1,2]), object.set
     assert_equal Set.new([3,4]), object.array
-    assert_nil object.nil
+    assert_equal Set.new, object.nil
     assert Person === object.set_with_subclass.first
     assert Person === object.array_with_subclass.first
   end

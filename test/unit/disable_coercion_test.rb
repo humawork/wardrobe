@@ -1,5 +1,5 @@
 require 'test_helper'
-class DisableCoercionTest < Minitest::Test
+class DisableCoercionTest < TestBase
   class NoCoercion
     include Wardrobe(coerce: false)
     attribute :name, String

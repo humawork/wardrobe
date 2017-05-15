@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MethodPolutionTest < Minitest::Test
+class MethodPolutionTest < TestBase
 
   ALLOWED_POLUTING_PLUGINS = { immutable: [:mutate] }
 

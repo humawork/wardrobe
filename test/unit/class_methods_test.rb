@@ -43,7 +43,7 @@ class WithExtendedModule
 end
 
 
-class ClassMethodsTest < Minitest::Test
+class ClassMethodsTest < TestBase
   def test_with_two_attributes
     klass = WithFourAttributes
     instance = klass.new(first_name: 'Foo', last_name: 'Bar')

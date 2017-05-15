@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EqualityTest < Minitest::Test
+class EqualityTest < TestBase
   class Person
     include Wardrobe
     plugin :equality

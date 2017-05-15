@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class WardrobeConfigTest < Minitest::Test
+class WardrobeConfigTest < TestBase
   CUSTOM_ATRS_MODULE = Wardrobe()
   CUSTOM_ATRS_MODULE.configure do |config|
     config.register_default_plugin :default

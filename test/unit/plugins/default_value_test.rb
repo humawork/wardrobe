@@ -34,7 +34,7 @@ class HouseWithAddressDefaultOverride < House
 end
 
 
-class DefaultValueTest < Minitest::Test
+class DefaultValueTest < TestBase
   def setup
     @house = House.new
   end

@@ -5,22 +5,23 @@ module Wardrobe
     module Validation
       module Refinements
         refine Object do
-          def not_nil(value)
-            return unless self.nil?
-            "Required attribute. Can't be null."
+          def _inspect
+            inspect
           end
 
-          def if(value)
-            if value[:check] == self
-              value[true].call
-              binding.pry
-            else
-              binding.pry
-            end
+          def included_in?(list)
+            return if list.include?(self)
+            "must be one of: #{list.map(&:_inspect).join(', ')}"
           end
 
-          def nil(value)
-            !not_nil(value)
+          def excluded_from?(list)
+            return unless list.include?(self)
+            "must not be one of: #{list.map(&:_inspect).join(', ')}"
+          end
+
+          def type?(value)
+            return if self.is_a?(value)
+            "must be a #{value.to_s}"
           end
         end
       end

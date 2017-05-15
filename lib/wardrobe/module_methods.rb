@@ -45,7 +45,7 @@ module Wardrobe
     end
 
     def logger
-      @logger ||= Logger.new(STDOUT)
+      config.logger
     end
   end
 end

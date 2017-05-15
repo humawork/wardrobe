@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DateTimeCoercionTest < Minitest::Test
+class DateTimeCoercionTest < TestBase
   class DateTimeObject
     include Wardrobe
     attribute :string,         DateTime

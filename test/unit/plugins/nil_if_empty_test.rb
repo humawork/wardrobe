@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class NilIfEmptyTest < Minitest::Test
+class NilIfEmptyTest < TestBase
   class Tree
     include Wardrobe
     plugin :nil_if_empty

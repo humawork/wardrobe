@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StringCoercionTest < Minitest::Test
+class StringCoercionTest < TestBase
   class StringObject
     include Wardrobe
     attribute :string,  String

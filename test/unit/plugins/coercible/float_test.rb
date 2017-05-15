@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FlaotCoercionTest < Minitest::Test
+class FlaotCoercionTest < TestBase
   class FloatObject
     include Wardrobe
     attribute :float,    Float

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MethodOverrideTest < Minitest::Test
+class MethodOverrideTest < TestBase
   class Person
     include Wardrobe
     plugin :nil_if_empty

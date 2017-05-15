@@ -10,7 +10,7 @@ module Wardrobe
             case v
             when self then v
             when Array then v.to_set
-            when NilClass then nil
+            when NilClass then new
             else
               raise UnsupportedError
             end
