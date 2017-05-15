@@ -7,7 +7,7 @@ module Wardrobe
     def initialize(calling_klass)
       @calling_klass = calling_klass
       # TODO: Refactor!!!
-      calling_klass.plugin_store.each do |key, value|
+      calling_klass.plugin_store.each do |_key, value|
         value[:klass].options.each do |option|
           case
           when option.klass == Boolean
@@ -27,7 +27,7 @@ module Wardrobe
     end
 
     def run(**kargs, &blk)
-      if karg = kargs.first
+      if (karg = kargs.first)
         kargs.delete(karg.first)
         send(*karg) do
           run(**kargs, &blk)

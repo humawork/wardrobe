@@ -18,7 +18,7 @@ module Wardrobe
             instance_variable_set(:@_mutating, true)
             blk.call(self) if block_given?
             args.each do |name, _value|
-              if atr = _attribute_store[name]
+              if (atr = _attribute_store[name])
                 _attribute_init(atr, args, name)
               end
             end

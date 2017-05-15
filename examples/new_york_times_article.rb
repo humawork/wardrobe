@@ -24,7 +24,7 @@ class Article
   attribute :published_at, Time, html_selector: proc { |doc| doc.at_css('meta[property="article:published"]').attribute('content')&.value }
   attribute :modified_at, Time, html_selector: proc { |doc| doc.at_css('meta[property="article:modified"]').attribute('content')&.value }
   attribute :tags, Array[String], html_selector: proc { |doc| doc.css('meta[property="article:tag"]').map { |t| t.attribute('content')&.value } }
-  attribute :body, Array, html_selector: proc { |doc, atr, instance|
+  attribute :body, Array, html_selector: proc { |doc, _atr, instance|
     instance.class.parse_body_html(doc.at_css('article#story').children)
   }
 

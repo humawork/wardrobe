@@ -7,7 +7,7 @@ module Wardrobe
 
       module InstanceMethods
         def ==(other)
-          _attribute_store.all? do |name, atr|
+          _attribute_store.all? do |_name, atr|
             return true unless atr.options[:include_in_equality]
             send(atr.name) == other.send(atr.name)
           end

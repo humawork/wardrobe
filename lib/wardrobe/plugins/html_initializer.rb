@@ -21,7 +21,7 @@ module Wardrobe
       module InstanceMethods
         def initialize(html = nil, **args)
           if html
-            define_singleton_method(:_attribute_init) do |atr, doc, name|
+            define_singleton_method(:_attribute_init) do |atr, doc, _name|
               value = atr.options[:html_selector].call(doc, atr, self)
               send(atr.setter_name, value)
             end

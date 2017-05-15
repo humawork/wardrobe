@@ -5,7 +5,7 @@ module Wardrobe
     module Coercible
       module Refinements
         refine Array.singleton_class do
-          def coerce(v, atr)
+          def coerce(v, _atr)
             case v
             when self     then v
             when Set      then v.to_a

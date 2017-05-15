@@ -4,7 +4,7 @@ module Wardrobe
   class Option
     attr_reader :name, :klass, :plugin, :default, :options, :setter, :getter
 
-    def initialize(name, klass, plugin, **kargs, &blk)
+    def initialize(name, klass, plugin, **kargs)
       @name = name
       @klass = klass
       @plugin = plugin
