@@ -19,9 +19,9 @@ class Bar
   include Hanami::Validations
 
   validations do
-    required(:one) { size?(3) }
-    required(:two) { included_in?(['one']) }
-    required(:three) { included_in?(['one', [1], Time.now]) }
+    required(:one) { format?(/ccc/) | format?(/ddd/) }
+    # required(:two) { included_in?(['one']) }
+    # required(:three) { included_in?(['one', [1], Time.now]) }
     # required(:four) { empty? }
     # required(:five) { empty? }
     # required(:six) { empty? }
@@ -29,7 +29,7 @@ class Bar
 end
 
 result = Bar.new(
-  one: nil,
+  one: 'abb',
   two: :'',
   three: [],
   four: {},

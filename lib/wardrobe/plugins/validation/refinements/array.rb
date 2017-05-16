@@ -21,14 +21,14 @@ module Wardrobe
             'must be filled'
           end
 
-          alias_method :original_each, :each
-          def each(predicates)
+          # alias_method :original_each, :each
+          def each?(predicates)
             errors = Hash.new do |h,k|
               h.merge!({ k => []}) unless h.key?(k)
               h.fetch(k)
             end
             predicates.each_pair do |k,v|
-              original_each.with_index do |item, index|
+              each.with_index do |item, index|
                 if res = item.send(k,v)
                   errors[index] << res
                 end

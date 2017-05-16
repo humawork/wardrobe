@@ -17,7 +17,7 @@ module Wardrobe
 
           def format?(regex)
             return if regex.match(self)
-            'is in invalid format'
+            "must match #{regex.inspect}"
           end
         end
       end

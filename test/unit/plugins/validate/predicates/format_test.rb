@@ -13,8 +13,8 @@ class ValidationPredicatesFormatTest < MiniTest::Test
       string: 'no', symbol: :no
     )._validation_errors
 
-    assert_equal 'is in invalid format', errors[:string][0]
-    assert_equal 'is in invalid format', errors[:symbol][0]
+    assert_equal 'must match /^abc$/', errors[:string][0]
+    assert_equal 'must match /^abc$/', errors[:symbol][0]
   end
 
   def test_matching_regex

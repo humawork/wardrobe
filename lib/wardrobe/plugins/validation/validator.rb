@@ -3,132 +3,79 @@
 module Wardrobe
   module Plugins
     module Validation
-
-      module DeepMerge
-        refine Array do
-          def deep_merge!(other)
-            self.push(*other)
-          end
-        end
-        refine Hash do
-          def deep_merge!(other)
-            other.each do |key, value|
-              if has_key?(key)
-                self[key].deep_merge!(value)
-              else
-                self[key] = value
-              end
-            end
-          end
-        end
-      end
-
-      class ErrorStore
-        attr_reader :store
-
-        using DeepMerge
-        def initialize
-          @store = Hash.new { |hash, key| hash[key] = Array.new }
-        end
-
-        def add(atr, *errors)
-          errors.each do |error|
-            if error.is_a? String
-              @store[atr.name] << error
-            else
-              @store[atr.name].unshift({}) unless @store[atr.name].first.is_a?(Hash)
-              @store[atr.name].first.deep_merge!(error)
-            end
-          end
-        end
-      end
       class Validator
         using Refinements
+        attr_reader :atr, :value, :error_store
 
-        attr_reader :instance
-
-        def initialize(instance)
-          @instance = instance
+        def initialize(atr, value, error_store)
+          @atr = atr
+          @value = value
+          @error_store = error_store
         end
 
-        def self.validate(instance)
-          new(instance).run
+        def validation
+          atr.options[:validates]
         end
 
         def run
-          instance._attribute_store.each { |name, atr| validate_attribute(atr) }
-          self
-        end
-
-        def error_store
-          @error_store ||= ErrorStore.new#Hash.new { |hash, key| hash[key] = [] }
-        end
-
-        def errors
-          error_store.store
+          if validation
+            validate(validation)
+          elsif value.respond_to?(:_validate!)
+            if value._validation_errors.any?
+              error_store.store[atr.name] = value._validation_errors
+            end
+          else
+            Wardrobe.logger.warn("Unable to validate #{value.class.to_s} class")
+          end
         end
 
         private
 
-        def validate_attribute(atr)
-          if validations = atr.options[:validates]
-            validations.each do |method, value|
-              validate(atr, method, value)
-            end
+        def report(*errors)
+          error_store.add(atr, *errors)
+        end
+
+        def validate(validation, report = true)
+          if validation.type == :special#method[/^_.+_$/]
+            send(*validation.args, report)
           else
-            # TODO: Support nested Wardrobe instance???
-            binding.pry
-          # elsif atr_model?(attribute)
-          #   result = @instance.send(name)._validate
-          #   binding.pry
-          #   errors[name] = result._validation_errors_hash unless result._valid?
+            error = value.send(*validation.args)
+            report && error ? report(error) : error
           end
         end
 
-        def validate(atr, method, value, **args)
-          case method
-          when :if then validate_if(atr, value, **args)
-          when :and then validate_and(atr, value, **args)
-          when :or then validate_or(atr, value, **args)
-          else
-            validate_other(atr, method, value, **args)
+        def validate_list(validations, report)
+          validations.map do |validation|
+            validate(validation, report)
           end
         end
 
-        def validate_other(atr, method, value, report_error: true)
-          instance_value = instance.send(atr.name)
-          begin
-            error = if value.nil?
-                      instance_value.send(method)
-                    else
-                      instance_value.send(method, value)
-                    end
-            error_store.add(atr, error) if error && report_error == true
+        def _or_(validations, report)
+          errors = validate_list(validations, false)
+          error_string = errors.join(' or ')
+          report(error_string) if validations.size == errors.size && report
+          error_string
+        end
+
+        def _and_(validations, report)
+          errors = validate_list(validations, false)
+          report ? report(*errors) : errors
+        end
+
+        def _then_(validations, report)
+          error = validate(validations.first, false)
+          if error
+            report(error) if report
             error
-          rescue NoMethodError => e
-            Wardrobe.logger.error("Prediciate #{method} not supported for #{instance_value.class}")
-            raise e
+          else
+            validate_list(validations[1..-1], report)
           end
         end
 
-        def validate_if(atr, value, **args)
-          # binding.pry
-        end
-
-        def validate_or(atr, validations, **args)
-          result = validations.map do |validation|
-            validate_other(atr, *validation.to_a.first)
-          end.compact
-          if result.count == validations.count
-            error_store.add(atr, *result)
-          end
-        end
-
-        def validate_and(atr, validations, **args)
-          result = validations.flat_map do |validation|
-            validate(atr, *validation.to_a.first, report_error: false)
-          end.compact
-          error_store.add(atr, *result) if result.any?
+        def _optional_(validation, report)
+          validate(validation, report)
+        rescue NoMethodError => e
+          raise e unless value.nil?
         end
       end
     end

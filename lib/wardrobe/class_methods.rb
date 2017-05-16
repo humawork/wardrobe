@@ -83,8 +83,9 @@ module Wardrobe
       end
     end
 
-    def attribute(name, klass, **args, &blk)
-      merged_args = option_store.defaults.merge(args)
+
+    def attribute(name, klass, *args, &blk)
+      merged_args = option_store.defaults.merge(args.inject({}) { |input, val| input.merge! val })
       @wardrobe_stores = wardrobe_stores.add_attribute(
         name, klass, self, **merged_args, &blk
       )
@@ -107,11 +108,21 @@ module Wardrobe
     def plugin(name, **args)
       @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
       plugin = plugin_store[name][:klass]
+
       if plugin.const_defined?(:ClassMethods)
         extend(plugin.const_get(:ClassMethods))
       end
+
       if plugin.const_defined?(:InstanceMethods)
         include(plugin.const_get(:InstanceMethods))
+      end
+
+      if plugin.const_defined?(:AttributeClassMethods)
+        Attribute.extend(plugin.const_get(:AttributeClassMethods))
+      end
+
+      if plugin.const_defined?(:AttributeInstanceMethods)
+        Attribute.include(plugin.const_get(:AttributeInstanceMethods))
       end
     end
   end

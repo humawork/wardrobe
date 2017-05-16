@@ -21,33 +21,33 @@ module Wardrobe
 
           def format?(regex)
             return if regex.match(self)
-            'is in invalid format'
+            "must match #{regex.inspect}"
           end
 
-          def in(array)
-            return unless array.include?(self)
-            "\"#{self}\" is not included in '#{array.inspect}'"
-          end
-
-          alias_method :original_size, :size
-
-          def size(range)
-            unless range === original_size
-              "\"#{self}\" violates length in range #{range}"
-            end
-          end
-
-          def max_size(int)
-            unless original_size <= int
-              "\"#{self}\" has two many characters. Maximum #{int}"
-            end
-          end
-
-          def min_size(int)
-            unless original_size >= int
-              "length cannot be less than #{int}"
-            end
-          end
+          # def in(array)
+          #   return unless array.include?(self)
+          #   "\"#{self}\" is not included in '#{array.inspect}'"
+          # end
+          #
+          # alias_method :original_size, :size
+          #
+          # def size(range)
+          #   unless range === original_size
+          #     "\"#{self}\" violates length in range #{range}"
+          #   end
+          # end
+          #
+          # def max_size(int)
+          #   unless original_size <= int
+          #     "\"#{self}\" has two many characters. Maximum #{int}"
+          #   end
+          # end
+          #
+          # def min_size(int)
+          #   unless original_size >= int
+          #     "length cannot be less than #{int}"
+          #   end
+          # end
         end
       end
     end
