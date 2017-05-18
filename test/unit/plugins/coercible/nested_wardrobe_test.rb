@@ -47,7 +47,7 @@ class NestedWardrobeTest < TestBase
 
   def test_string_as_input_for_nested_wardrobe
     assert_raises(ArgumentError) do
-      object = Two.new(
+      Two.new(
         user: 'Foo'
       )
     end
@@ -55,7 +55,7 @@ class NestedWardrobeTest < TestBase
 
   def test_string_as_input_for_nested_wardrobe_in_array
     assert_raises(Wardrobe::Plugins::Coercible::Refinements::UnsupportedError) do
-      object = Three.new(
+      Three.new(
         group: 'Foo'
       )
     end

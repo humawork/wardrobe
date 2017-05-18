@@ -10,7 +10,7 @@ module Wardrobe
       module ClassMethods
         def define_setter(atr)
           super
-          atr.options[:alias_setter].each do |alias_setter|
+          atr.options[:alias_setter]&.each do |alias_setter|
             alias_method "#{alias_setter}=", atr.setter_name
           end
         end
@@ -20,6 +20,7 @@ module Wardrobe
         private
 
         def _attribute_init(atr, hash, name)
+          return super unless atr.options[:alias_setter]
           return super if atr.options[:alias_setter].empty?
           keys_in_hash = atr.options[:alias_setter].select { |key| hash.key?(key) }
           return super unless keys_in_hash.any?

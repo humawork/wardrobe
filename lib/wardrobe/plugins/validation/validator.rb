@@ -50,9 +50,35 @@ module Wardrobe
         def each?(validation, report)
           errors = {}
           value.each_with_index do |item, index|
-            result = Validator.new(value, nil, nil, validation).run(false)
+            result = Validator.new(item, nil, nil, validation).run(false)
             result = [result] unless result.is_a?(Array)
             errors[index] = result if result.any?
+          end
+          if errors.any?
+            report(errors) if report
+            errors
+          end
+        end
+
+        def each_key?(validation, report)
+          errors = {}
+          value.each do |key, _|
+            result = Validator.new(key, nil, nil, validation).run(false)
+            result = [result] unless result.is_a?(Array)
+            errors[key] = result.map { |error| 'key ' + error } if result.any?
+          end
+          if errors.any?
+            report(errors) if report
+            errors
+          end
+        end
+
+        def each_value?(validation, report)
+          errors = {}
+          value.each do |key, val|
+            result = Validator.new(val, nil, nil, validation).run(false)
+            result = [result] unless result.is_a?(Array)
+            errors[key] = result.map { |error| 'value ' + error } if result.any?
           end
           if errors.any?
             report(errors) if report

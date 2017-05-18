@@ -4,9 +4,12 @@ class BlockModel
   include Wardrobe
   plugin :nil_if_empty
   plugin :nil_if_zero
+  plugin :ivy_presenter
+  plugin :alias_setters
+  plugin :validation
 
-  attributes nil_if_empty: true, nil_if_zero: true do
-    attribute :name,    String
+  attributes nil_if_empty: true, nil_if_zero: true, preset: :one, validates: { method: :int?, arguments: 1 }, alias_setter: :nested_int_alias do
+    attribute :name,    String, preset: :two, validates: { method: :str?, arguments: 1 }
     attribute :status,  Integer
     attribute :friends, Array
     nil_if_empty false do
@@ -16,14 +19,13 @@ class BlockModel
         attribute :uuid, Integer, nil_if_zero: true
         nil_if_zero true do
           attributes nil_if_zero: false do
-            attribute :nested_int, Integer
+            attribute :nested_int, Integer, alias_setter: :nested_int_alias_2
           end
         end
       end
     end
   end
 end
-
 
 class BlockSetupTest < TestBase
   def test_one

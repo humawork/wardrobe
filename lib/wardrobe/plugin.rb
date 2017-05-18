@@ -24,10 +24,10 @@ module Wardrobe
       raise PluginOptionKeywordTaken if Wardrobe.options[name]
       option_instance = Option.new(name, klass, self, **kargs, &blk)
       Wardrobe.options[name] = option_instance
+      BlockSetup.register_option(option_instance)
       options << option_instance
       #
       # # TODO: Refactor this to apply only if plugin is in use
-      # # THOUGHT: Should we support a set of default options enabled globaly?
       #
       # raise PluginOptionKeywordTaken if Wardrobe.options[:name]
       # # These needs to go somewhere else

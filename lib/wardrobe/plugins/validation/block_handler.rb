@@ -51,35 +51,30 @@ module Wardrobe
 
         def optional(&blk)
           Validation.new(:_optional_, instance_exec(&blk))
-          # CustomHash.new(_optional_: instance_exec(&blk))
         end
 
         TYPE_METHODS.each do |name, klass|
           define_method(name) do
             Validation.new(:type?, klass)
-            # CustomHash.new(type?: klass)
           end
         end
 
         METHODS_WITHOUT_ARGUMENTS.each do |name|
           define_method(name) do
             Validation.new(name.to_sym, nil)
-            # CustomHash.new(name => nil)
           end
         end
 
         METHODS_WITH_ARGUMENTS.each do |name|
           define_method(name) do |value|
             Validation.new(name.to_sym, value)
-            # CustomHash.new(name => value)
           end
         end
 
         METHODS_WITH_BLOCK.each do |name|
           define_method(name) do |&blk|
-            raise "Error. No block given" unless blk
+            raise 'Error. No block given' unless blk
             Validation.new(name.to_sym, instance_exec(&blk))
-            # CustomHash.new(name => instance_exec(&blk))
           end
         end
       end

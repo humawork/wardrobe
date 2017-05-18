@@ -15,6 +15,10 @@ module Wardrobe
       freeze
     end
 
+    def klass_name
+      klass.to_s[/([^:]+)$/,1].downcase
+    end
+
     def use_getter_for_atr?(atr)
       getter&.use_if&.call(atr)
     end

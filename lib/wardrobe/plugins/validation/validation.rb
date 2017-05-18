@@ -24,7 +24,7 @@ module Wardrobe
           end
         end
 
-        SPECIAL_METHODS = Set.new([:each?])
+        SPECIAL_METHODS = Set.new([:each?, :each_key?, :each_value?])
 
         def type
           @type ||= begin

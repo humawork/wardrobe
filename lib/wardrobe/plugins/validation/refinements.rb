@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'refinements/_empty'
 require_relative 'refinements/_size'
 require_relative 'refinements/array'
 require_relative 'refinements/date'

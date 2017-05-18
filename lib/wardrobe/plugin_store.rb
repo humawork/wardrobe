@@ -14,8 +14,8 @@ module Wardrobe
             retry
           end
         rescue LoadError
+          raise NoPluginRegisteredError, name
         end
-        raise NoPluginRegisteredError, name
       end
       mutate do
         store[name] = {
