@@ -4,7 +4,6 @@ module Wardrobe
   module Plugins
     module Coercible
       module Refinements
-
         refine Hash.singleton_class do
           def coerce(v, _atr)
             case v
@@ -28,29 +27,27 @@ module Wardrobe
             end
           end
 
+          HASH_SINGLETON_MODIFIER = lambda { |coercer, atr_object|
+            @_coercer = coercer
+            @_atr = atr_object
+
+            def _coercer
+              self.singleton_class.instance_variable_get(:@_coercer)
+            end
+
+            def self._atr; @_atr; end
+
+            def _coerce(key, value)
+              return _coercer[0].coerce(key, nil),
+              _coercer[1].coerce(value, nil)
+            end
+
+            def []=(key, value)
+              super(*_coerce(key,value))
+            end
+          }
+
           private
-
-          def hash_modifier
-            lambda { |coercer, atr_object|
-              @_coercer = coercer
-              @_atr = atr_object
-
-              def _coercer
-                self.singleton_class.instance_variable_get(:@_coercer)
-              end
-
-              def self._atr; @_atr; end
-
-              def _coerce(key, value)
-                return _coercer[0].coerce(key, nil),
-                _coercer[1].coerce(value, nil)
-              end
-
-              def []=(key, value)
-                super(*_coerce(key,value))
-              end
-            }
-          end
 
           def coerce_hash(h, atr)
             hash = h.map do |key, value|
@@ -58,7 +55,7 @@ module Wardrobe
               [self.first[0].coerce(key, nil), self.first[1].coerce(value, nil)]
             end.to_h
 
-            hash.singleton_class.class_exec(first,atr, &hash_modifier)
+            hash.singleton_class.class_exec(first,atr, &HASH_SINGLETON_MODIFIER)
             hash
           end
         end
