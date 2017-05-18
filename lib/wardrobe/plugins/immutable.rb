@@ -92,7 +92,7 @@ module Wardrobe
         end
 
         def deep_freeze
-          _attribute_store.each do |name,atr|
+          _attribute_store.each do |_name, atr|
             instance_variable_get(atr.ivar_name).deep_freeze
           end
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
@@ -112,14 +112,11 @@ module Wardrobe
         priority: -101,
         use_if: ->(_atr) { true },
         setter: lambda do |value, atr, instance|
-          if instance._initializing? || !instance.frozen?
-            value
-          else
-            raise NoMethodError, <<~eos
-              undefined method `#{atr.name}=' for #{instance}.
-              The instance is immutable. Use `#mutate(key, value)' or `#mutate { |obj| obj.#{atr.name} = #{value.inspect}}'
-            eos
-          end
+          return value if instance._initializing? || !instance.frozen?
+          raise NoMethodError, <<~eos
+            undefined method `#{atr.name}=' for #{instance}.
+            The instance is immutable. Use `#mutate(key, value)' or `#mutate { |obj| obj.#{atr.name} = #{value.inspect}}'
+          eos
         end
       )
 

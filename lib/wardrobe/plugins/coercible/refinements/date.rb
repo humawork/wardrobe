@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/CyclomaticComplexity
+
 require 'date'
 module Wardrobe
   module Plugins
@@ -25,3 +27,5 @@ module Wardrobe
     end
   end
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity

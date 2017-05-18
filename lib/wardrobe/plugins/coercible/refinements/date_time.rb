@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/CyclomaticComplexity
+
 module Wardrobe
   module Plugins
     module Coercible
@@ -23,3 +25,5 @@ module Wardrobe
     end
   end
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity

@@ -10,18 +10,24 @@ module Wardrobe
           def coerce(v, _atr)
             case v
             when TrueClass, FalseClass then v
-            when Integer
-              return false if v == 0
-              return true if v == 1
-              raise UnsupportedError
-            when String
-              return false if FALSE_STRINGS.include?(v)
-              return true if TRUE_STRINGS.include?(v)
-              raise UnsupportedError
+            when Integer then integer(v)
+            when String then string(v)
             when NilClass then nil
             else
               raise UnsupportedError
             end
+          end
+
+          def integer(v)
+            return false if v == 0
+            return true if v == 1
+            raise UnsupportedError
+          end
+
+          def string(v)
+            return false if FALSE_STRINGS.include?(v)
+            return true if TRUE_STRINGS.include?(v)
+            raise UnsupportedError
           end
         end
       end
