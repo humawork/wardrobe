@@ -30,7 +30,15 @@ class SetCoercionTest < TestBase
     assert Person === object.array_with_subclass.first
   end
 
+  def test_set_instance_coercion
+    object = SetObject.new(set_with_subclass: nil)
+    assert_equal Set.new, object.set_with_subclass
+  end
+
   def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      SetObject.new(set_with_subclass: :sym)
+    end
     assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SetObject.new(set: Time.now)
     end

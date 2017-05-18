@@ -11,7 +11,7 @@ module Wardrobe
         end
 
         def to_s
-          errors
+          errors.to_s
         end
       end
     end

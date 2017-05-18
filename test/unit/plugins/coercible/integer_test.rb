@@ -33,4 +33,10 @@ class IntegerCoercionTest < TestBase
     assert_equal now.to_i, object.datetime
     assert_equal now.to_date.to_time.to_i, object.date
   end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      IntegerObject.new(integer: [])
+    end
+  end
 end

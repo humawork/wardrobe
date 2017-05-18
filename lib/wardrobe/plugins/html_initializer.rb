@@ -31,11 +31,6 @@ module Wardrobe
             super(**args)
           end
         end
-
-        def _attribute_init(atr, html, name)
-          return super if html.is_a?(Hash)
-          send(atr.setter_name, html)
-        end
       end
     end
   end

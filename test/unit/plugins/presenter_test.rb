@@ -5,6 +5,7 @@ class PresenterTest < TestBase
     plugin :presenter
     attribute :zip_code, String
     attribute :street,   String
+    attribute :time, Time
   end
 
   class User
@@ -20,12 +21,18 @@ class PresenterTest < TestBase
     attribute :friends,  Array[User]
   end
 
+  class WithoutTimeFormatter
+    include Wardrobe
+    plugin :presenter
+    attribute :created,  Time
+  end
+
   def setup
     @time = Time.now - 60
     @user = User.new(
       name: 'Test Person',
       email: 'user@example.com',
-      address: { zip_code: '1234', street: 'No Where Street'},
+      address: { zip_code: '1234', street: 'No Where Street' },
       status: :open,
       friends: [{ name: 'Friend One' }],
       created: @time.to_s,
@@ -52,5 +59,10 @@ class PresenterTest < TestBase
     assert_equal 'No Where Street', result[:address][:street]
     assert_nil result[:address][:zip_code]
     assert_nil result[:address][:status]
+  end
+
+  def test_without_time_formater
+    result = WithoutTimeFormatter.new(created: @time.to_s)._present
+    assert_equal @time.to_s, result[:created]
   end
 end

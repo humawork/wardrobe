@@ -35,10 +35,6 @@ module Wardrobe
       end
     end
 
-    def configure_wardrobe(&blk)
-      @root_config = root_config.mutate(&blk)
-    end
-
     def root_config=(input)
       @root_config = input
     end
@@ -117,13 +113,15 @@ module Wardrobe
         include(plugin.const_get(:InstanceMethods))
       end
 
-      if plugin.const_defined?(:AttributeClassMethods)
-        Attribute.extend(plugin.const_get(:AttributeClassMethods))
-      end
-
-      if plugin.const_defined?(:AttributeInstanceMethods)
-        Attribute.include(plugin.const_get(:AttributeInstanceMethods))
-      end
+      # Currently these are not needed
+      #
+      # if plugin.const_defined?(:AttributeClassMethods)
+      #   Attribute.extend(plugin.const_get(:AttributeClassMethods))
+      # end
+      #
+      # if plugin.const_defined?(:AttributeInstanceMethods)
+      #   Attribute.include(plugin.const_get(:AttributeInstanceMethods))
+      # end
     end
   end
 end

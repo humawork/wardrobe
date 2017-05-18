@@ -55,13 +55,13 @@ module Wardrobe
     def build_getter_array(klass)
       (klass.option_store.values.map do |option|
         option.getter if option.use_getter_for_atr?(self)
-      end + klass.default_getters).compact.sort_by(&:priority)
+      end + klass.default_getters).compact.sort
     end
 
     def build_setter_array(klass)
       (klass.option_store.values.map do |option|
         option.setter if option.use_setter_for_atr?(self)
-      end + klass.default_setters).compact.sort_by(&:priority)
+      end + klass.default_setters).compact.sort
     end
 
     def validate_options(options, config, defining_object)
@@ -69,13 +69,6 @@ module Wardrobe
         unless config.option_store[name]
           Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
           raise UnavailableOptionError
-        end
-        unless name == :coerce
-          define_singleton_method(name) do
-            puts caller_locations.first
-            puts "NO! Don't do this! #{name}"
-            @options[name]
-          end
         end
       end
     end

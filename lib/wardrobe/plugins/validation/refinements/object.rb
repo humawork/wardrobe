@@ -19,9 +19,14 @@ module Wardrobe
             "must not be one of: #{list.map(&:_inspect).join(', ')}"
           end
 
-          def type?(value)
-            return if self.is_a?(value)
-            "must be a #{value.to_s}"
+          def type?(predicate)
+            return if self.is_a?(predicate)
+            if predicate == Wardrobe::Boolean
+              return if self.is_a?(TrueClass) || self.is_a?(FalseClass)
+              "must be a TrueClass or FalseClass"
+            else
+              "must be a #{predicate.to_s}"
+            end
           end
         end
       end

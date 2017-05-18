@@ -3,7 +3,6 @@
 require_relative 'refinements/_empty'
 require_relative 'refinements/_size'
 require_relative 'refinements/array'
-require_relative 'refinements/boolean'
 require_relative 'refinements/date'
 require_relative 'refinements/hash'
 require_relative 'refinements/integer'

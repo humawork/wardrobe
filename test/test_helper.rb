@@ -1,12 +1,17 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  # TODO: Figure out a way to include these files in the report. Fork is used.
+  add_filter 'test/unit/plugins/json_initializer_test.rb'
+  add_filter 'lib/wardrobe/plugins/json_initializer.rb'
+end
+
+require 'pry'
+require 'pry-byebug'
 
 require 'minitest/autorun'
 require 'assertions'
 require 'wardrobe'
 
-require 'pry'
-require 'pry-byebug'
 
 LOG_MESSAGES = []
 

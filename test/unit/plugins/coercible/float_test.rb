@@ -9,6 +9,7 @@ class FlaotCoercionTest < TestBase
     attribute :time,     Float
     attribute :datetime, Float
     attribute :date,     Float
+    attribute :nil,      Float
   end
 
   def test_coercion
@@ -20,7 +21,8 @@ class FlaotCoercionTest < TestBase
       integer: 1,
       time: now,
       datetime: now.to_datetime,
-      date: now.to_date
+      date: now.to_date,
+      nil: nil
     )
 
     assert_equal 1.01, object.float
@@ -29,5 +31,12 @@ class FlaotCoercionTest < TestBase
     assert_equal now.to_f, object.time
     assert_equal now.to_f, object.datetime
     assert_equal now.to_date.to_time.to_f, object.date
+    assert_nil object.nil
+  end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      FloatObject.new(float: [])
+    end
   end
 end

@@ -14,7 +14,7 @@ module Wardrobe
 
         def _validate!
           _validate unless _validated?
-          raise ValidationError.new(_validation_errors_hash) unless _valid?
+          raise ValidationError.new(@_validator.errors) unless _valid?
           self
         end
 

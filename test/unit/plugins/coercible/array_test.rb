@@ -14,7 +14,7 @@ class ArrayCoercionTest < TestBase
     attribute :array_string,              Array[String]
     attribute :array_hash,                Array[Hash]
     attribute :array_hash_integer_symbol, Array[Hash[Integer => Symbol]]
-    attribute :array_wardrobe_objects,        Array[Person]
+    attribute :array_wardrobe_objects,    Array[Person]
     attribute :nil,                       Array
   end
 
@@ -69,5 +69,11 @@ class ArrayCoercionTest < TestBase
     assert_equal 5, @object.array_integer.last
     assert_equal '4.1', @object.array_string.last
     assert_equal({ 3 => :three }, @object.array_hash_integer_symbol.last)
+  end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      ArrayObject.new(set: :symbol)
+    end
   end
 end

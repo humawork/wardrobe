@@ -14,13 +14,13 @@ module Wardrobe
           new(instance).run
         end
 
-        def Validate(atr, value, error_store)
-          Validator.new(atr, value, error_store).run
+        def Validate(value, atr, error_store)
+          Validator.new(value, atr, error_store).run
         end
 
         def run
           instance._attribute_store.each do |name, atr|
-            Validate(atr, instance.send(atr.name), error_store)
+            Validate(instance.send(atr.name), atr, error_store)
           end
           self
         end

@@ -5,21 +5,18 @@ module Wardrobe
     module Validation
       class Validator
         using Refinements
-        attr_reader :atr, :value, :error_store
+        attr_reader :value, :atr, :error_store, :validation
 
-        def initialize(atr, value, error_store)
-          @atr = atr
+        def initialize(value, atr, error_store, validation = nil)
           @value = value
+          @atr = atr
           @error_store = error_store
+          @validation = validation || atr.options[:validates]
         end
 
-        def validation
-          atr.options[:validates]
-        end
-
-        def run
+        def run(report = true)
           if validation
-            validate(validation)
+            validate(validation, report)
           elsif value.respond_to?(:_validate!)
             if value._validation_errors.any?
               error_store.store[atr.name] = value._validation_errors
@@ -35,7 +32,7 @@ module Wardrobe
           error_store.add(atr, *errors)
         end
 
-        def validate(validation, report = true)
+        def validate(validation, report)
           if validation.type == :special#method[/^_.+_$/]
             send(*validation.args, report)
           else
@@ -47,6 +44,19 @@ module Wardrobe
         def validate_list(validations, report)
           validations.map do |validation|
             validate(validation, report)
+          end.compact
+        end
+
+        def each?(validation, report)
+          errors = {}
+          value.each_with_index do |item, index|
+            result = Validator.new(value, nil, nil, validation).run(false)
+            result = [result] unless result.is_a?(Array)
+            errors[index] = result if result.any?
+          end
+          if errors.any?
+            report(errors) if report
+            errors
           end
         end
 

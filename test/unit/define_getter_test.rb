@@ -60,6 +60,7 @@ class DefineGetterTest < TestBase
   class Five < Three
     include Part3
     include Part2
+    include Part1
   end
 
 
@@ -88,5 +89,6 @@ class DefineGetterTest < TestBase
 
   def test_class_five
     assert_equal 'email overridden in mod part_2', Five.new.email
+    assert_equal 'overridden in mod part_1', Five.new.name
   end
 end

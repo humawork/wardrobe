@@ -22,10 +22,6 @@ module Wardrobe
       )
     end
 
-    def _data
-      @_data ||= {}
-    end
-
     def _set_attribute_value(atr, value)
       instance_variable_set(atr.ivar_name, value)
     end

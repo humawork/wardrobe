@@ -46,12 +46,23 @@ class BooleanCoercionTest < TestBase
     assert_equal false, object.string_false
   end
 
-
   def test_coercion_from_setter
     object = BooleanObject.new
     object.false = false
     object.integer_zero = 0
     assert_equal false, object.false
     assert_equal false, object.integer_zero
+  end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      BooleanObject.new(yes: 'ja')
+    end
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      BooleanObject.new(yes: 11)
+    end
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      BooleanObject.new(yes: [1])
+    end
   end
 end

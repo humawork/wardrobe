@@ -29,4 +29,10 @@ class DateCoercionTest < TestBase
     assert_equal date, object.integer
     assert_equal date, object.float
   end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      DateObject.new(string: [])
+    end
+  end
 end

@@ -34,4 +34,10 @@ class TimeCoercionTest < TestBase
     assert_equal Time.at(time.to_i), object.integer
     assert_equal Time.at(time.to_f), object.float
   end
+
+  def test_error
+    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+      TimeObject.new(string: [])
+    end
+  end
 end
