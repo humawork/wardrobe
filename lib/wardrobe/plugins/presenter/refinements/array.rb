@@ -5,7 +5,7 @@ module Wardrobe
     module Presenter
       module Refinements
         refine Array do
-          def _present(*args)
+          def _present(*_args)
             map(&:_present)
           end
         end

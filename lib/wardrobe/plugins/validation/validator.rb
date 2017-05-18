@@ -22,7 +22,7 @@ module Wardrobe
               error_store.store[atr.name] = value._validation_errors
             end
           else
-            Wardrobe.logger.warn("Unable to validate #{value.class.to_s} class")
+            Wardrobe.logger.warn("Unable to validate #{value.class} class")
           end
         end
 

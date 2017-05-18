@@ -25,7 +25,7 @@ module Wardrobe
               return if self.is_a?(TrueClass) || self.is_a?(FalseClass)
               "must be a TrueClass or FalseClass"
             else
-              "must be a #{predicate.to_s}"
+              "must be a #{predicate}"
             end
           end
         end

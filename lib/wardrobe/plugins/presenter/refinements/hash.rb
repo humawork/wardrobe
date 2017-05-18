@@ -5,7 +5,7 @@ module Wardrobe
     module Presenter
       module Refinements
         refine Hash do
-          def _present(*args)
+          def _present(*_args)
             transform_values(&:_present)
           end
         end

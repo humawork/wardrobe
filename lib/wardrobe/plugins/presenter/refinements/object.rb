@@ -5,7 +5,7 @@ module Wardrobe
     module Presenter
       module Refinements
         refine Object do
-          def _present(*args)
+          def _present(*_args)
             self
           end
         end
