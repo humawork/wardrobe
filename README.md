@@ -4,7 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/agensdev/wardrobe/badges/coverage.svg)](https://codeclimate.com/github/agensdev/wardrobe/coverage)
 <!-- [![Gem Version](https://badge.fury.io/agensdev/wardrobe.svg)](https://rubygems.org/gems/wardrobe) -->
 
-Wardrobe is a library that simplifies creating ruby models with attributes and coercion. Wardrobe includes a multitude of plugins. See list of bundled plugins below. Wardrobe was made with inspiration from and years of using Virtus. Wardrobe aims at being easier to extend and include more tools out of the box.
+Wardrobe is a gem that simplifies creating Ruby objects with attributes. Wardrobe bundles a multitude of plugins. See [list](#bundled-plugins) below.
 
 ## Requirements
 
@@ -32,7 +32,8 @@ User.new(name: 'Wardrobe User')
 
 ## Composition
 
-Wardrobe allow you to compose models based on multiple modules for reuse.
+Wardrobe allows you to compose models from multiple modules for easy reuse.
+
 ```ruby
 module Name
   include Wardrobe
@@ -48,7 +49,7 @@ end
 
 ## Coercion
 
-Coercion is enabled by default and works with most of the types available in Ruby.
+Coercion is enabled by default and works with most types available in Ruby.
 
 Example:
 ```ruby
@@ -153,27 +154,62 @@ User.new(first_name: '', last_name: '', friends: [])
 # => #<User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil>
 ```
 
-## Plugins
+## Bundled Plugins
 
 Wardrobe comes with numerous plugins and aims at making it easy to write your own.
 
 |Name               |Exposed options      |Development state  |Description       |
 |-------------------|---------------------|-------------------|------------------|
-|validation         |`validates`          |POC                |dry-validation inspired validations for your attributes|
-|immutable          |`immutable`          |BETA               |makes your modle immutable. Exposes a #mutate method that will return a new object|
+|validation         |`validates`          |BETA               |dry-validation and Hanami inspired validations for your attributes|
+|immutable          |`immutable`          |BETA               |makes your object immutable. Exposes a #mutate method that will return a new immutable object|
 |dirty_tracker      |`track`              |BETA               |tracks instances and exposes a #_changed? method|
 |default            |`default`            |BETA               |default values for attributes|
-|presenter          |                     |POC                |presents your instance as a hash|
-|configurable       |                     |BETA               |allows you to add class level immutable configuration to your modles|
-|nil_if_empty       |`nil_if_empty`       |BETA               |
+|configurable       |                     |BETA               |allows you to add class level immutable configuration to your classes|
+|nil_if_empty       |`nil_if_empty`       |BETA               |Converts empty objects like `''`, `{}` and `[]` to nil when initializing.|
 |nil_if_zero        |`nil_if_zero`        |BETA               |
 |alias_setters      |`alias_setter(Array)`|BETA               |
-|json_initializer   |                     |POC                |initialize your model with a json string|
-|html_initializer   |                     |POC                |initialize your model with a html string|
-|xml_initializer    |                     |NOT IMPLEMENTED    |initialize your model with a xml string|
 |optional_setter    |`setter`             |BETA               |disable the setter|
 |optional_getter    |`getter`             |BETA               |disable the getter|
 |equality           |`include_in_equality`|BETA               |check if to wardrobe instances are equal|
+|presenter          |                     |POC                |presents your instance as a hash|
+|json_initializer   |                     |POC                |initialize your model with a json string|
+|html_initializer   |                     |POC                |initialize your model with a html string|
+|xml_initializer    |                     |NOT IMPLEMENTED    |initialize your model with a xml string|
+
+## Writing your own plugin
+
+### Example
+
+```ruby
+require 'wardrobe'
+
+Wardrobe.register_setter(
+  name: :capitalize,
+  priority: 25,
+  use_if: ->(atr) { atr.options[:capitalize] && atr.klass == String },
+  setter: lambda do |value, _atr, _instance|
+    value ? value.capitalize : value
+  end
+)
+
+module Capitalize
+  extend Wardrobe::Plugin
+  option :capitalize, Wardrobe::Boolean, setter: :capitalize
+end
+
+Wardrobe.register_plugin(:capitalize, Capitalize)
+
+class Person
+  include Wardrobe
+  plugin :capitalize
+
+  attribute :name, String, capitalize: true
+  attribute :gender, String
+end
+
+Person.new(name: 'foo', gender: 'male')
+#=> #<Person:0x007fba42a273b8 @name="Foo", @gender="male">
+```
 
 ## Goals
 
@@ -182,10 +218,10 @@ Wardrobe should:
 * be faster than Virtus
 * have no dependencies (plugins may)
 * not pollute the instance level with any methods other than ones prefixed with `_`
-* should be immutable in the config layer allowing subclasses or singleton classes to modify the setup
-* include a plugin system
+* should be immutable in the config layer allowing subclasses or singleton classes to modify the config
+* be easy to extend with plugins
 * simplify coercions through refinements
 
 ## Ruby 2.4
 
-When working on the first proof of concept for Wardrobe I wanted to use refinements for coercion. This was right before Ruby 2.4 was released that added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Wardrobe requires ruby 2.4 or above.
+When working on the first "Proof of Concept" for Wardrobe I wanted to use refinements for coercion. This was right before Ruby 2.4 was released that added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Wardrobe requires ruby 2.4 or above.
