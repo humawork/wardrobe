@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/agensdev/wardrobe.svg?branch=master)](https://travis-ci.org/agensdev/wardrobe)
 [![Code Climate](https://codeclimate.com/github/agensdev/wardrobe.svg)](https://codeclimate.com/github/agensdev/wardrobe)
 [![Test Coverage](https://codeclimate.com/github/agensdev/wardrobe/badges/coverage.svg)](https://codeclimate.com/github/agensdev/wardrobe/coverage)
-<!-- [![Gem Version](https://badge.fury.io/agensdev/wardrobe.svg)](https://rubygems.org/gems/wardrobe) -->
+[![Gem Version](https://badge.fury.io/rb/wardrobe.svg)](https://rubygems.org/gems/wardrobe)
 
 Wardrobe is a gem that simplifies creating Ruby objects with attributes. Wardrobe bundles a multitude of plugins. See [list](#bundled-plugins) below.
 
