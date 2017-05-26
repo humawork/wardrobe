@@ -1,5 +1,11 @@
 #Changelog
 
+## HEAD
+
+### Bugfixes
+
+* Fix to disable coercion per attribute.
+
 ## v0.1.1
 
 ### Other changes

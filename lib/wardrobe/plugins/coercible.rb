@@ -28,7 +28,7 @@ module Wardrobe
   register_setter(
     name: :coercer,
     priority: -100,
-    use_if: ->(_atr) { true },
+    use_if: ->(atr) { atr.options[:coerce] },
     setter: lambda do |value, atr, _instance|
       atr.coerce(value)
     end
