@@ -53,12 +53,22 @@ class ArrayCoercionTest < TestBase
 
   def test_coercion_when_modifying_person_array
     @object.array_wardrobe_objects << { name: '1' }
+    assert '1' === @object.array_wardrobe_objects[1].name
     assert Person === @object.array_wardrobe_objects[1]
-    @object.array_wardrobe_objects.push({ name: '2' })
+
+    @object.array_wardrobe_objects.push(name: '2')
+    assert '2' === @object.array_wardrobe_objects[2].name
     assert Person === @object.array_wardrobe_objects[2]
-    @object.array_wardrobe_objects.unshift({ name: '3' })
-    assert Person === @object.array_wardrobe_objects[3]
-    assert_equal 4, @object.array_wardrobe_objects.count
+
+    @object.array_wardrobe_objects.unshift(name: '3')
+    assert '3' === @object.array_wardrobe_objects[0].name
+    assert Person === @object.array_wardrobe_objects[0]
+
+    @object.array_wardrobe_objects.insert(-1, name: '4')
+    assert '4' === @object.array_wardrobe_objects[4].name
+    assert Person === @object.array_wardrobe_objects[4]
+
+    assert_equal 5, @object.array_wardrobe_objects.count
     assert @object.array_wardrobe_objects.all? { |item| Person === item }
   end
 

@@ -2,6 +2,10 @@
 
 ## HEAD
 
+### Enhancements
+
+* Added support for coercion with `insert` when mutating Array.
+
 ### Bugfixes
 
 * Fix to disable coercion per attribute.

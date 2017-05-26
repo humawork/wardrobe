@@ -43,6 +43,10 @@ module Wardrobe
             def unshift(*items)
               super(*items.map { |i| _coerce(i) })
             end
+
+            def insert(index, item)
+              super(index, _coerce(item))
+            end
           end
 
           def coerce(v, atr)
