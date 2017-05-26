@@ -43,7 +43,17 @@ module Wardrobe
             end
 
             def []=(key, value)
-              super(*_coerce(key,value))
+              super(*_coerce(key, value))
+            end
+
+            def merge!(other)
+              other.each do |key, value|
+                self[key] = value
+              end
+            end
+
+            def store(key, value)
+              self[key] = value
             end
           }
 

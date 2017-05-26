@@ -5,6 +5,7 @@
 ### Enhancements
 
 * Added support for coercion with `insert` when mutating Array.
+* Added support for coercion with `merge!` and `store` when mutating Hash.
 
 ### Bugfixes
 

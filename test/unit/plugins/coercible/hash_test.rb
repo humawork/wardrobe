@@ -49,6 +49,16 @@ class HashCoercionTest < TestBase
     @object.string_symbol[3] = 'three'
     assert_nil @object.string_symbol[3]
     assert_equal :three, @object.string_symbol['3']
+
+    @object.string_symbol.merge!({4 => 'four', 5 => 'five'})
+    assert_nil @object.string_symbol[4]
+    assert_nil @object.string_symbol[5]
+    assert_equal :four, @object.string_symbol['4']
+    assert_equal :five, @object.string_symbol['5']
+
+    @object.string_symbol.store(6, 'six')
+    assert_nil @object.string_symbol[6]
+    assert_equal :six, @object.string_symbol['6']
   end
 
   def test_error
