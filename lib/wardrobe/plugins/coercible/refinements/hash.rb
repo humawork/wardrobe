@@ -61,11 +61,12 @@ module Wardrobe
 
           def coerce_hash(h, atr)
             hash = h.map do |key, value|
-              #TODO: Since we pass around the atr object, how should this work here? Just pass nil?
-              [self.first[0].coerce(key, nil), self.first[1].coerce(value, nil)]
+              # TODO: Since we pass around the atr object, how should this work
+              # here? Just pass nil?
+              [first[0].coerce(key, nil), first[1].coerce(value, nil)]
             end.to_h
 
-            hash.singleton_class.class_exec(first,atr, &HASH_SINGLETON_MODIFIER)
+            hash.singleton_class.class_exec(first, atr, &HASH_SINGLETON_MODIFIER)
             hash
           end
         end
