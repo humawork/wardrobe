@@ -6,7 +6,7 @@ class ValidationPredicatesIncludedInTest < MiniTest::Test
     include Wardrobe(coerce: false)
     plugin :validation
     attribute :string,    String,   validates { included_in?(['test']) }
-    attribute :symbol,    Symbol,   validates { included_in?([:test]) }
+    attribute :symbol,    Symbol,   validates { included_in?(:test) }
     attribute :integer,   Integer,  validates { included_in?([1]) }
     attribute :float,     Float,    validates { included_in?([1.1]) }
     attribute :boolean,   Wardrobe::Boolean, validates { included_in?([true]) }

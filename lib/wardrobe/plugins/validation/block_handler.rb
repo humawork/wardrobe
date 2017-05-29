@@ -1,31 +1,34 @@
 module Wardrobe
   module Plugins
     module Validation
-      METHODS_WITHOUT_ARGUMENTS = [
-        :empty?,
-        :filled?,
-        :odd?,
-        :even?
-      ]
+      METHODS_WITHOUT_ARGUMENTS = %i[
+        empty?
+        filled?
+        odd?
+        even?
+      ].freeze
 
-      METHODS_WITH_ARGUMENTS = [
-        :format?,
-        :size?,
-        :min_size?,
-        :max_size?,
-        :included_in?,
-        :excluded_from?,
-        :gt?,
-        :lt?,
-        :lteq?,
-        :gteq?
-      ]
+      METHODS_WITH_ARGUMENTS = %i[
+        format?
+        size?
+        min_size?
+        max_size?
+        gt?
+        lt?
+        lteq?
+        gteq?
+      ].freeze
 
-      METHODS_WITH_BLOCK = [
-        :each?,
-        :each_key?,
-        :each_value?
-      ]
+      METHODS_WITH_ARRAY_ARGUMENT = %i[
+        included_in?
+        excluded_from?
+      ].freeze
+
+      METHODS_WITH_BLOCK = %i[
+        each?
+        each_key?
+        each_value?
+      ].freeze
 
       TYPE_METHODS = {
         str?: String,
@@ -38,7 +41,7 @@ module Wardrobe
         date_time?: DateTime,
         array?: Array,
         hash?: Hash
-      }
+      }.freeze
 
       class BlockHandler
         attr_reader :result
@@ -68,6 +71,12 @@ module Wardrobe
         METHODS_WITH_ARGUMENTS.each do |name|
           define_method(name) do |value|
             Validation.new(name.to_sym, value)
+          end
+        end
+
+        METHODS_WITH_ARRAY_ARGUMENT.each do |name|
+          define_method(name) do |*args|
+            Validation.new(name.to_sym, args.flatten(1))
           end
         end
 
