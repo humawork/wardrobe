@@ -14,13 +14,9 @@ module Wardrobe
           new(instance).run
         end
 
-        def Validate(value, atr, error_store)
-          Validator.new(value, atr, error_store).run
-        end
-
         def run
           instance._attribute_store.each do |_name, atr|
-            Validate(instance.send(atr.name), atr, error_store)
+            Validator.new(instance.send(atr.name), atr, error_store).run
           end
           self
         end

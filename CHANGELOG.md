@@ -9,6 +9,7 @@
 * Added support for coercion with `merge!` and `store` when mutating Hash.
 * Support sending list as arguments as well as array in `exclude_from?` and
   `included_in?` validation methods.
+* Automatically validate Array[SomeClass] instances if validation is supported.
 
 ### Bugfixes
 

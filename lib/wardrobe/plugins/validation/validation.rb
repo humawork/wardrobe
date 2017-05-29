@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wardrobe
   module Plugins
     module Validation
@@ -18,7 +20,7 @@ module Wardrobe
 
         def args
           @args ||= begin
-            arr = [ method ]
+            arr = [method]
             arr << argument if argument
             arr
           end
@@ -47,7 +49,7 @@ module Wardrobe
 
         def |(other)
           if method == :_or_
-            argument<< other
+            argument << other
             self
           else
             self.class.new(:_or_, [self, other])

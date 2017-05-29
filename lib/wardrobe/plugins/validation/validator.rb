@@ -21,6 +21,17 @@ module Wardrobe
             if value._validation_errors.any?
               error_store.store[atr.name] = value._validation_errors
             end
+          elsif atr.klass.is_a?(Array) && value.first&.respond_to?(:_validate!)
+            errors = {}
+            value.each_with_index do |item, index|
+              if item._validation_errors.any?
+                errors[index] = item._validation_errors
+              end
+            end
+            if errors.any?
+              report(errors) if report
+              errors
+            end
           else
             Wardrobe.logger.warn("Unable to validate #{value.class} class")
           end
@@ -33,7 +44,7 @@ module Wardrobe
         end
 
         def validate(validation, report)
-          if validation.type == :special#method[/^_.+_$/]
+          if validation.type == :special
             send(*validation.args, report)
           else
             error = value.send(*validation.args)
