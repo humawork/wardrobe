@@ -76,7 +76,7 @@ module Wardrobe
           value.each do |key, _|
             result = Validator.new(key, nil, nil, validation).run(false)
             result = [result] unless result.is_a?(Array)
-            errors[key] = result.map { |error| 'key ' + error } if result.any?
+            errors[key] = result.map { |error| 'KEY: ' + error } if result.any?
           end
           if errors.any?
             report(errors) if report
@@ -89,7 +89,7 @@ module Wardrobe
           value.each do |key, val|
             result = Validator.new(val, nil, nil, validation).run(false)
             result = [result] unless result.is_a?(Array)
-            errors[key] = result.map { |error| 'value ' + error } if result.any?
+            errors[key] = result.map { |error| 'VALUE: ' + error } if result.any?
           end
           if errors.any?
             report(errors) if report

@@ -4,12 +4,14 @@
 
 ### Enhancements
 
-* Added support for coercion with `add`, `<<` and `merge` when mutating Set.
-* Added support for coercion with `insert` when mutating Array.
-* Added support for coercion with `merge!` and `store` when mutating Hash.
-* Support sending list as arguments as well as array in `exclude_from?` and
-  `included_in?` validation methods.
-* Automatically validate Array[SomeClass] instances if validation is supported.
+* COERCION: Added support for with `add`, `<<` and `merge` when mutating Set.
+* COERCION: Added support for with `insert` when mutating Array.
+* COERCION: Added support for with `merge!` and `store` when mutating Hash.
+* VALIDATION: Support sending list as arguments as well as array in
+  `exclude_from?` and `included_in?` predicates.
+* VALIDATION: Automatically validate Array[SomeClass] instances if validation
+  is supported.
+* VALIDATION: Updated each_key and each_value error messages.
 
 ### Bugfixes
 
