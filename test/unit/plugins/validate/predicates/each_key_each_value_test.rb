@@ -26,8 +26,8 @@ class ValidationPredicatesEachKeyTest < MiniTest::Test
 
     assert_equal 1, errors[:simple].length
     assert_equal 3, errors[:advanced].length
-    assert_equal ['key must be a Integer'], errors[:simple].first[:one]
-    assert_equal ['key must be a Integer', 'value must be a Symbol'], errors[:advanced].first[:one]
+    assert_equal ['KEY: must be a Integer'], errors[:simple].first[:one]
+    assert_equal ['KEY: must be a Integer', 'VALUE: must be a Symbol'], errors[:advanced].first[:one]
     assert_equal 'must be a Array', errors[:advanced][1]
     assert_equal 'size cannot be less than 4', errors[:advanced].last
   end

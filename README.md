@@ -47,58 +47,6 @@ class Person
 end
 ```
 
-## Coercion
-
-Coercion is enabled by default and works with most types available in Ruby.
-
-Example:
-```ruby
-class User
-  include Wardrobe
-  attribute :id, Integer
-  attribute :name, String
-  attribute :status, Symbol
-  attribute :friends, Array[User]
-  attribute :interests, Hash[String => Symbol]
-end
-
-user = User.new(
-  id: 1.1,
-  name: :'Example User',
-  status: 'active',
-  friends: [
-    {
-      id: '0045',
-      name: 'Another User',
-      status: 'inactive'
-    }
-  ],
-  interests: {
-    'architecture' => 'medium',
-    :sports => 'low',
-    :travel => :high
-  }
-)
-
-# <User:0x007fcc160851f8
-#   @id=1,
-#   @name="Example User",
-#   @status=:active,
-#   @friends=[
-#     <User:0x007fcc16084b68
-#       @id=45,
-#       @name="Another User",
-#       @status=:inactive,
-#       @friends=[],
-#       @interests={}>
-#   ],
-#   @interests={
-#     "architecture"=>:medium,
-#     "sports"=>:low,
-#     "travel"=>:high
-# }>
-```
-
 Coercion also works when mutating `Array`, `Hash` and `Set`. Based on the example above adding a friend to the friends array would coerce the given hash into a `User` object:
 
 ```ruby
