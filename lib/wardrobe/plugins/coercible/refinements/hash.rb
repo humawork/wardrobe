@@ -27,19 +27,17 @@ module Wardrobe
             end
           end
 
-          HASH_SINGLETON_MODIFIER = lambda { |coercer, atr_object|
-            @_coercer = coercer
-            @_atr = atr_object
+          module HashInstanceCoercer
 
-            def _coercer
-              self.singleton_class.instance_variable_get(:@_coercer)
+            def _wardrobe_init(atr, coercer: nil)
+              @_wardrobe_atr = atr
+              @_wardrobe_coercer = coercer
+              self
             end
 
-            def self._atr; @_atr; end
-
             def _coerce(key, value)
-              return _coercer[0].coerce(key, nil),
-              _coercer[1].coerce(value, nil)
+              return @_wardrobe_coercer[0].coerce(key, nil),
+              @_wardrobe_coercer[1].coerce(value, nil)
             end
 
             def []=(key, value)
@@ -55,7 +53,7 @@ module Wardrobe
             def store(key, value)
               self[key] = value
             end
-          }
+          end
 
           private
 
@@ -66,7 +64,8 @@ module Wardrobe
               [first[0].coerce(key, nil), first[1].coerce(value, nil)]
             end.to_h
 
-            hash.singleton_class.class_exec(first, atr, &HASH_SINGLETON_MODIFIER)
+            hash.singleton_class.include(HashInstanceCoercer)
+            hash._wardrobe_init(atr, coercer: first)
             hash
           end
         end
