@@ -5,23 +5,23 @@ module Wardrobe
     module Validation
 
       class Validation < Hash
-        def initialize(method, argument)
+        def initialize(method, arg)
           self[:method] = method
-          self[:argument] = argument
+          self[:arg] = arg
         end
 
         def method
           self[:method]
         end
 
-        def argument
-          self[:argument]
+        def arg
+          self[:arg]
         end
 
         def args
           @args ||= begin
             arr = [method]
-            arr << argument if argument
+            arr << arg if arg
             arr
           end
         end
@@ -40,7 +40,7 @@ module Wardrobe
 
         def &(other)
           if method == :_and_
-            argument << other
+            arg << other
             self
           else
             self.class.new(:_and_, [self, other])
@@ -49,7 +49,7 @@ module Wardrobe
 
         def |(other)
           if method == :_or_
-            argument << other
+            arg << other
             self
           else
             self.class.new(:_or_, [self, other])
