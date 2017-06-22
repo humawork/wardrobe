@@ -9,12 +9,16 @@ module Wardrobe
 
       module ClassMethods
         extend Forwardable
-        def_delegators :@wardrobe_stores, :configurable_store
-        
+
         def self.extended(base)
           super
           base.wardrobe_stores do
             add_store(:configurable_store, ConfigurableStore)
+          end
+          base.instance_variable_get(:@wardrobe_class_methods).class_exec do
+            def configurable_store
+              @wardrobe_stores.configurable_store
+            end
           end
         end
 
@@ -22,14 +26,18 @@ module Wardrobe
           wardrobe_stores do
             @configurable_store = configurable_store.register(name, klass)
           end
+          _create_configurable_methods(name, blk_name)
+        end
 
-          define_singleton_method(name) do
-            wardrobe_stores.configurable_store[name]
-          end
-
-          define_singleton_method(blk_name) do |&blk|
-            wardrobe_stores do
-              @configurable_store = configurable_store.update(name, &blk)
+        def _create_configurable_methods(name, blk_name)
+          @wardrobe_class_methods.class_exec do
+            define_method(name) do
+              wardrobe_stores.configurable_store[name]
+            end
+            define_method(blk_name) do |&blk|
+              wardrobe_stores do
+                @configurable_store = configurable_store.update(name, &blk)
+              end
             end
           end
         end

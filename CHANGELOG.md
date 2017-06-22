@@ -1,6 +1,7 @@
 #Changelog
 
 ## HEAD
+* Improved support for plugins in modules.
 
 ### Enhancements
 

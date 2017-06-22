@@ -37,7 +37,7 @@ class CoerceToStringTest
   attribute :number, Integer
 end
 
-class WithExtendedModule
+class WithIncludedModule
   include Essentials
   attribute :another, String
 end
@@ -66,8 +66,8 @@ class ClassMethodsTest < TestBase
     assert_equal 5, klass.attribute_store.count
   end
 
-  def test_class_with_includeed_module
-    klass = WithExtendedModule
+  def test_class_with_included_module
+    klass = WithIncludedModule
     assert_equal 2, klass.attribute_store.count
   end
 

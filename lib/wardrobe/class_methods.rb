@@ -9,21 +9,30 @@ module Wardrobe
 
     def self.extended(base)
       wardrobe_methods = base.instance_variable_set(:@wardrobe_methods, Module.new)
+      wardrobe_class_methods = base.instance_variable_set(:@wardrobe_class_methods, Module.new)
       base.include(wardrobe_methods)
+      base.extend(wardrobe_class_methods)
       base.instance_variable_set(:@wardrobe_stores, Stores.new)
     end
 
     # This is called when included in another module/class
     def included(base)
-      base.include(Wardrobe) unless base.respond_to? :wardrobe_stores
-      base.merge(wardrobe_stores)
+      unless base.respond_to? :wardrobe_stores
+        base.include(Wardrobe)
+      end
+      base.include(@wardrobe_methods)
+      base.extend(@wardrobe_class_methods)
+      (plugin_store.store.keys - Wardrobe.config.default_plugins.to_a).each do |plugin|
+        base.plugin plugin
+      end
+      base.merge_wardrobe_stores(wardrobe_stores)
     end
 
     def inherited(child)
       wardrobe_methods = child.instance_variable_set(:@wardrobe_methods, Module.new)
       child.include(wardrobe_methods)
       child.instance_variable_set(:@wardrobe_stores, Stores.new)
-      child.merge(wardrobe_stores)
+      child.merge_wardrobe_stores(wardrobe_stores)
       child.root_config = root_config
     end
 
@@ -55,8 +64,8 @@ module Wardrobe
       ]
     end
 
-    def merge(config)
-      @wardrobe_stores = wardrobe_stores.merge(config, self)
+    def merge_wardrobe_stores(other_wardrobe_stores)
+      @wardrobe_stores = wardrobe_stores.merge(other_wardrobe_stores, self)
     end
 
     def define_getter(atr)
@@ -104,7 +113,10 @@ module Wardrobe
     def plugin(name, **args)
       @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
       plugin = plugin_store[name][:klass]
+      init_plugin_methods(plugin)
+    end
 
+    def init_plugin_methods(plugin)
       if plugin.const_defined?(:ClassMethods)
         extend(plugin.const_get(:ClassMethods))
       end

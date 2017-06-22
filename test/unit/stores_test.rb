@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StoresTest < TestBase
 
-  class TestStore
+  class TestStore < Wardrobe::Store
 
   end
 
