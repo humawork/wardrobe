@@ -25,7 +25,21 @@ end
 class Base
   include Wardrobe
   plugin :configurable
-  configurable :config, :configure, TestConfig
+
+  configurable :config, :configure, TestConfig,
+               before_update: ->(klass) { klass.before_called! },
+               after_update: ->(klass) { klass.after_called! }
+
+  def self.before_called!
+    @before_array ||= []
+    @before_array << self
+  end
+
+  def self.after_called!
+    @after_array ||= []
+    @after_array << self
+  end
+
   configure do |config|
     config.title = 'Title'
     config.child.name = 'Child Title'
@@ -64,5 +78,15 @@ class ConfigurableTest < TestBase
   def test_modified_child_class
     assert_equal 'Title', Child.config.title
     assert_equal 'Modified Child Title', Child.config.child.name
+  end
+
+  def test_callbacks
+    assert_equal [Base], Base.instance_variable_get(:@before_array)
+    assert_equal [Base], Base.instance_variable_get(:@after_array)
+    assert_equal [Child], Child.instance_variable_get(:@before_array)
+    assert_equal [Child], Child.instance_variable_get(:@after_array)
+    Child.configure {}
+    assert_equal [Child, Child], Child.instance_variable_get(:@before_array)
+    assert_equal [Child, Child], Child.instance_variable_get(:@after_array)
   end
 end
