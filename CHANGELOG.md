@@ -2,6 +2,8 @@
 
 ## HEAD
 * Improved support for plugins in modules.
+* CONFIGURABLE: Added before_update and after_update callbacks
+* CONFIGURABLE: Support validation plugin
 
 ### Enhancements
 

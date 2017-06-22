@@ -41,6 +41,9 @@ module Wardrobe
               wardrobe_stores do
                 args[:before_update].call(klass) if args[:before_update]
                 @configurable_store = configurable_store.update(name, &blk)
+                if @configurable_store[name].class.plugin_store[:validation]
+                  configurable_store[name]._validate!
+                end
                 args[:after_update].call(klass) if args[:after_update]
               end
             end

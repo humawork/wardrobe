@@ -17,9 +17,18 @@ end
 class TestConfig
   include Wardrobe
   plugin :immutable
-  attribute :title, String
+  plugin :validation
+  attribute :title, String, validates { filled? }
   attribute :proc_test, Proc
   attribute :child, ChildTestConfig
+end
+
+class TestConfigWithValidation
+  include Wardrobe
+  plugin :immutable
+  plugin :validation
+  attribute :foo, String, validates { filled? }
+  attribute :bar, String
 end
 
 class Base
@@ -88,5 +97,16 @@ class ConfigurableTest < TestBase
     Child.configure {}
     assert_equal [Child, Child], Child.instance_variable_get(:@before_array)
     assert_equal [Child, Child], Child.instance_variable_get(:@after_array)
+  end
+
+  def test_validation
+    assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
+      klass = Class.new do
+        include Wardrobe
+        plugin :configurable
+        configurable :config, :configure, TestConfigWithValidation
+        configure {}
+      end
+    end
   end
 end
