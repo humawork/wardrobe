@@ -32,6 +32,12 @@ module Wardrobe
               @_wardrobe_coercer.coerce(item, @_wardrobe_atr)
             end
 
+            def dup
+              duplicate = super
+              duplicate.singleton_class.include(ArrayInstanceCoercer)
+              duplicate
+            end
+
             def <<(item)
               super(_coerce(item))
             end

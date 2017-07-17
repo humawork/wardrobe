@@ -29,6 +29,12 @@ module Wardrobe
               @_wardrobe_coercer.coerce(item, @_wardrobe_atr)
             end
 
+            def dup
+              duplicate = super
+              duplicate.singleton_class.include(SetInstanceCoercer)
+              duplicate
+            end
+
             def add(item)
               super(_coerce(item))
             end
@@ -36,22 +42,6 @@ module Wardrobe
             def <<(item)
               super(_coerce(item))
             end
-
-            # def <<(item)
-            #   super(_coerce(item))
-            # end
-            #
-            # def push(*items)
-            #   super(*items.map { |i| _coerce(i) })
-            # end
-            #
-            # def unshift(*items)
-            #   super(*items.map { |i| _coerce(i) })
-            # end
-            #
-            # def insert(index, item)
-            #   super(index, _coerce(item))
-            # end
           end
 
           def coerce(v, atr)

@@ -40,6 +40,12 @@ module Wardrobe
               @_wardrobe_coercer[1].coerce(value, nil)
             end
 
+            def dup
+              duplicate = super
+              duplicate.singleton_class.include(HashInstanceCoercer)
+              duplicate
+            end
+
             def []=(key, value)
               super(*_coerce(key, value))
             end

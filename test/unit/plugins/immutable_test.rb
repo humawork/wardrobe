@@ -144,6 +144,7 @@ class ImmutableTest < TestBase
     assert new_object.frozen?
     assert new_object.array_of_people.frozen?
     assert_equal 2, new_object.array_of_people.count
+    assert new_object.array_of_people.all? { |person| person.class == Person }
     refute new_object.array_of_people.instance_variable_defined?(:@_mutating)
   end
 end

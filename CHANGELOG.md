@@ -23,6 +23,7 @@
 
 * COERCION: Fix to disable coercion per attribute.
 * EQUALITY: Return false if classes don't match
+* COERCION/IMMUTABLE: Ensure Array/Set/Hash mutation methods works with coercion when mutating.
 
 ## v0.1.1
 

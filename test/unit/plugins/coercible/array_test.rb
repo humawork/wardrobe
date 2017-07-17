@@ -15,6 +15,7 @@ class ArrayCoercionTest < TestBase
     attribute :array_hash,                Array[Hash]
     attribute :array_hash_integer_symbol, Array[Hash[Integer => Symbol]]
     attribute :array_wardrobe_objects,    Array[Person]
+    attribute :array_wardrobe_self,       Array[ArrayObject]
     attribute :nil,                       Array
   end
 
@@ -27,6 +28,7 @@ class ArrayCoercionTest < TestBase
       array_hash: [{one: '1'}, ['two', 2.4]],
       array_hash_integer_symbol: [{1.0 => 'one'}, ['2', 'two']],
       array_wardrobe_objects: [{name: 'Test Person'}],
+      array_wardrobe_self: [{array_integer: ['1']}],
       nil: nil
     )
   end
@@ -39,6 +41,7 @@ class ArrayCoercionTest < TestBase
     assert_equal [{one: '1'}, {'two' => 2.4}], @object.array_hash
     assert_equal [{1 => :one}, {2 => :two}], @object.array_hash_integer_symbol
     assert Person === @object.array_wardrobe_objects[0]
+    assert ArrayObject === @object.array_wardrobe_self[0]
     assert_equal [], @object.nil
   end
 
