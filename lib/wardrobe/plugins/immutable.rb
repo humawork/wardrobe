@@ -5,7 +5,7 @@ module Wardrobe
   module Plugins
     module ImmutableInstanceMethods
       IMMUTABLE_CORE_CLASSES = Set.new(
-        [NilClass, TrueClass, FalseClass, Integer, Symbol, Proc]
+        [NilClass, TrueClass, FalseClass, Integer, Float, Symbol, Proc]
       )
 
       refine Object do
