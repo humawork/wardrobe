@@ -111,6 +111,7 @@ module Wardrobe
     alias remove_attribute remove_attributes
 
     def plugin(name, **args)
+      name = name.to_sym
       @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
       plugin = plugin_store[name][:klass]
       init_plugin_methods(plugin)

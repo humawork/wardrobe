@@ -16,6 +16,7 @@
 * VALIDATION: Automatically validate Array[SomeClass] instances if validation
   is supported.
 * VALIDATION: Updated each_key and each_value error messages.
+* Support loading plugin as both string and symbol.
 
 ### Bugfixes
 
