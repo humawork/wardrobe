@@ -10,6 +10,7 @@
 * COERCION: Added support for with `add`, `<<` and `merge` when mutating Set.
 * COERCION: Added support for with `insert` when mutating Array.
 * COERCION: Added support for with `merge!` and `store` when mutating Hash.
+* COERCION: Added support for Proc class.
 * VALIDATION: Support sending list as arguments as well as array in
   `exclude_from?` and `included_in?` predicates.
 * VALIDATION: Automatically validate Array[SomeClass] instances if validation

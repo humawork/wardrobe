@@ -22,7 +22,7 @@ module Wardrobe
       klass.coerce(val, self)
     rescue Plugins::Coercible::Refinements::UnsupportedError => e
       raise e.class,
-            "Can't coerce #{val.class} `#{val}` into #{klass}"
+            "Can't coerce #{val.class} `#{val}` into #{klass}."
     end
   end
 
