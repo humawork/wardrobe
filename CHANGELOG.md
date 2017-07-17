@@ -19,7 +19,8 @@
 
 ### Bugfixes
 
-* Fix to disable coercion per attribute.
+* COERCION: Fix to disable coercion per attribute.
+* EQUALITY: Return false if classes don't match
 
 ## v0.1.1
 

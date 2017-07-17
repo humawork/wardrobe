@@ -33,4 +33,8 @@ class EqualityTest < TestBase
     refute @person_2 == @person_3
     assert @person_1 == @person_3
   end
+
+  def test_different_class
+    refute @person_1 == 1
+  end
 end
