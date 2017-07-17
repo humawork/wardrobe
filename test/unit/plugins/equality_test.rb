@@ -5,7 +5,7 @@ class EqualityTest < TestBase
     include Wardrobe
     plugin :equality
     attribute :name, String
-    attribute :age, Integer, include_in_equality: false
+    attribute :age, Integer, exclude_from_equality: true
   end
 
   class Alien

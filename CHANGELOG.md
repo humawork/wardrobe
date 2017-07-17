@@ -16,6 +16,7 @@
 * VALIDATION: Automatically validate Array[SomeClass] instances if validation
   is supported.
 * VALIDATION: Updated each_key and each_value error messages.
+* EQUALITY: Changed `include_in_equality` option to  `exclude_from_equality`
 * Support loading plugin as both string and symbol.
 
 ### Bugfixes
