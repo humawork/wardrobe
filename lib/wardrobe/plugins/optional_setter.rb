@@ -5,19 +5,19 @@ module Wardrobe
     module OptionalSetter
       extend Wardrobe::Plugin
 
-      option :setter, Boolean, default: true
+      # option :setter, Boolean, default: true
 
-      module InstanceMethods
-        def _attribute_init(atr, hash, name)
-          super unless atr.respond_to?(:setter) && atr.setter == false
+      Wardrobe.register_setter(
+        name: :optional_setter,
+        priority: -100,
+        use_if: ->(atr) { atr.options[:setter] == false },
+        setter: lambda do |_value, atr, instance|
+          return _value if instance._initializing?
+          raise NoMethodError, "undefined method `#{atr.name}=' for #{instance}"
         end
-      end
+      )
 
-      module ClassMethods
-        def define_setter(atr)
-          super unless atr.respond_to?(:setter) && atr.setter == false
-        end
-      end
+      option :setter, Boolean, default: true, setter: :optional_setter
     end
   end
   register_plugin(:optional_setter, Plugins::OptionalSetter)
