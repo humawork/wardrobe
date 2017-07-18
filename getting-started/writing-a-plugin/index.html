@@ -258,7 +258,7 @@
 <ul>
 <li>
 <ul>
-<li><a href="#example">Example</a></li>
+<li><a href="#usage">Usage</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -278,34 +278,46 @@
 
 
 <p>Lets create a plugin that capitalizes strings. Wardrobe uses a middleware
-inspired system for small blocks of code for manipulating data when setting or
-getting. You can create your own setters and getters. We&rsquo;ll start by creating a
-setter that will apply to all attributes with the <code>capitalize: true</code> option.</p>
-
-<pre><code class="language-ruby">require 'wardrobe'
-</code></pre>
-
-<h2 id="example">Example</h2>
+inspired system for small blocks of code for manipulating data when &ldquo;setting&rdquo; or
+&ldquo;getting&rdquo; the value for an attribute. You can create your own setters and
+getters. We&rsquo;ll start by creating a setter that will apply to all attributes with
+the <code>capitalize: true</code> option.</p>
 
 <pre><code class="language-ruby">require 'wardrobe'
 
 Wardrobe.register_setter(
  name: :capitalize,
- priority: 25,
+ before: [:setter],
+ after: [:coercer],
  use_if: -&gt;(atr) { atr.options[:capitalize] &amp;&amp; atr.klass == String },
  setter: lambda do |value, _atr, _instance|
    value ? value.capitalize : value
  end
 )
+</code></pre>
 
-module Capitalize
+<p>The <code>before</code> and <code>after</code> arrays allow you to tell Wardrobe about other setters
+that need to happen before or after the one you are creating.</p>
+
+<p>The <code>use_if</code> lambda will allow us to ensure that the setter middleware is only
+added to attributes that meet a certain criteria.</p>
+
+<p>The <code>setter</code> is a lambda that takes three arguments. The value passing through
+the middleware, the attribute instance and the Wardrobe model instance.</p>
+
+<p>Now lets write the the rest of the plugin:</p>
+
+<pre><code class="language-ruby">module Capitalize
  extend Wardrobe::Plugin
  option :capitalize, Wardrobe::Boolean, setter: :capitalize
 end
 
 Wardrobe.register_plugin(:capitalize, Capitalize)
+</code></pre>
 
-class Person
+<h2 id="usage">Usage</h2>
+
+<pre><code class="language-ruby">class Person
  include Wardrobe
  plugin :capitalize
 

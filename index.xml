@@ -840,34 +840,46 @@ foo.bar = &#39;changed&#39; #=&amp;gt; NoMethodError: undefined method `bar=&#39
       <description>
 
 &lt;p&gt;Lets create a plugin that capitalizes strings. Wardrobe uses a middleware
-inspired system for small blocks of code for manipulating data when setting or
-getting. You can create your own setters and getters. We&amp;rsquo;ll start by creating a
-setter that will apply to all attributes with the &lt;code&gt;capitalize: true&lt;/code&gt; option.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+inspired system for small blocks of code for manipulating data when &amp;ldquo;setting&amp;rdquo; or
+&amp;ldquo;getting&amp;rdquo; the value for an attribute. You can create your own setters and
+getters. We&amp;rsquo;ll start by creating a setter that will apply to all attributes with
+the &lt;code&gt;capitalize: true&lt;/code&gt; option.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
 
 Wardrobe.register_setter(
  name: :capitalize,
- priority: 25,
+ before: [:setter],
+ after: [:coercer],
  use_if: -&amp;gt;(atr) { atr.options[:capitalize] &amp;amp;&amp;amp; atr.klass == String },
  setter: lambda do |value, _atr, _instance|
    value ? value.capitalize : value
  end
 )
+&lt;/code&gt;&lt;/pre&gt;
 
-module Capitalize
+&lt;p&gt;The &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt; arrays allow you to tell Wardrobe about other setters
+that need to happen before or after the one you are creating.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;use_if&lt;/code&gt; lambda will allow us to ensure that the setter middleware is only
+added to attributes that meet a certain criteria.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;setter&lt;/code&gt; is a lambda that takes three arguments. The value passing through
+the middleware, the attribute instance and the Wardrobe model instance.&lt;/p&gt;
+
+&lt;p&gt;Now lets write the the rest of the plugin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;module Capitalize
  extend Wardrobe::Plugin
  option :capitalize, Wardrobe::Boolean, setter: :capitalize
 end
 
 Wardrobe.register_plugin(:capitalize, Capitalize)
+&lt;/code&gt;&lt;/pre&gt;
 
-class Person
+&lt;h2 id=&#34;usage&#34;&gt;Usage&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Person
  include Wardrobe
  plugin :capitalize
 
