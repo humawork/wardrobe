@@ -27,6 +27,7 @@ module Wardrobe
     end
 
     def _get_attribute_value(atr)
+      atr = _attribute_store[atr] if atr.is_a? Symbol
       instance_variable_get(atr.ivar_name)
     end
 
