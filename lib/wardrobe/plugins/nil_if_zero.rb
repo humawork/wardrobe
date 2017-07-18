@@ -6,7 +6,8 @@ module Wardrobe
     priority: 10,
     use_if: ->(atr) { atr.options[:nil_if_zero] },
     setter: lambda do |value, _atr, _instance|
-      value == 0 ? nil : value
+      return value unless value == 0 || value == '0'
+      nil
     end
   )
   module Plugins
