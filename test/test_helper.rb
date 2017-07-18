@@ -10,10 +10,6 @@ require 'pry-byebug'
 
 require 'minitest/autorun'
 require 'assertions'
-require 'wardrobe'
-
-
-LOG_MESSAGES = []
 
 class TestBase < Minitest::Test
   def log_messages
@@ -23,7 +19,27 @@ class TestBase < Minitest::Test
   def teardown
     LOG_MESSAGES.clear
   end
+
+  def self.debuging?
+    @@debuging ||= false
+  end
+
+  def debug(&blk)
+    @@debuging = true
+    instance_exec(&blk)
+    @@debuging = false
+  end
 end
+
+class Object
+  def debug?
+    TestBase.debuging?
+  end
+end
+require 'wardrobe'
+
+
+LOG_MESSAGES = []
 
 class TestLogger < Logger
   def format_message(severity, datetime, progname, msg)

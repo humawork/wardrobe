@@ -4,6 +4,7 @@
 * Improved support for plugins in modules.
 * CONFIGURABLE: Added before_update and after_update callbacks
 * CONFIGURABLE: Support validation plugin
+* Rewrite getter and setter middleware to use before/after instead of priority
 
 ### Enhancements
 

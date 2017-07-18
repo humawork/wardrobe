@@ -9,7 +9,7 @@ module Wardrobe
 
       Wardrobe.register_setter(
         name: :dirty_tracker,
-        priority: 25,
+        before: [:setter],
         use_if: ->(atr) { atr.options[:track] },
         setter: lambda do |value, atr, instance|
           return value if instance._initializing?
@@ -20,9 +20,10 @@ module Wardrobe
 
       Wardrobe.register_getter(
         name: :dirty_tracker,
-        priority: 5,
+        after: [:getter],
         use_if: ->(atr) { atr.options[:track] },
         getter: lambda do |value, atr, instance|
+          return value if instance._initializing?
           instance._register_get(atr.name, value)
           value
         end
@@ -49,7 +50,7 @@ module Wardrobe
             end
           elsif ref.is_a? Array
             _dirty! if value.hash != ref.first
-            result = value.each.with_index.any? do |item, index|
+            value.each.with_index.any? do |item, index|
               _value_changed?(item, ref.last[index])
             end
           elsif ref.is_a? Hash

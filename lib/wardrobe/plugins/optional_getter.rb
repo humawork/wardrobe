@@ -7,7 +7,7 @@ module Wardrobe
 
       Wardrobe.register_getter(
         name: :optional_getter,
-        priority: -100,
+        before: [:getter],
         use_if: ->(atr) { atr.options[:getter] == false },
         getter: lambda do |_value, atr, instance|
           raise NoMethodError, "undefined method `#{atr.name}' for #{instance}"

@@ -3,7 +3,8 @@
 module Wardrobe
   register_setter(
     name: :nil_if_zero,
-    priority: 10,
+    before: [:setter, :default_setter],
+    after: [:coercer],
     use_if: ->(atr) { atr.options[:nil_if_zero] },
     setter: lambda do |value, _atr, _instance|
       return value unless value == 0 || value == '0'

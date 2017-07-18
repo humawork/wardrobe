@@ -109,7 +109,7 @@ module Wardrobe
 
       Wardrobe.register_setter(
         name: :disable_setter_for_immutable_plugin,
-        priority: -101,
+        before: [:setter],
         use_if: ->(_atr) { true },
         setter: lambda do |value, atr, instance|
           return value if instance._initializing? || !instance.frozen?
@@ -122,7 +122,7 @@ module Wardrobe
 
       Wardrobe.register_getter(
         name: :dup_when_using_set_block,
-        priority: 100,
+        after: [:getter],
         use_if: ->(_atr) { true },
         getter: lambda do |value, atr, instance|
           using ImmutableInstanceMethods
@@ -130,7 +130,6 @@ module Wardrobe
             value
           elsif instance._mutating?
             instance._set_attribute_value(atr, value.mutate!)
-            # instance.instance_variable_set(atr.ivar_name, value.mutate!)
           else
             value
           end

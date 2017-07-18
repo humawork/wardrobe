@@ -3,7 +3,11 @@
 require 'wardrobe/version'
 require 'wardrobe/boolean'
 require 'wardrobe/store'
-require 'wardrobe/getter_setter'
+
+require 'wardrobe/middleware_registry'
+require 'wardrobe/middleware'
+require 'wardrobe/getter'
+require 'wardrobe/setter'
 require 'wardrobe/attribute'
 require 'wardrobe/attribute_store'
 require 'wardrobe/option'

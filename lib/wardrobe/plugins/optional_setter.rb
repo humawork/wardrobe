@@ -5,11 +5,9 @@ module Wardrobe
     module OptionalSetter
       extend Wardrobe::Plugin
 
-      # option :setter, Boolean, default: true
-
       Wardrobe.register_setter(
         name: :optional_setter,
-        priority: -100,
+        before: [:setter],
         use_if: ->(atr) { atr.options[:setter] == false },
         setter: lambda do |_value, atr, instance|
           return _value if instance._initializing?

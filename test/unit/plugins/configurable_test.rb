@@ -101,7 +101,7 @@ class ConfigurableTest < TestBase
 
   def test_validation
     assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
-      klass = Class.new do
+      Class.new do
         include Wardrobe
         plugin :configurable
         configurable :config, :configure, TestConfigWithValidation
