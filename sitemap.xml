@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/about/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/coercion/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/validation/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/configurable/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/immutable/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/default/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/equality/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/intallation/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/json_initializer/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/nil_if_zero/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/optional_getter/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/optional_setter/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/writing-a-plugin/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/</loc>
+    <lastmod>2017-07-18T12:45:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/</loc>
+    <lastmod>2017-07-18T12:45:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

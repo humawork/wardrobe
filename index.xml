@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>https://agensdev.github.io/wardrobe/index.xml</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Jul 2017 12:45:34 +0200</lastBuildDate>
+    <atom:link href="https://agensdev.github.io/wardrobe/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About</title>
+      <link>https://agensdev.github.io/wardrobe/getting-started/about/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/getting-started/about/</guid>
+      <description>
+
+&lt;p&gt;Wardrobe is a gem that simplifies creating Ruby objects with attributes. Wardrobe uses a plugin system and comes bundled with various plugins to get you started.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://travis-ci.org/agensdev/wardrobe&#34;&gt;&lt;img src=&#34;https://travis-ci.org/agensdev/wardrobe.svg?branch=master&#34; alt=&#34;Build Status&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://codeclimate.com/github/agensdev/wardrobe&#34;&gt;&lt;img src=&#34;https://codeclimate.com/github/agensdev/wardrobe.svg&#34; alt=&#34;Code Climate&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://codeclimate.com/github/agensdev/wardrobe/coverage&#34;&gt;&lt;img src=&#34;https://codeclimate.com/github/agensdev/wardrobe/badges/coverage.svg&#34; alt=&#34;Test Coverage&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rubygems.org/gems/wardrobe&#34;&gt;&lt;img src=&#34;https://badge.fury.io/rb/wardrobe.svg&#34; alt=&#34;Gem Version&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+
+&lt;p&gt;Wardrobe requires Ruby 2.4.0 or later. Read more about why &lt;a href=&#34;#ruby-2-4&#34;&gt;here&lt;/a&gt;.
+JRuby should be supported once &lt;a href=&#34;https://github.com/jruby/jruby/milestone/53&#34;&gt;9.2.0.0&lt;/a&gt; is released&lt;/p&gt;
+
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
+
+&lt;p&gt;Wardrobe should:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;be faster than Virtus&lt;/li&gt;
+&lt;li&gt;have no dependencies (plugins may)&lt;/li&gt;
+&lt;li&gt;not pollute the instance level with any methods other than ones prefixed with &lt;code&gt;_&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;should be immutable in the config layer allowing subclasses or singleton classes to modify the config&lt;/li&gt;
+&lt;li&gt;be easy to extend with plugins&lt;/li&gt;
+&lt;li&gt;simplify coercions through refinements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ruby-2-4&#34;&gt;Ruby 2.4&lt;/h2&gt;
+
+&lt;p&gt;When working on the first &amp;ldquo;Proof of Concept&amp;rdquo; for Wardrobe I wanted to use refinements for coercion. This was right before Ruby 2.4 was released which added support for using Kernel#send to call a method defined in a refined class. This was needed to get my first POC working and is why Wardrobe requires ruby 2.4 or above.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Coercion</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/coercion/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/coercion/</guid>
+      <description>
+
+&lt;p&gt;Coercion is the only plugin in Wardrobe enabled by default. Coercion works with
+most of Rubys types. Coercion will also happen when mutating &lt;code&gt;Array&lt;/code&gt;, &lt;code&gt;Hash&lt;/code&gt; and
+&lt;code&gt;Set&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+  include Wardrobe
+  attribute :id, Integer
+  attribute :name, String
+  attribute :status, Symbol
+  attribute :friends, Array[User]
+  attribute :interests, Hash[String =&amp;gt; Symbol]
+end
+
+user = User.new(
+  id: 1.1,
+  name: :&#39;Example User&#39;,
+  status: &#39;active&#39;,
+  friends: [
+    {
+      id: &#39;0045&#39;,
+      name: &#39;Another User&#39;,
+      status: &#39;inactive&#39;
+    }
+  ],
+  interests: {
+    &#39;architecture&#39; =&amp;gt; &#39;medium&#39;,
+    :sports =&amp;gt; &#39;low&#39;,
+    :travel =&amp;gt; :high
+  }
+)
+
+# &amp;lt;User:0x007fcc160851f8
+#   @id=1,
+#   @name=&amp;quot;Example User&amp;quot;,
+#   @status=:active,
+#   @friends=[
+#     &amp;lt;User:0x007fcc16084b68
+#       @id=45,
+#       @name=&amp;quot;Another User&amp;quot;,
+#       @status=:inactive,
+#       @friends=[],
+#       @interests={}&amp;gt;
+#   ],
+#   @interests={
+#     &amp;quot;architecture&amp;quot;=&amp;gt;:medium,
+#     &amp;quot;sports&amp;quot;=&amp;gt;:low,
+#     &amp;quot;travel&amp;quot;=&amp;gt;:high
+# }&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mutating-array&#34;&gt;Mutating Array&lt;/h2&gt;
+
+&lt;p&gt;Given the example above adding a friend to the friends array will coerce the
+given hash to a User object. &lt;code&gt;&amp;lt;&amp;lt;&lt;/code&gt;, &lt;code&gt;push&lt;/code&gt;, &lt;code&gt;unshift&lt;/code&gt; and &lt;code&gt;insert&lt;/code&gt; will all work
+with coercion.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;user.friends &amp;lt;&amp;lt; { id: &#39;22&#39;, name: &#39;Added later&#39; }
+# =&amp;gt; [
+#  #&amp;lt;User:0x007fb242c0c960
+#    @id=45,
+#    @name=&amp;quot;Another User&amp;quot;,
+#    @status=:inactive,
+#    @friends=[],
+#    @interests={}&amp;gt;,
+#  #&amp;lt;User:0x007fb242bd66a8
+#    @id=22,
+#    @name=&amp;quot;Added later&amp;quot;,
+#    @status=nil,
+#    @friends=[],
+#    @interests={}&amp;gt;
+# ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;mutating-hash&#34;&gt;Mutating Hash&lt;/h2&gt;
+
+&lt;p&gt;Mutating a hash with coercion is supported with the &lt;code&gt;[]&lt;/code&gt;, &lt;code&gt;merge!&lt;/code&gt; amd &lt;code&gt;store&lt;/code&gt;
+Hash methods.&lt;/p&gt;
+
+&lt;h2 id=&#34;mutating-set&#34;&gt;Mutating Set&lt;/h2&gt;
+
+&lt;p&gt;Mutating a set with coercion is supported with the &lt;code&gt;&amp;lt;&amp;lt;&lt;/code&gt;, &lt;code&gt;add&lt;/code&gt; amd &lt;code&gt;merge&lt;/code&gt;
+Set methods.&lt;/p&gt;
+
+&lt;h2 id=&#34;disabling-coercion&#34;&gt;Disabling coercion&lt;/h2&gt;
+
+&lt;h3 id=&#34;disable-coercion-for-a-class&#34;&gt;Disable coercion for a class&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe(coerce: false)
+
+  attribute :bar, String
+end
+
+Foo.new(bar: :a_symbol).bar # =&amp;gt; :a_symbol
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;disable-coercion-for-a-single-attribute&#34;&gt;Disable coercion for a single attribute&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+
+  attribute :bar, String, coerce: false
+end
+
+Foo.new(bar: :a_symbol).bar # =&amp;gt; :a_symbol
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Validation</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/validation/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/validation/</guid>
+      <description>
+
+&lt;p&gt;Wardrobes validation plugin is inspired by Hanami and Dry.rb.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+  include Wardrobe
+  plugin :validation
+  attribute :id, Integer, validates { gt?(1000) }
+  attribute :name, String, validates { min_size?(5) &amp;amp; max_size?(50) }
+  attribute :status, Symbol, validates { included_in?(:active, :suspended) }
+  attribute :friends, Array[User]
+  attribute :interests, Hash[String =&amp;gt; Symbol], validates { each_key? { max_size?(2) }}
+end
+
+user = User.new(
+  id: 521,
+  name: &#39;Foo&#39;,
+  status: :new,
+  friends: [
+    {
+      id: 45,
+      name: &#39;No&#39;,
+      status: &#39;inactive&#39;
+    }
+  ],
+  interests: {
+    &#39;architecture&#39; =&amp;gt; &#39;medium&#39;,
+    :sports =&amp;gt; &#39;low&#39;,
+    :travel =&amp;gt; :high
+  }
+)._validation_errors
+
+# =&amp;gt; {
+#   id: [&#39;must be greater than 1000&#39;],
+#   name: [&#39;size cannot be less than 5&#39;],
+#   status: [&#39;must be one of: :active, :suspended&#39;],
+#   friends: [
+#     {
+#       0 =&amp;gt; {
+#         id: [&#39;must be greater than 1000&#39;],
+#         name: [&#39;size cannot be less than 5&#39;],
+#         status: [&#39;must be one of: :active, :suspended&#39;]
+#       }
+#     }
+#   ],
+#   interests: [
+#     {
+#       &#39;architecture&#39; =&amp;gt; [&#39;KEY: size cannot be greater than 2&#39;],
+#       &#39;sports&#39; =&amp;gt; [&#39;KEY: size cannot be greater than 2&#39;],
+#       &#39;travel&#39; =&amp;gt; [&#39;KEY: size cannot be greater than 2&#39;]
+#     }
+#   ]
+# }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;predicates&#34;&gt;Predicates&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Configurable</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/configurable/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/configurable/</guid>
+      <description>
+
+&lt;p&gt;Configurable adds powerful class level configuration to your wardrobe models.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;p&gt;Start by creating a normal Wardrobe model with the immutable plugin added.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Config
+  include Wardrobe
+  plugin :immutable
+  plugin :presenter
+
+  attribute :foo, String
+  attribute :children, Array[Config]
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then create another Wardrobe model and enable the &lt;code&gt;configurable&lt;/code&gt; plugin.
+Enable the &lt;code&gt;Config&lt;/code&gt; class by calling &lt;code&gt;#configurable&lt;/code&gt; method. It takes 3
+arguments. The first is the name of the method that will enable to you to access
+the config. The second is the name of the method used to mutate the config. The
+third argument is the config class created above. You can add multiple
+&amp;ldquo;configurables&amp;rdquo;. Just give them different method names.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+  include Wardrobe
+  plugin :configurable
+  configurable :config, :configure, Config
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now you can configure your class by calling &lt;code&gt;User.configure&lt;/code&gt; with a block.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;User.configure do |c|
+  c.foo = &#39;bar&#39;
+  c.children &amp;lt;&amp;lt; { foo: &#39;bar child&#39;}
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can safely inherit from the User class. Any configurable will be inherited
+but will never be able to change to config in the parent.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class InheritedUser &amp;lt; User; end
+
+InheritedUser.configure do |c|
+  c.foo = &#39;bar in InheritedUser&#39;
+  c.children[0].foo = &#39;First child changed in InheritedUser&#39;
+  c.children &amp;lt;&amp;lt; { foo: &#39;Added in InheritedUser&#39;}
+end
+
+User.config._present #=&amp;gt; {:foo=&amp;gt;&amp;quot;bar&amp;quot;, :children=&amp;gt;[{:foo=&amp;gt;&amp;quot;bar child&amp;quot;, :children=&amp;gt;[]}]}
+InheritedUser.config._present #=&amp;gt; {:foo=&amp;gt;&amp;quot;bar in InheritedUser&amp;quot;, :children=&amp;gt;[{:foo=&amp;gt;&amp;quot;First child changed in InheritedUser&amp;quot;, :children=&amp;gt;[]}, {:foo=&amp;gt;&amp;quot;Added in InheritedUser&amp;quot;, :children=&amp;gt;[]}, {:foo=&amp;gt;&amp;quot;Added in InheritedUser&amp;quot;, :children=&amp;gt;[]}]}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Immutable</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/immutable/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/immutable/</guid>
+      <description>
+
+&lt;p&gt;The immutable plugin will make any Wardrobe model immutable and expose a
+&lt;code&gt;#mutate&lt;/code&gt; method that will return a new object.&lt;/p&gt;
+
+&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+  include Wardrobe
+  plugin :immutable
+  attribute :foo, String
+  attribute :bar, Array[String]
+end
+
+user = User.new(foo: &#39;Test&#39;, bar: [&#39;Test 1&#39;] )
+
+user.foo = &#39;Changed&#39; #=&amp;gt; NoMethodError: undefined method `foo=&#39;...
+user.bar &amp;lt;&amp;lt; &#39;Test 2&#39; #=&amp;gt; RuntimeError: can&#39;t modify frozen...
+
+updated_user = user.mutate do |user|
+  user.foo = &#39;Changed&#39;
+  user.bar &amp;lt;&amp;lt; &#39;Test 2&#39;
+end
+
+user #=&amp;gt; &amp;lt;User:0x007fb83a879c78 @foo=&amp;quot;Test&amp;quot;, @bar=[&amp;quot;Test 1&amp;quot;]&amp;gt;
+updated_user #=&amp;gt; &amp;lt;User:0x007fb838246268 @foo=&amp;quot;Changed&amp;quot;, @bar=[&amp;quot;Test 1&amp;quot;, &amp;quot;Test 2&amp;quot;]&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Default</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/default/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/default/</guid>
+      <description>
+
+&lt;p&gt;The default plugin will allow you to set a fallback value if no attribute or nil
+is given when initializing. The option &lt;code&gt;default&lt;/code&gt; is made available for your
+attributes and supports a literal value, a proc/lambda or a
+&lt;code&gt;:some_method_name_ending_with_default&lt;/code&gt; symbol as input.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :default
+
+  attribute :number, Integer, default: 10
+  attribute :name,   String, default: -&amp;gt; { &#39;No Name&#39; }
+  attribute :status, Symbol, default: :new
+  attribute :count,  Integer, default: :count_default
+
+  def count_default
+    number * 2
+  end
+end
+
+Foo.new
+#=&amp;gt; #&amp;lt;Foo:0x007f8953813718 @number=10, @name=&amp;quot;No Name&amp;quot;, @status=:new, @count=20&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Dirty Tracker</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</guid>
+      <description>
+
+&lt;p&gt;Dirty Tracker will track any changes to a Wardrobe instance including nested
+values.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :dirty_tracker
+
+  attribute :name, String
+end
+
+class Bar
+  include Wardrobe
+  plugin :dirty_tracker
+
+  attribute :name, String
+  attribute :hash, Hash
+  attribute :children, Array[Foo]
+end
+
+bar = Bar.new(
+  name: &#39;Clean&#39;,
+  hash: { first: 1, second: 2 },
+  children: [{name: &#39;Clean Child&#39;}]
+)
+
+bar._dirty? #=&amp;gt; false
+
+bar.name = &#39;Dirty&#39;
+bar._dirty? #=&amp;gt; true
+
+bar._reset_dirty_tracker!
+bar._dirty? #=&amp;gt; false
+
+bar.children.first.name = &#39;Dirty Child&#39;
+bar._dirty? #=&amp;gt; true
+
+bar._reset_dirty_tracker!
+bar._dirty? #=&amp;gt; false
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Equality</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/equality/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/equality/</guid>
+      <description>
+
+&lt;p&gt;Equality checks if two Wardrobe objects are equal by checking equality on all
+attributes.&lt;/p&gt;
+
+&lt;h2 id=&#34;options&#34;&gt;Options&lt;/h2&gt;
+
+&lt;p&gt;Equality exposes the &lt;code&gt;exclude_from_equality&lt;/code&gt; option which is &lt;code&gt;false&lt;/code&gt; by default.
+To exclude an attribute from equality set the attribute to
+&lt;code&gt;exclude_from_equality: true&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+  include Wardrobe
+  plugin :equality
+  attribute :foo, String
+  attribute :ignored, Integer, exclude_from_equality: true
+end
+
+one = User.new(foo: &#39;bar&#39;, ignored: 1)
+two = User.new(foo: &#39;bar&#39;, ignored: 2)
+
+one == two #=&amp;gt; true
+
+one.foo = &#39;foo&#39;
+
+one == two #=&amp;gt; false
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installation</title>
+      <link>https://agensdev.github.io/wardrobe/getting-started/intallation/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/getting-started/intallation/</guid>
+      <description>
+
+&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;gem install wardrobe
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;simple-usage&#34;&gt;Simple usage&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
+
+class User
+ include Wardrobe
+ attribute :name, String
+end
+
+User.new(name: &#39;Wardrobe User&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;composition&#34;&gt;Composition&lt;/h2&gt;
+
+&lt;p&gt;Wardrobe allows you to compose models from multiple modules for easy reuse.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;module Name
+ include Wardrobe
+ attribute :first_name, String
+ attribute :last_name, String
+end
+
+class Person
+ include Name
+ attribute :age, Integer
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;block-syntax&#34;&gt;Block syntax&lt;/h2&gt;
+
+&lt;p&gt;Many plugins expose options for attributes. These can be enabled on each attribute needed, or you can use a block to enable for a group of attributes.&lt;/p&gt;
+
+&lt;p&gt;Per attribute syntax:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+ include Wardrobe
+ plugin :nil_if_empty
+
+ attribute :first_name, String, nil_if_empty: true
+ attribute :last_name, String, nil_if_empty: true
+ attribute :friends, Array, nil_if_empty: true
+end
+User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
+# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Block syntax:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+ include Wardrobe
+ plugin :nil_if_empty
+
+ attributes do
+   nil_if_empty true do
+     attribute :first_name, String
+     attribute :last_name, String
+     attribute :friends, Array
+   end
+ end
+end
+User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
+# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bundled-plugins&#34;&gt;Bundled Plugins&lt;/h2&gt;
+
+&lt;p&gt;Wardrobe comes with numerous plugins and aims at making it easy to write your own.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Exposed options&lt;/th&gt;
+&lt;th&gt;Development state&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;validation&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;validates&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;dry-validation and Hanami inspired validations for your attributes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;immutable&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;immutable&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;makes your object immutable. Exposes a #mutate method that will return a new immutable object&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;dirty_tracker&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;track&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;tracks instances and exposes a #_changed? method&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;default&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;default&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;default values for attributes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;configurable&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;allows you to add class level immutable configuration to your classes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nil_if_empty&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;nil_if_empty&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;Converts empty objects like &lt;code&gt;&#39;&#39;&lt;/code&gt;, &lt;code&gt;{}&lt;/code&gt; and &lt;code&gt;[]&lt;/code&gt; to nil when initializing.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;nil_if_zero&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;nil_if_zero&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;alias_setters&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;alias_setter(Array)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;optional_setter&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;setter&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;disable the setter&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;optional_getter&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;getter&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;disable the getter&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;equality&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;include_in_equality&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;BETA&lt;/td&gt;
+&lt;td&gt;check if to wardrobe instances are equal&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;presenter&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;POC&lt;/td&gt;
+&lt;td&gt;presents your instance as a hash&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;json_initializer&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;POC&lt;/td&gt;
+&lt;td&gt;initialize your model with a json string&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;html_initializer&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;POC&lt;/td&gt;
+&lt;td&gt;initialize your model with a html string&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;xml_initializer&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;NOT IMPLEMENTED&lt;/td&gt;
+&lt;td&gt;initialize your model with a xml string&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;writing-your-own-plugin&#34;&gt;Writing your own plugin&lt;/h2&gt;
+
+&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
+
+Wardrobe.register_setter(
+ name: :capitalize,
+ priority: 25,
+ use_if: -&amp;gt;(atr) { atr.options[:capitalize] &amp;amp;&amp;amp; atr.klass == String },
+ setter: lambda do |value, _atr, _instance|
+   value ? value.capitalize : value
+ end
+)
+
+module Capitalize
+ extend Wardrobe::Plugin
+ option :capitalize, Wardrobe::Boolean, setter: :capitalize
+end
+
+Wardrobe.register_plugin(:capitalize, Capitalize)
+
+class Person
+ include Wardrobe
+ plugin :capitalize
+
+ attribute :name, String, capitalize: true
+ attribute :gender, String
+end
+
+Person.new(name: &#39;foo&#39;, gender: &#39;male&#39;)
+#=&amp;gt; #&amp;lt;Person:0x007fba42a273b8 @name=&amp;quot;Foo&amp;quot;, @gender=&amp;quot;male&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>JSON Initializer</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/json_initializer/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/json_initializer/</guid>
+      <description>
+
+&lt;p&gt;This plugin will allow you to initialize Wardrobe models with a serialized json
+string. The plugin will check if &lt;code&gt;MultiJson&lt;/code&gt; is available or fallback to using
+&lt;code&gt;JSON&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :json_initializer
+
+  attribute :bar, String
+end
+
+Foo.new(&#39;{&amp;quot;bar&amp;quot;:&amp;quot;value&amp;quot;}&#39;)
+#=&amp;gt; &amp;lt;Foo:0x007fa1779e1478 @bar=&amp;quot;value&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Nil if Empty</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</guid>
+      <description>
+
+&lt;p&gt;The &lt;code&gt;nil_if_empty&lt;/code&gt; plugin works with String, Array and Hash and will set the
+value to nil when coercing if the value returns true when &lt;code&gt;#empty?&lt;/code&gt; is called.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :nil_if_empty
+  attribute :string, String, nil_if_empty: true
+  attribute :array, Array, nil_if_empty: true
+  attribute :hash, Hash, nil_if_empty: true
+end
+
+foo = Foo.new(string: &#39;&#39;, array: [], hash: {})
+foo #=&amp;gt; &amp;lt;Foo:0x007fb8389a2610 @string=nil, @array=nil, @hash=nil&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Nil if Zero</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/nil_if_zero/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/nil_if_zero/</guid>
+      <description>
+
+&lt;p&gt;This plugin will change &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;&#39;0&#39;&lt;/code&gt; values to nil if enabled. The option
+&lt;code&gt;nil_if_zero&lt;/code&gt; is exposed and has to be set to true for this plugin to work.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :nil_if_zero
+
+  attribute :integer, Integer, nil_if_zero: true
+  attribute :string, String, nil_if_zero: true
+end
+
+Foo.new(integer: 0, string: &#39;0&#39;)
+#=&amp;gt; &amp;lt;Foo:0x007ff4cb86ad68 @integer=nil, @string=nil&amp;gt;
+
+foo = Foo.new(integer: 1, string: &#39;1&#39;)
+#=&amp;gt; &amp;lt;Foo:0x007ff4cb849f78 @integer=1, @string=&amp;quot;1&amp;quot;&amp;gt;
+foo.integer = 0
+#=&amp;gt; &amp;lt;Foo:0x007ff4cb823918 @integer=nil, @string=&amp;quot;1&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Optional Getter</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/optional_getter/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/optional_getter/</guid>
+      <description>
+
+&lt;p&gt;The &lt;code&gt;optional_getter&lt;/code&gt; plugin exposes a &lt;code&gt;getter&lt;/code&gt; option that defaults to true
+when this plugin is enabled.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :optional_getter
+  attribute :bar, String, getter: false
+end
+
+foo = Foo.new(bar: &#39;value&#39;)
+
+foo.bar #=&amp;gt; NoMethodError: undefined method `bar&#39; for #&amp;lt;Foo:0x007fbddc1a7790&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Optional Setter</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/optional_setter/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/optional_setter/</guid>
+      <description>
+
+&lt;p&gt;The &lt;code&gt;optional_setter&lt;/code&gt; plugin exposes a &lt;code&gt;setter&lt;/code&gt; option that defaults to true
+when this plugin is enabled.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Foo
+  include Wardrobe
+  plugin :optional_setter
+  attribute :bar, String, setter: false
+end
+
+foo = Foo.new(bar: &#39;value&#39;)
+
+foo.bar = &#39;changed&#39; #=&amp;gt; NoMethodError: undefined method `bar=&#39; for #&amp;lt;Foo:0x007f8953916660&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Writing a plugin</title>
+      <link>https://agensdev.github.io/wardrobe/getting-started/writing-a-plugin/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/getting-started/writing-a-plugin/</guid>
+      <description>
+
+&lt;p&gt;Lets create a plugin that capitalizes strings. Wardrobe uses a middleware
+inspired system for small blocks of code for manipulating data when setting or
+getting. You can create your own setters and getters. We&amp;rsquo;ll start by creating a
+setter that will apply to all attributes with the &lt;code&gt;capitalize: true&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
+
+Wardrobe.register_setter(
+ name: :capitalize,
+ priority: 25,
+ use_if: -&amp;gt;(atr) { atr.options[:capitalize] &amp;amp;&amp;amp; atr.klass == String },
+ setter: lambda do |value, _atr, _instance|
+   value ? value.capitalize : value
+ end
+)
+
+module Capitalize
+ extend Wardrobe::Plugin
+ option :capitalize, Wardrobe::Boolean, setter: :capitalize
+end
+
+Wardrobe.register_plugin(:capitalize, Capitalize)
+
+class Person
+ include Wardrobe
+ plugin :capitalize
+
+ attribute :name, String, capitalize: true
+ attribute :gender, String
+end
+
+Person.new(name: &#39;foo&#39;, gender: &#39;male&#39;)
+#=&amp;gt; #&amp;lt;Person:0x007fba42a273b8 @name=&amp;quot;Foo&amp;quot;, @gender=&amp;quot;male&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

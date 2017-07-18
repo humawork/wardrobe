@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.19" />
+    <meta name="description" content="">
+
+
+    
+    
+    <title>JSON Initializer</title>
+    <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/featherlight.min.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/horsey.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/theme.css" rel="stylesheet">
+    <link href="https://agensdev.github.io/wardrobe//css/hugo-theme.css" rel="stylesheet">
+    <script src="https://agensdev.github.io/wardrobe//js/jquery-2.x.min.js"></script>
+    <style type="text/css">:root #header + #content > #left > #rlblock_left
+    {display:none !important;}</style>
+    <style media="screen">
+#body img, #body .video-container {
+  margin: 3rem auto;
+  display: inherit;
+  text-align: center;
+}
+</style>
+
+  </head>
+  <body class="" data-url="/wardrobe/plugins/json_initializer/">
+    
+    <nav id="sidebar">
+  <div id="header-wrapper">
+    <div id="header">
+      <h3 style="color: white">Wardrobe</h3>
+
+    </div>
+    
+</div>
+
+
+  <div class="highlightable">
+    <ul class="topics">
+      
+        
+        
+          
+          
+            
+          
+        
+          
+          
+            
+          
+        
+        
+        
+          
+        
+          
+        
+      
+      
+      
+      
+
+      
+      
+      
+        
+          
+        
+      
+      
+      
+
+      <li class="dd-item  " data-nav-id="/wardrobe/getting-started/">
+        <a href="/wardrobe/getting-started/">
+          <span>
+            
+             Getting started
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/about/">
+              <a href="/wardrobe/getting-started/about/">
+                <span>About     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/intallation/">
+              <a href="/wardrobe/getting-started/intallation/">
+                <span>Installation     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/writing-a-plugin/">
+              <a href="/wardrobe/getting-started/writing-a-plugin/">
+                <span>Writing a plugin     </i></span>
+              </a>
+            </li>
+          
+        </ul>
+        
+      </li>
+      
+      
+      
+
+      
+      
+      
+        
+          
+        
+      
+      
+      
+
+      <li class="dd-item  parent" data-nav-id="/wardrobe/plugins/">
+        <a href="/wardrobe/plugins/">
+          <span>
+            
+             Plugins
+            
+           </span>
+        </a>
+        
+        <ul>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/coercion/">
+              <a href="/wardrobe/plugins/coercion/">
+                <span>Coercion     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/validation/">
+              <a href="/wardrobe/plugins/validation/">
+                <span>Validation     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/configurable/">
+              <a href="/wardrobe/plugins/configurable/">
+                <span>Configurable     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/immutable/">
+              <a href="/wardrobe/plugins/immutable/">
+                <span>Immutable     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/default/">
+              <a href="/wardrobe/plugins/default/">
+                <span>Default     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty_tracker/">
+              <a href="/wardrobe/plugins/dirty_tracker/">
+                <span>Dirty Tracker     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/equality/">
+              <a href="/wardrobe/plugins/equality/">
+                <span>Equality     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/json_initializer/">
+              <a href="/wardrobe/plugins/json_initializer/">
+                <span>JSON Initializer     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/nil_if_empty/">
+              <a href="/wardrobe/plugins/nil_if_empty/">
+                <span>Nil if Empty     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/nil_if_zero/">
+              <a href="/wardrobe/plugins/nil_if_zero/">
+                <span>Nil if Zero     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/optional_getter/">
+              <a href="/wardrobe/plugins/optional_getter/">
+                <span>Optional Getter     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/optional_setter/">
+              <a href="/wardrobe/plugins/optional_setter/">
+                <span>Optional Setter     </i></span>
+              </a>
+            </li>
+          
+        </ul>
+        
+      </li>
+      
+      
+    </ul>
+    <hr>
+     
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fa fa-heart"></i></a> from <a href="http://getgrav.org">Grav</a> and <a href="http://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+        <section id="body">
+        <div id="overlay"></div>
+
+        <div class="padding highlightable sticky-parent">
+            
+            <div class="sticky-spacer">
+              <div id="top-bar">
+              
+              <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                  <span id="sidebar-toggle-span">
+                      <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                        <i class="fa fa-bars"></i>
+                      </a>
+                  </span>
+                
+                <span id="toc-menu"><a href=""><i class="fa fa-list-alt"></i></a></span>
+                
+                
+                  
+                  
+                  
+                    
+                    
+                <a href="/wardrobe/plugins/" itemprop="url"><span itemprop="title">Plugins</span></a> <i class="fa fa-angle-right"></i>
+                    
+                  
+                
+                <span itemprop="title"> JSON Initializer</span>
+              </div>
+              
+                  <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#example">Example</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+              
+            </div>
+
+            </div>
+            
+              <div id="body-inner">
+                
+                <h1>JSON Initializer</h1>
+                
+
+
+
+<p>This plugin will allow you to initialize Wardrobe models with a serialized json
+string. The plugin will check if <code>MultiJson</code> is available or fallback to using
+<code>JSON</code>.</p>
+
+<h2 id="example">Example</h2>
+
+<pre><code class="language-ruby">class Foo
+  include Wardrobe
+  plugin :json_initializer
+
+  attribute :bar, String
+end
+
+Foo.new('{&quot;bar&quot;:&quot;value&quot;}')
+#=&gt; &lt;Foo:0x007fa1779e1478 @bar=&quot;value&quot;&gt;
+</code></pre>
+
+
+      
+      
+      </div>
+    </div>
+
+    
+
+    <div id="navigation">
+        
+        
+        
+    </div>
+
+    </section>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://agensdev.github.io/wardrobe//js/clipboard.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/perfect-scrollbar.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/jquery.sticky-kit.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/featherlight.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/html5shiv-printshiv.min.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://agensdev.github.io/wardrobe//js/modernizr.custom.71422.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/learn.js"></script>
+    <script src="https://agensdev.github.io/wardrobe//js/hugo-learn.js"></script>
+    
+
+  </body>
+</html>
+
