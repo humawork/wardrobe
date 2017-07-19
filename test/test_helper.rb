@@ -27,7 +27,7 @@ class TestBase < Minitest::Test
   def debug(&blk)
     @@debuging = true
     instance_exec(&blk)
-    @@debuging = false
+    @@debuging = false  
   end
 end
 
