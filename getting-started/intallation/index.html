@@ -101,6 +101,18 @@
               </a>
             </li>
           
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/block-syntax/">
+              <a href="/wardrobe/getting-started/block-syntax/">
+                <span>Block Syntax     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/plugins/">
+              <a href="/wardrobe/getting-started/plugins/">
+                <span>Plugins     </i></span>
+              </a>
+            </li>
+          
             <li class="dd-item " data-nav-id="/wardrobe/getting-started/writing-a-plugin/">
               <a href="/wardrobe/getting-started/writing-a-plugin/">
                 <span>Writing a plugin     </i></span>
@@ -165,8 +177,8 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty_tracker/">
-              <a href="/wardrobe/plugins/dirty_tracker/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty-tracker/">
+              <a href="/wardrobe/plugins/dirty-tracker/">
                 <span>Dirty Tracker     </i></span>
               </a>
             </li>
@@ -263,12 +275,6 @@
 <li><a href="#simple-usage">Simple usage</a></li>
 </ul></li>
 <li><a href="#composition">Composition</a></li>
-<li><a href="#block-syntax">Block syntax</a></li>
-<li><a href="#bundled-plugins">Bundled Plugins</a></li>
-<li><a href="#writing-your-own-plugin">Writing your own plugin</a>
-<ul>
-<li><a href="#example">Example</a></li>
-</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -318,198 +324,6 @@ class Person
  include Name
  attribute :age, Integer
 end
-</code></pre>
-
-<h2 id="block-syntax">Block syntax</h2>
-
-<p>Many plugins expose options for attributes. These can be enabled on each attribute needed, or you can use a block to enable for a group of attributes.</p>
-
-<p>Per attribute syntax:</p>
-
-<pre><code class="language-ruby">class User
- include Wardrobe
- plugin :nil_if_empty
-
- attribute :first_name, String, nil_if_empty: true
- attribute :last_name, String, nil_if_empty: true
- attribute :friends, Array, nil_if_empty: true
-end
-User.new(first_name: '', last_name: '', friends: [])
-# =&gt; #&lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&gt;
-</code></pre>
-
-<p>Block syntax:</p>
-
-<pre><code class="language-ruby">class User
- include Wardrobe
- plugin :nil_if_empty
-
- attributes do
-   nil_if_empty true do
-     attribute :first_name, String
-     attribute :last_name, String
-     attribute :friends, Array
-   end
- end
-end
-User.new(first_name: '', last_name: '', friends: [])
-# =&gt; #&lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&gt;
-</code></pre>
-
-<h2 id="bundled-plugins">Bundled Plugins</h2>
-
-<p>Wardrobe comes with numerous plugins and aims at making it easy to write your own.</p>
-
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Exposed options</th>
-<th>Development state</th>
-<th>Description</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>validation</td>
-<td><code>validates</code></td>
-<td>BETA</td>
-<td>dry-validation and Hanami inspired validations for your attributes</td>
-</tr>
-
-<tr>
-<td>immutable</td>
-<td><code>immutable</code></td>
-<td>BETA</td>
-<td>makes your object immutable. Exposes a #mutate method that will return a new immutable object</td>
-</tr>
-
-<tr>
-<td>dirty_tracker</td>
-<td><code>track</code></td>
-<td>BETA</td>
-<td>tracks instances and exposes a #_changed? method</td>
-</tr>
-
-<tr>
-<td>default</td>
-<td><code>default</code></td>
-<td>BETA</td>
-<td>default values for attributes</td>
-</tr>
-
-<tr>
-<td>configurable</td>
-<td></td>
-<td>BETA</td>
-<td>allows you to add class level immutable configuration to your classes</td>
-</tr>
-
-<tr>
-<td>nil_if_empty</td>
-<td><code>nil_if_empty</code></td>
-<td>BETA</td>
-<td>Converts empty objects like <code>''</code>, <code>{}</code> and <code>[]</code> to nil when initializing.</td>
-</tr>
-
-<tr>
-<td>nil_if_zero</td>
-<td><code>nil_if_zero</code></td>
-<td>BETA</td>
-<td></td>
-</tr>
-
-<tr>
-<td>alias_setters</td>
-<td><code>alias_setter(Array)</code></td>
-<td>BETA</td>
-<td></td>
-</tr>
-
-<tr>
-<td>optional_setter</td>
-<td><code>setter</code></td>
-<td>BETA</td>
-<td>disable the setter</td>
-</tr>
-
-<tr>
-<td>optional_getter</td>
-<td><code>getter</code></td>
-<td>BETA</td>
-<td>disable the getter</td>
-</tr>
-
-<tr>
-<td>equality</td>
-<td><code>include_in_equality</code></td>
-<td>BETA</td>
-<td>check if to wardrobe instances are equal</td>
-</tr>
-
-<tr>
-<td>presenter</td>
-<td></td>
-<td>POC</td>
-<td>presents your instance as a hash</td>
-</tr>
-
-<tr>
-<td>json_initializer</td>
-<td></td>
-<td>POC</td>
-<td>initialize your model with a json string</td>
-</tr>
-
-<tr>
-<td>html_initializer</td>
-<td></td>
-<td>POC</td>
-<td>initialize your model with a html string</td>
-</tr>
-
-<tr>
-<td>xml_initializer</td>
-<td></td>
-<td>NOT IMPLEMENTED</td>
-<td>initialize your model with a xml string</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="writing-your-own-plugin">Writing your own plugin</h2>
-
-<h3 id="example">Example</h3>
-
-<pre><code class="language-ruby">require 'wardrobe'
-
-Wardrobe.register_setter(
- name: :capitalize,
- priority: 25,
- use_if: -&gt;(atr) { atr.options[:capitalize] &amp;&amp; atr.klass == String },
- setter: lambda do |value, _atr, _instance|
-   value ? value.capitalize : value
- end
-)
-
-module Capitalize
- extend Wardrobe::Plugin
- option :capitalize, Wardrobe::Boolean, setter: :capitalize
-end
-
-Wardrobe.register_plugin(:capitalize, Capitalize)
-
-class Person
- include Wardrobe
- plugin :capitalize
-
- attribute :name, String, capitalize: true
- attribute :gender, String
-end
-
-Person.new(name: 'foo', gender: 'male')
-#=&gt; #&lt;Person:0x007fba42a273b8 @name=&quot;Foo&quot;, @gender=&quot;male&quot;&gt;
 </code></pre>
 
 

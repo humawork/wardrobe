@@ -32,7 +32,7 @@
   </url>
   
   <url>
-    <loc>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</loc>
+    <loc>https://agensdev.github.io/wardrobe/plugins/dirty-tracker/</loc>
     <lastmod>2017-07-18T12:45:34+02:00</lastmod>
   </url>
   
@@ -68,6 +68,16 @@
   
   <url>
     <loc>https://agensdev.github.io/wardrobe/plugins/optional_setter/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/block-syntax/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/getting-started/plugins/</loc>
     <lastmod>2017-07-18T12:45:34+02:00</lastmod>
   </url>
   

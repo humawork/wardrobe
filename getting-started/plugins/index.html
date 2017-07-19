@@ -9,7 +9,7 @@
 
     
     
-    <title>JSON Initializer</title>
+    <title>Plugins</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/json_initializer/">
+  <body class="" data-url="/wardrobe/getting-started/plugins/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -78,7 +78,7 @@
       
       
 
-      <li class="dd-item  " data-nav-id="/wardrobe/getting-started/">
+      <li class="dd-item  parent" data-nav-id="/wardrobe/getting-started/">
         <a href="/wardrobe/getting-started/">
           <span>
             
@@ -107,7 +107,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/getting-started/plugins/">
+            <li class="dd-item active" data-nav-id="/wardrobe/getting-started/plugins/">
               <a href="/wardrobe/getting-started/plugins/">
                 <span>Plugins     </i></span>
               </a>
@@ -136,7 +136,7 @@
       
       
 
-      <li class="dd-item  parent" data-nav-id="/wardrobe/plugins/">
+      <li class="dd-item  " data-nav-id="/wardrobe/plugins/">
         <a href="/wardrobe/plugins/">
           <span>
             
@@ -189,7 +189,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/json_initializer/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/json_initializer/">
               <a href="/wardrobe/plugins/json_initializer/">
                 <span>JSON Initializer     </i></span>
               </a>
@@ -257,23 +257,16 @@
                   
                     
                     
-                <a href="/wardrobe/plugins/" itemprop="url"><span itemprop="title">Plugins</span></a> <i class="fa fa-angle-right"></i>
+                <a href="/wardrobe/getting-started/" itemprop="url"><span itemprop="title">Getting started</span></a> <i class="fa fa-angle-right"></i>
                     
                   
                 
-                <span itemprop="title"> JSON Initializer</span>
+                <span itemprop="title"> Plugins</span>
               </div>
               
                   <div class="progress">
     <div class="wrapper">
-<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#example">Example</a></li>
-</ul></li>
-</ul>
-</nav>
+
     </div>
 </div>
 
@@ -284,27 +277,128 @@
             
               <div id="body-inner">
                 
-                <h1>JSON Initializer</h1>
+                <h1>Plugins</h1>
                 
 
+<p>Wardrobe comes with numerous plugins and aims at making it easy to write your own.</p>
 
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Exposed options</th>
+<th>Development state</th>
+<th>Description</th>
+</tr>
+</thead>
 
-<p>This plugin will allow you to initialize Wardrobe models with a serialized json
-string. The plugin will check if <code>MultiJson</code> is available or fallback to using
-<code>JSON</code>.</p>
+<tbody>
+<tr>
+<td>validation</td>
+<td><code>validates</code></td>
+<td>BETA</td>
+<td>dry-validation and Hanami inspired validations for your attributes</td>
+</tr>
 
-<h2 id="example">Example</h2>
+<tr>
+<td>immutable</td>
+<td><code>immutable</code></td>
+<td>BETA</td>
+<td>makes your object immutable. Exposes a #mutate method that will return a new immutable object</td>
+</tr>
 
-<pre><code class="language-ruby">class Foo
-  include Wardrobe
-  plugin :json_initializer
+<tr>
+<td>dirty_tracker</td>
+<td><code>track</code></td>
+<td>BETA</td>
+<td>tracks instances and exposes a #_changed? method</td>
+</tr>
 
-  attribute :bar, String
-end
+<tr>
+<td>default</td>
+<td><code>default</code></td>
+<td>BETA</td>
+<td>default values for attributes</td>
+</tr>
 
-Foo.new('{&quot;bar&quot;:&quot;value&quot;}')
-#=&gt; &lt;Foo:0x007fa1779e1478 @bar=&quot;value&quot;&gt;
-</code></pre>
+<tr>
+<td>configurable</td>
+<td></td>
+<td>BETA</td>
+<td>allows you to add class level immutable configuration to your classes</td>
+</tr>
+
+<tr>
+<td>nil_if_empty</td>
+<td><code>nil_if_empty</code></td>
+<td>BETA</td>
+<td>Converts empty objects like <code>''</code>, <code>{}</code> and <code>[]</code> to nil when initializing.</td>
+</tr>
+
+<tr>
+<td>nil_if_zero</td>
+<td><code>nil_if_zero</code></td>
+<td>BETA</td>
+<td></td>
+</tr>
+
+<tr>
+<td>alias_setters</td>
+<td><code>alias_setter(Array)</code></td>
+<td>BETA</td>
+<td></td>
+</tr>
+
+<tr>
+<td>optional_setter</td>
+<td><code>setter</code></td>
+<td>BETA</td>
+<td>disable the setter</td>
+</tr>
+
+<tr>
+<td>optional_getter</td>
+<td><code>getter</code></td>
+<td>BETA</td>
+<td>disable the getter</td>
+</tr>
+
+<tr>
+<td>equality</td>
+<td><code>include_in_equality</code></td>
+<td>BETA</td>
+<td>check if to wardrobe instances are equal</td>
+</tr>
+
+<tr>
+<td>presenter</td>
+<td></td>
+<td>POC</td>
+<td>presents your instance as a hash</td>
+</tr>
+
+<tr>
+<td>json_initializer</td>
+<td></td>
+<td>POC</td>
+<td>initialize your model with a json string</td>
+</tr>
+
+<tr>
+<td>html_initializer</td>
+<td></td>
+<td>POC</td>
+<td>initialize your model with a html string</td>
+</tr>
+
+<tr>
+<td>xml_initializer</td>
+<td></td>
+<td>NOT IMPLEMENTED</td>
+<td>initialize your model with a xml string</td>
+</tr>
+</tbody>
+</table>
 
 
       

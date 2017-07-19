@@ -331,10 +331,10 @@ Foo.new
     
     <item>
       <title>Dirty Tracker</title>
-      <link>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</link>
+      <link>https://agensdev.github.io/wardrobe/plugins/dirty-tracker/</link>
       <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
       
-      <guid>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</guid>
+      <guid>https://agensdev.github.io/wardrobe/plugins/dirty-tracker/</guid>
       <description>
 
 &lt;p&gt;Dirty Tracker will track any changes to a Wardrobe instance including nested

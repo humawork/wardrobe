@@ -9,7 +9,7 @@
 
     
     
-    <title>JSON Initializer</title>
+    <title>Block Syntax</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/json_initializer/">
+  <body class="" data-url="/wardrobe/getting-started/block-syntax/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -78,7 +78,7 @@
       
       
 
-      <li class="dd-item  " data-nav-id="/wardrobe/getting-started/">
+      <li class="dd-item  parent" data-nav-id="/wardrobe/getting-started/">
         <a href="/wardrobe/getting-started/">
           <span>
             
@@ -101,7 +101,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/getting-started/block-syntax/">
+            <li class="dd-item active" data-nav-id="/wardrobe/getting-started/block-syntax/">
               <a href="/wardrobe/getting-started/block-syntax/">
                 <span>Block Syntax     </i></span>
               </a>
@@ -136,7 +136,7 @@
       
       
 
-      <li class="dd-item  parent" data-nav-id="/wardrobe/plugins/">
+      <li class="dd-item  " data-nav-id="/wardrobe/plugins/">
         <a href="/wardrobe/plugins/">
           <span>
             
@@ -189,7 +189,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/json_initializer/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/json_initializer/">
               <a href="/wardrobe/plugins/json_initializer/">
                 <span>JSON Initializer     </i></span>
               </a>
@@ -257,23 +257,16 @@
                   
                     
                     
-                <a href="/wardrobe/plugins/" itemprop="url"><span itemprop="title">Plugins</span></a> <i class="fa fa-angle-right"></i>
+                <a href="/wardrobe/getting-started/" itemprop="url"><span itemprop="title">Getting started</span></a> <i class="fa fa-angle-right"></i>
                     
                   
                 
-                <span itemprop="title"> JSON Initializer</span>
+                <span itemprop="title"> Block Syntax</span>
               </div>
               
                   <div class="progress">
     <div class="wrapper">
-<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#example">Example</a></li>
-</ul></li>
-</ul>
-</nav>
+
     </div>
 </div>
 
@@ -284,26 +277,41 @@
             
               <div id="body-inner">
                 
-                <h1>JSON Initializer</h1>
+                <h1>Block Syntax</h1>
                 
 
+<p>Many plugins expose options for attributes. These can be applied to each attribute or to a group of attributes in a block.</p>
 
+<p>Per attribute syntax:</p>
 
-<p>This plugin will allow you to initialize Wardrobe models with a serialized json
-string. The plugin will check if <code>MultiJson</code> is available or fallback to using
-<code>JSON</code>.</p>
+<pre><code class="language-ruby">class User
+ include Wardrobe
+ plugin :nil_if_empty
 
-<h2 id="example">Example</h2>
-
-<pre><code class="language-ruby">class Foo
-  include Wardrobe
-  plugin :json_initializer
-
-  attribute :bar, String
+ attribute :first_name, String, nil_if_empty: true
+ attribute :last_name, String, nil_if_empty: true
+ attribute :friends, Array, nil_if_empty: true
 end
+User.new(first_name: '', last_name: '', friends: [])
+# =&gt; #&lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&gt;
+</code></pre>
 
-Foo.new('{&quot;bar&quot;:&quot;value&quot;}')
-#=&gt; &lt;Foo:0x007fa1779e1478 @bar=&quot;value&quot;&gt;
+<p>Block syntax:</p>
+
+<pre><code class="language-ruby">class User
+ include Wardrobe
+ plugin :nil_if_empty
+
+ attributes do
+   nil_if_empty true do
+     attribute :first_name, String
+     attribute :last_name, String
+     attribute :friends, Array
+   end
+ end
+end
+User.new(first_name: '', last_name: '', friends: [])
+# =&gt; #&lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&gt;
 </code></pre>
 
 

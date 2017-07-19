@@ -101,6 +101,18 @@
               </a>
             </li>
           
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/block-syntax/">
+              <a href="/wardrobe/getting-started/block-syntax/">
+                <span>Block Syntax     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/plugins/">
+              <a href="/wardrobe/getting-started/plugins/">
+                <span>Plugins     </i></span>
+              </a>
+            </li>
+          
             <li class="dd-item active" data-nav-id="/wardrobe/getting-started/writing-a-plugin/">
               <a href="/wardrobe/getting-started/writing-a-plugin/">
                 <span>Writing a plugin     </i></span>
@@ -165,8 +177,8 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty_tracker/">
-              <a href="/wardrobe/plugins/dirty_tracker/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty-tracker/">
+              <a href="/wardrobe/plugins/dirty-tracker/">
                 <span>Dirty Tracker     </i></span>
               </a>
             </li>
@@ -277,8 +289,8 @@
 
 
 
-<p>Lets create a plugin that capitalizes strings. Wardrobe uses a middleware
-inspired system for small blocks of code for manipulating data when &ldquo;setting&rdquo; or
+<p>Lets create a plugin that capitalizes strings.Wardrobe uses a middleware
+inspired system with blocks of code that manipulate data when &ldquo;setting&rdquo; or
 &ldquo;getting&rdquo; the value for an attribute. You can create your own setters and
 getters. We&rsquo;ll start by creating a setter that will apply to all attributes with
 the <code>capitalize: true</code> option.</p>
@@ -299,8 +311,8 @@ Wardrobe.register_setter(
 <p>The <code>before</code> and <code>after</code> arrays allow you to tell Wardrobe about other setters
 that need to happen before or after the one you are creating.</p>
 
-<p>The <code>use_if</code> lambda will allow us to ensure that the setter middleware is only
-added to attributes that meet a certain criteria.</p>
+<p>The <code>use_if</code> lambda ensures that the setter middleware is only added to
+attributes that meet a given criteria.</p>
 
 <p>The <code>setter</code> is a lambda that takes three arguments. The value passing through
 the middleware, the attribute instance and the Wardrobe model instance.</p>

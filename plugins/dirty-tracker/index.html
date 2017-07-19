@@ -9,7 +9,7 @@
 
     
     
-    <title>JSON Initializer</title>
+    <title>Dirty Tracker</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/json_initializer/">
+  <body class="" data-url="/wardrobe/plugins/dirty-tracker/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -177,7 +177,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty-tracker/">
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/dirty-tracker/">
               <a href="/wardrobe/plugins/dirty-tracker/">
                 <span>Dirty Tracker     </i></span>
               </a>
@@ -189,7 +189,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/json_initializer/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/json_initializer/">
               <a href="/wardrobe/plugins/json_initializer/">
                 <span>JSON Initializer     </i></span>
               </a>
@@ -261,7 +261,7 @@
                     
                   
                 
-                <span itemprop="title"> JSON Initializer</span>
+                <span itemprop="title"> Dirty Tracker</span>
               </div>
               
                   <div class="progress">
@@ -284,26 +284,51 @@
             
               <div id="body-inner">
                 
-                <h1>JSON Initializer</h1>
+                <h1>Dirty Tracker</h1>
                 
 
 
 
-<p>This plugin will allow you to initialize Wardrobe models with a serialized json
-string. The plugin will check if <code>MultiJson</code> is available or fallback to using
-<code>JSON</code>.</p>
+<p>Dirty Tracker will track any changes to a Wardrobe instance including nested
+values.</p>
 
 <h2 id="example">Example</h2>
 
 <pre><code class="language-ruby">class Foo
   include Wardrobe
-  plugin :json_initializer
+  plugin :dirty_tracker
 
-  attribute :bar, String
+  attribute :name, String
 end
 
-Foo.new('{&quot;bar&quot;:&quot;value&quot;}')
-#=&gt; &lt;Foo:0x007fa1779e1478 @bar=&quot;value&quot;&gt;
+class Bar
+  include Wardrobe
+  plugin :dirty_tracker
+
+  attribute :name, String
+  attribute :hash, Hash
+  attribute :children, Array[Foo]
+end
+
+bar = Bar.new(
+  name: 'Clean',
+  hash: { first: 1, second: 2 },
+  children: [{name: 'Clean Child'}]
+)
+
+bar._dirty? #=&gt; false
+
+bar.name = 'Dirty'
+bar._dirty? #=&gt; true
+
+bar._reset_dirty_tracker!
+bar._dirty? #=&gt; false
+
+bar.children.first.name = 'Dirty Child'
+bar._dirty? #=&gt; true
+
+bar._reset_dirty_tracker!
+bar._dirty? #=&gt; false
 </code></pre>
 
 

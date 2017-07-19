@@ -370,10 +370,10 @@ Foo.new
     
     <item>
       <title>Dirty Tracker</title>
-      <link>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</link>
+      <link>https://agensdev.github.io/wardrobe/plugins/dirty-tracker/</link>
       <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
       
-      <guid>https://agensdev.github.io/wardrobe/plugins/dirty_tracker/</guid>
+      <guid>https://agensdev.github.io/wardrobe/plugins/dirty-tracker/</guid>
       <description>
 
 &lt;p&gt;Dirty Tracker will track any changes to a Wardrobe instance including nested
@@ -497,198 +497,6 @@ class Person
  include Name
  attribute :age, Integer
 end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;block-syntax&#34;&gt;Block syntax&lt;/h2&gt;
-
-&lt;p&gt;Many plugins expose options for attributes. These can be enabled on each attribute needed, or you can use a block to enable for a group of attributes.&lt;/p&gt;
-
-&lt;p&gt;Per attribute syntax:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
- include Wardrobe
- plugin :nil_if_empty
-
- attribute :first_name, String, nil_if_empty: true
- attribute :last_name, String, nil_if_empty: true
- attribute :friends, Array, nil_if_empty: true
-end
-User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
-# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Block syntax:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
- include Wardrobe
- plugin :nil_if_empty
-
- attributes do
-   nil_if_empty true do
-     attribute :first_name, String
-     attribute :last_name, String
-     attribute :friends, Array
-   end
- end
-end
-User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
-# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;bundled-plugins&#34;&gt;Bundled Plugins&lt;/h2&gt;
-
-&lt;p&gt;Wardrobe comes with numerous plugins and aims at making it easy to write your own.&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Name&lt;/th&gt;
-&lt;th&gt;Exposed options&lt;/th&gt;
-&lt;th&gt;Development state&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;validation&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;validates&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;dry-validation and Hanami inspired validations for your attributes&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;immutable&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;immutable&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;makes your object immutable. Exposes a #mutate method that will return a new immutable object&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;dirty_tracker&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;track&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;tracks instances and exposes a #_changed? method&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;default&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;default&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;default values for attributes&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;configurable&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;allows you to add class level immutable configuration to your classes&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;nil_if_empty&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;nil_if_empty&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;Converts empty objects like &lt;code&gt;&#39;&#39;&lt;/code&gt;, &lt;code&gt;{}&lt;/code&gt; and &lt;code&gt;[]&lt;/code&gt; to nil when initializing.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;nil_if_zero&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;nil_if_zero&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;alias_setters&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;alias_setter(Array)&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;optional_setter&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;setter&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;disable the setter&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;optional_getter&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;getter&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;disable the getter&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;equality&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;include_in_equality&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;BETA&lt;/td&gt;
-&lt;td&gt;check if to wardrobe instances are equal&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;presenter&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;POC&lt;/td&gt;
-&lt;td&gt;presents your instance as a hash&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;json_initializer&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;POC&lt;/td&gt;
-&lt;td&gt;initialize your model with a json string&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;html_initializer&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;POC&lt;/td&gt;
-&lt;td&gt;initialize your model with a html string&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;xml_initializer&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;NOT IMPLEMENTED&lt;/td&gt;
-&lt;td&gt;initialize your model with a xml string&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;writing-your-own-plugin&#34;&gt;Writing your own plugin&lt;/h2&gt;
-
-&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
-
-Wardrobe.register_setter(
- name: :capitalize,
- priority: 25,
- use_if: -&amp;gt;(atr) { atr.options[:capitalize] &amp;amp;&amp;amp; atr.klass == String },
- setter: lambda do |value, _atr, _instance|
-   value ? value.capitalize : value
- end
-)
-
-module Capitalize
- extend Wardrobe::Plugin
- option :capitalize, Wardrobe::Boolean, setter: :capitalize
-end
-
-Wardrobe.register_plugin(:capitalize, Capitalize)
-
-class Person
- include Wardrobe
- plugin :capitalize
-
- attribute :name, String, capitalize: true
- attribute :gender, String
-end
-
-Person.new(name: &#39;foo&#39;, gender: &#39;male&#39;)
-#=&amp;gt; #&amp;lt;Person:0x007fba42a273b8 @name=&amp;quot;Foo&amp;quot;, @gender=&amp;quot;male&amp;quot;&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -832,63 +640,43 @@ foo.bar = &#39;changed&#39; #=&amp;gt; NoMethodError: undefined method `bar=&#39
     </item>
     
     <item>
-      <title>Writing a plugin</title>
-      <link>https://agensdev.github.io/wardrobe/getting-started/writing-a-plugin/</link>
+      <title>Block Syntax</title>
+      <link>https://agensdev.github.io/wardrobe/getting-started/block-syntax/</link>
       <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
       
-      <guid>https://agensdev.github.io/wardrobe/getting-started/writing-a-plugin/</guid>
-      <description>
+      <guid>https://agensdev.github.io/wardrobe/getting-started/block-syntax/</guid>
+      <description>&lt;p&gt;Many plugins expose options for attributes. These can be applied to each attribute or to a group of attributes in a block.&lt;/p&gt;
 
-&lt;p&gt;Lets create a plugin that capitalizes strings. Wardrobe uses a middleware
-inspired system for small blocks of code for manipulating data when &amp;ldquo;setting&amp;rdquo; or
-&amp;ldquo;getting&amp;rdquo; the value for an attribute. You can create your own setters and
-getters. We&amp;rsquo;ll start by creating a setter that will apply to all attributes with
-the &lt;code&gt;capitalize: true&lt;/code&gt; option.&lt;/p&gt;
+&lt;p&gt;Per attribute syntax:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;wardrobe&#39;
-
-Wardrobe.register_setter(
- name: :capitalize,
- before: [:setter],
- after: [:coercer],
- use_if: -&amp;gt;(atr) { atr.options[:capitalize] &amp;amp;&amp;amp; atr.klass == String },
- setter: lambda do |value, _atr, _instance|
-   value ? value.capitalize : value
- end
-)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt; arrays allow you to tell Wardrobe about other setters
-that need to happen before or after the one you are creating.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;use_if&lt;/code&gt; lambda will allow us to ensure that the setter middleware is only
-added to attributes that meet a certain criteria.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;setter&lt;/code&gt; is a lambda that takes three arguments. The value passing through
-the middleware, the attribute instance and the Wardrobe model instance.&lt;/p&gt;
-
-&lt;p&gt;Now lets write the the rest of the plugin:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;module Capitalize
- extend Wardrobe::Plugin
- option :capitalize, Wardrobe::Boolean, setter: :capitalize
-end
-
-Wardrobe.register_plugin(:capitalize, Capitalize)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;usage&#34;&gt;Usage&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Person
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
  include Wardrobe
- plugin :capitalize
+ plugin :nil_if_empty
 
- attribute :name, String, capitalize: true
- attribute :gender, String
+ attribute :first_name, String, nil_if_empty: true
+ attribute :last_name, String, nil_if_empty: true
+ attribute :friends, Array, nil_if_empty: true
 end
+User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
+# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-Person.new(name: &#39;foo&#39;, gender: &#39;male&#39;)
-#=&amp;gt; #&amp;lt;Person:0x007fba42a273b8 @name=&amp;quot;Foo&amp;quot;, @gender=&amp;quot;male&amp;quot;&amp;gt;
+&lt;p&gt;Block syntax:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
+ include Wardrobe
+ plugin :nil_if_empty
+
+ attributes do
+   nil_if_empty true do
+     attribute :first_name, String
+     attribute :last_name, String
+     attribute :friends, Array
+   end
+ end
+end
+User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
+# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
