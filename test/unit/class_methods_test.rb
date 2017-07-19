@@ -82,9 +82,15 @@ class ClassMethodsTest < TestBase
     instance2 = klass.new(first_name: 'Test2')
     instance._add_attribute(:dynamic, Integer)
     instance2._add_attribute(:dynamic, String)
+    instance.dynamic = '1'
+    instance2.dynamic = 1
+    assert_equal 1, instance.dynamic
+    assert_equal '1', instance2.dynamic
     assert_equal 4, klass.attribute_store.count
-    assert_equal 5, instance._attribute_store.count
-    assert_equal 5, instance2._attribute_store.count
+    debug do
+      assert_equal 5, instance._attribute_store.count
+      assert_equal 5, instance2._attribute_store.count
+    end
     assert_equal Integer, instance._attribute_store.dynamic.klass
     assert_equal String, instance2._attribute_store.dynamic.klass
     assert_nil klass.attribute_store[:dynamic]

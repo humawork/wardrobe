@@ -13,13 +13,30 @@ module Wardrobe
     end
 
     def _attribute_store
-      _attribute_store_singleton || self.class.attribute_store
+      _wardrobe_stores.attribute_store
+    end
+
+    def _wardrobe_stores
+      if _singleton_initialized?
+        singleton_class.wardrobe_stores
+      else
+        self.class.wardrobe_stores
+      end
+    end
+
+    def _init_singleton!
+      return if singleton_class.instance_variable_defined?(:@wardrobe_stores)
+      parent_stores = self.class.wardrobe_stores
+      singleton_class.instance_exec do
+        extend Wardrobe::ClassMethods
+        merge_wardrobe_stores(parent_stores)
+      end
+      @_singleton_initialized = true
     end
 
     def _add_attribute(name, klass, **args, &blk)
-      @_wardrobe_set_singleton = _attribute_store.add(
-        name, klass, self.class, self.class.wardrobe_stores, **args, &blk
-      )
+      _init_singleton!
+      singleton_class.attribute(name, klass, **args, &blk)
     end
 
     def _set_attribute_value(atr, value)
@@ -40,7 +57,11 @@ module Wardrobe
     end
 
     def _attribute_store_singleton
-      @_wardrobe_set_singleton if instance_variable_defined?('@_wardrobe_set_singleton')
+      @_wardrobe_store_singleton if instance_variable_defined?('@_wardrobe_store_singleton')
+    end
+
+    def _singleton_initialized?
+      @_singleton_initialized if instance_variable_defined?('@_singleton_initialized')
     end
 
     def _wardrobe_init(data)
