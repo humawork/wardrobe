@@ -12,7 +12,7 @@ Wardrobe requires Ruby 2.4.0 or later. Read more about why [here](#ruby-24).
 JRuby should be supported once [9.2.0.0](https://github.com/jruby/jruby/milestone/53) is released
 
 ## Documentation
-[Documentation for Wardrobe](https://agensdev.github.io/wardrobe/)
+[Documentation for Wardrobe](https://agensdev.github.io/wardrobe/getting-started/about/)
 
 ## Installation
 
