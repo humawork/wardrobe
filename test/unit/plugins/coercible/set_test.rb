@@ -15,6 +15,12 @@ class SetCoercionTest < TestBase
     attribute :array_with_subclass, Set[Person]
   end
 
+  class ImmutableSetObject
+    include Wardrobe
+    plugin :immutable
+    attribute :set_with_strings, Set[String]
+  end
+
   def test_coercion
     object = SetObject.new(
       set: Set.new([1, 1, 2, 2]),
@@ -66,5 +72,16 @@ class SetCoercionTest < TestBase
     assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       SetObject.new(array: 'string')
     end
+  end
+
+  def test_immutable
+    object = ImmutableSetObject.new(set_with_strings: [:foo])
+    assert_raises(RuntimeError) do
+      object.set_with_strings.add(:bar)
+    end
+    new_object = object.mutate do |obj|
+      obj.set_with_strings.add(:bar)
+    end
+    assert_equal Set.new(['foo', 'bar']), new_object.set_with_strings
   end
 end

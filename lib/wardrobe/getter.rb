@@ -1,9 +1,5 @@
 module Wardrobe
   class Getter < Middleware
-    def type
-      :getter
-    end
-
     def priority
       Wardrobe.getter_registery.priority(self)
     end

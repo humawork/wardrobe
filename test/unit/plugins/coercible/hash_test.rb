@@ -17,6 +17,12 @@ class HashCoercionTest < TestBase
     attribute :nil,            Hash
   end
 
+  class ImmutableHashObject
+    include Wardrobe
+    plugin :immutable
+    attribute :string_symbol,  Hash[String => Symbol]
+  end
+
   def setup
     @now = Time.now
     @later = @now + 1
@@ -68,5 +74,16 @@ class HashCoercionTest < TestBase
     assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(integer_float: Time.now)
     end
+  end
+
+  def test_immutable
+    object = ImmutableHashObject.new(string_symbol: { foo: 'bar' })
+    assert_raises(RuntimeError) do
+      object.string_symbol[:foo2] = 'bar'
+    end
+    new_object = object.mutate do |obj|
+      obj.string_symbol[:foo2] = 'bar2'
+    end
+    assert_equal :bar2, new_object.string_symbol['foo2']
   end
 end

@@ -52,9 +52,7 @@ class Base
   configure do |config|
     config.title = 'Title'
     config.child.name = 'Child Title'
-    config.proc_test = Proc.new { |input|
-      puts "sdfsdf"
-    }
+    config.proc_test = Proc.new { |input| }
   end
 end
 

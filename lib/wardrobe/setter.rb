@@ -1,9 +1,5 @@
 module Wardrobe
   class Setter < Middleware
-    def type
-      :setter
-    end
-
     def priority
       Wardrobe.setter_registery.priority(self)
     end

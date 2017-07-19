@@ -41,9 +41,9 @@ class ValidationNestedModelTest < TestBase
     assert_equal ['size must be 1'], errors[:foo_with][:name]
     assert_equal 1, log_messages.length
     assert errors.key?(:array_with)
-    assert errors[:array_with].first.all? do |_, v|
+    assert errors[:array_with].first.all? { |_, v|
       v[:name][0] == 'size must be 1'
-    end
+    }
     refute errors.key?(:foo_without)
   end
 end

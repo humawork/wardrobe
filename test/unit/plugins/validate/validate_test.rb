@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ValidationBangTest < TestBase
+class ValidationTest < TestBase
   class Foo
     include Wardrobe
     plugin :validation
@@ -25,6 +25,7 @@ class ValidationBangTest < TestBase
 
   def test_success
     instance = Foo.new(name: 'Foo Bar Long', gender: 'a')._validate!
+    assert instance._valid?
     assert instance.is_a?(Foo)
   end
 end
