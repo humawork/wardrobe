@@ -70,10 +70,12 @@ module Wardrobe
 
     def define_getter(atr)
       @wardrobe_methods.instance_exec do
-        define_method(atr.name) do
-          atr.getters.inject(nil) do |val, getter|
+        define_method(atr.name) do |&blk|
+          result = atr.getters.inject(nil) do |val, getter|
             getter.block.call(val, atr, self)
           end
+          result = blk.call(result) if blk
+          result
         end
       end
     end
