@@ -111,7 +111,7 @@ module Wardrobe
         name: :disable_setter_for_immutable_plugin,
         before: [:setter],
         use_if: ->(_atr) { true },
-        setter: lambda do |value, atr, instance|
+        setter: lambda do |value, atr, instance, _options|
           return value if instance._initializing? || !instance.frozen?
           raise NoMethodError, <<~eos
             undefined method `#{atr.name}=' for #{instance}.
@@ -124,7 +124,7 @@ module Wardrobe
         name: :dup_when_using_set_block,
         after: [:getter],
         use_if: ->(_atr) { true },
-        getter: lambda do |value, atr, instance|
+        getter: lambda do |value, atr, instance, options|
           using ImmutableInstanceMethods
           if instance._initializing?
             value

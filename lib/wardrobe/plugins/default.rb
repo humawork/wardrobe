@@ -10,7 +10,7 @@ module Wardrobe
         before: [:setter],
         after: [:coercer, :nil_if_empty, :nil_if_zero],
         use_if: ->(atr) { !atr.options[:default].nil? },
-        setter: lambda do |value, atr, instance|
+        setter: lambda do |value, atr, instance, _options|
           if !value.nil? && ![{},[]].include?(value)
             value
           else

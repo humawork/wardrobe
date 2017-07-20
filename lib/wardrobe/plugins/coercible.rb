@@ -30,7 +30,7 @@ module Wardrobe
     name: :coercer,
     before: [:setter],
     use_if: ->(atr) { atr.options[:coerce] },
-    setter: lambda do |value, atr, _instance|
+    setter: lambda do |value, atr, _instance, _options|
       atr.coerce(value)
     end
   )

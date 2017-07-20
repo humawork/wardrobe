@@ -9,7 +9,7 @@ module Wardrobe
         name: :optional_setter,
         before: [:setter],
         use_if: ->(atr) { atr.options[:setter] == false },
-        setter: lambda do |_value, atr, instance|
+        setter: lambda do |_value, atr, instance, _options|
           return _value if instance._initializing?
           raise NoMethodError, "undefined method `#{atr.name}=' for #{instance}"
         end

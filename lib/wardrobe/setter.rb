@@ -11,7 +11,7 @@ module Wardrobe
 
   Wardrobe.register_setter(
     name: :setter,
-    setter: lambda do |value, atr, instance|
+    setter: lambda do |value, atr, instance, _options|
       instance.instance_variable_set(atr.ivar_name, value)
     end
   )

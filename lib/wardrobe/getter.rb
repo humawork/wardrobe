@@ -11,7 +11,7 @@ module Wardrobe
 
   Wardrobe.register_getter(
     name: :getter,
-    getter: lambda do |_value, atr, instance|
+    getter: lambda do |_value, atr, instance, _options|
       instance.instance_variable_get(atr.ivar_name)
     end
   )

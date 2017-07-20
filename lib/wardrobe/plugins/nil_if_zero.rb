@@ -6,7 +6,7 @@ module Wardrobe
     before: [:setter, :default_setter],
     after: [:coercer],
     use_if: ->(atr) { atr.options[:nil_if_zero] },
-    setter: lambda do |value, _atr, _instance|
+    setter: lambda do |value, _atr, _instance, _options|
       return value unless value == 0 || value == '0'
       nil
     end

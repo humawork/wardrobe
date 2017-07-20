@@ -10,7 +10,7 @@ module Wardrobe
         before: [:setter, :default_setter],
         after: [:coercer],
         use_if: ->(atr) { atr.options[:nil_if_empty] },
-        setter: lambda do |value, atr, _instance|
+        setter: lambda do |value, atr, _instance, _options|
           return value unless atr.options[:nil_if_empty]
           case value
           when String, Array, Hash

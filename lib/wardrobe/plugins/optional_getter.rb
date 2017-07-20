@@ -9,7 +9,7 @@ module Wardrobe
         name: :optional_getter,
         before: [:getter],
         use_if: ->(atr) { atr.options[:getter] == false },
-        getter: lambda do |_value, atr, instance|
+        getter: lambda do |_value, atr, instance, _options|
           raise NoMethodError, "undefined method `#{atr.name}' for #{instance}"
         end
       )

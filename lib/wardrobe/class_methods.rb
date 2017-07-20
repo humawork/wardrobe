@@ -70,9 +70,9 @@ module Wardrobe
 
     def define_getter(atr)
       @wardrobe_methods.instance_exec do
-        define_method(atr.name) do |&blk|
+        define_method(atr.name) do |options: {}, &blk|
           result = atr.getters.inject(nil) do |val, getter|
-            getter.block.call(val, atr, self)
+            getter.block.call(val, atr, self, options)
           end
           result = blk.call(result) if blk
           result
@@ -82,9 +82,9 @@ module Wardrobe
 
     def define_setter(atr)
       @wardrobe_methods.instance_exec do
-        define_method(atr.setter_name) do |input|
+        define_method(atr.setter_name) do |input, options: {}|
           atr.setters.inject(input) do |val, setter|
-            setter.block.call(val, atr, self)
+            setter.block.call(val, atr, self, options)
           end
         end
       end

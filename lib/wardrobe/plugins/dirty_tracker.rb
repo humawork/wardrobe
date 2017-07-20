@@ -11,7 +11,7 @@ module Wardrobe
         name: :dirty_tracker,
         before: [:setter],
         use_if: ->(atr) { atr.options[:track] },
-        setter: lambda do |value, atr, instance|
+        setter: lambda do |value, atr, instance, _options|
           return value if instance._initializing?
           instance._dirty! if value != instance._get_attribute_value(atr)
           value
@@ -22,7 +22,7 @@ module Wardrobe
         name: :dirty_tracker,
         after: [:getter],
         use_if: ->(atr) { atr.options[:track] },
-        getter: lambda do |value, atr, instance|
+        getter: lambda do |value, atr, instance, _options|
           return value if instance._initializing?
           instance._register_get(atr.name, value)
           value
