@@ -4,7 +4,7 @@ class BlockModel
   include Wardrobe
   plugin :nil_if_empty
   plugin :nil_if_zero
-  plugin :ivy_presenter
+  plugin :test_plugin
   plugin :alias_setters
   plugin :validation
 

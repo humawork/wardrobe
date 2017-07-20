@@ -2,7 +2,7 @@ require 'test_helper'
 
 class BlockRunnerArray
   include Wardrobe
-  plugin :ivy_presenter
+  plugin :test_plugin
 
   attributes preset: :one do
     attribute :name, String

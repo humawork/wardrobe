@@ -27,7 +27,7 @@ class TestBase < Minitest::Test
   def debug(&blk)
     @@debuging = true
     instance_exec(&blk)
-    @@debuging = false  
+    @@debuging = false
   end
 end
 
@@ -38,6 +38,12 @@ class Object
 end
 require 'wardrobe'
 
+module TestPlugin
+  extend Wardrobe::Plugin
+  option :preset, Set
+end
+
+Wardrobe.register_plugin(:test_plugin, TestPlugin)
 
 LOG_MESSAGES = []
 

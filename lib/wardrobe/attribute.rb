@@ -19,6 +19,17 @@ module Wardrobe
       freeze
     end
 
+    def merge(other, defining_object, config)
+      merged_options = merge_options(other.options)
+      self.class.new(name, other.klass, defining_object, config, merged_options)
+    end
+
+    def wardrobe?
+      klass.respond_to?(:wardrobe_stores)
+    end
+
+    private
+
     def validate_klass(klass)
       if klass.is_a?(Array) && klass.count != 1
         raise StandardError, %(
@@ -30,13 +41,6 @@ module Wardrobe
       end
       klass
     end
-
-    def merge(other, defining_object, config)
-      merged_options = merge_options(other.options)
-      self.class.new(name, other.klass, defining_object, config, merged_options)
-    end
-
-    private
 
     def merge_options(other)
       merged_options = options.dup
