@@ -56,10 +56,6 @@ module Wardrobe
       remove_instance_variable(:@_initializing)
     end
 
-    def _attribute_store_singleton
-      @_wardrobe_store_singleton if instance_variable_defined?('@_wardrobe_store_singleton')
-    end
-
     def _singleton_initialized?
       @_singleton_initialized if instance_variable_defined?('@_singleton_initialized')
     end

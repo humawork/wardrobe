@@ -11,11 +11,11 @@ module Wardrobe
           end
         end
 
-        def update(name, &blk)
+        def update(name, klass, &blk)
           if frozen?
-            dup.update(name, &blk)
+            dup.update(name, klass, &blk)
           else
-            duplicate = @store[name].mutate(&blk)
+            duplicate = @store[name].mutate(_options: { klass: klass }, &blk)
             @store = @store.merge(name => duplicate)
             freeze
           end

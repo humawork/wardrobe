@@ -13,9 +13,10 @@ module Wardrobe
           instance_variable_defined?(:@_mutating) && @_mutating
         end
 
-        def mutate(**args, &blk)
+        def mutate(_options: {}, **args, &blk)
           dup.instance_exec do
             instance_variable_set(:@_mutating, true)
+            instance_variable_set(:@_mutation_options, _options)
             blk.call(self) if block_given?
             args.each do |name, _value|
               if (atr = _attribute_store[name])
@@ -23,6 +24,7 @@ module Wardrobe
               end
             end
             remove_instance_variable(:@_mutating)
+            remove_instance_variable(:@_mutation_options)
             deep_freeze
             self
           end

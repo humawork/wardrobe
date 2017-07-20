@@ -31,6 +31,11 @@ class TestConfigWithValidation
   attribute :bar, String
 end
 
+class TestConfigWithoutWardrobe; end
+class TestConfigWithoutImmutable
+  include Wardrobe
+end
+
 class Base
   include Wardrobe
   plugin :configurable
@@ -104,6 +109,26 @@ class ConfigurableTest < TestBase
         plugin :configurable
         configurable :config, :configure, TestConfigWithValidation
         configure {}
+      end
+    end
+  end
+
+  def test_config_class_without_wardrobe
+    assert_raises(Wardrobe::Plugins::Configurable::InvalidConfigClass) do
+      Class.new do
+        include Wardrobe
+        plugin :configurable
+        configurable :config, :configure, TestConfigWithoutWardrobe
+      end
+    end
+  end
+
+  def test_config_class_without_immutable
+    assert_raises(Wardrobe::Plugins::Configurable::InvalidConfigClass) do
+      Class.new do
+        include Wardrobe
+        plugin :configurable
+        configurable :config, :configure, TestConfigWithoutImmutable
       end
     end
   end

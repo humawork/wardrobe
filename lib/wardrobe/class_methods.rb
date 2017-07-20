@@ -116,6 +116,9 @@ module Wardrobe
       name = name.to_sym
       @wardrobe_stores = wardrobe_stores.enable_plugin(name, **args)
       plugin = plugin_store[name][:klass]
+      plugin.required_plugins.each do |name|
+        plugin(name) unless plugin_store[name]
+      end
       init_plugin_methods(plugin)
     end
 

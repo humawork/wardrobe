@@ -6,6 +6,8 @@ module Wardrobe
     module IvyPresenter
       extend Wardrobe::Plugin
 
+      plugin :presenter
+
       option :preset, Set
       option :source, Boolean
 
