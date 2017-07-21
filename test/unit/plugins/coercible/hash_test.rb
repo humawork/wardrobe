@@ -67,6 +67,12 @@ class HashCoercionTest < TestBase
     assert_equal :six, @object.string_symbol['6']
   end
 
+  def test_with_empty_hash
+    object = HashObject.new
+    object.integer_float['1'] = '2'
+    object.integer_float[1].class == Float
+  end
+
   def test_error
     assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(string_symbol: [1,2])

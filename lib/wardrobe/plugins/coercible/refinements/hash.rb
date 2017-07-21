@@ -21,7 +21,8 @@ module Wardrobe
               coerce_hash(v, atr)
             when Array
               coerce_hash(self.class[*v], atr)
-            when NilClass then {}
+            when NilClass
+              coerce_hash({}, atr)
             else
               raise UnsupportedError
             end
