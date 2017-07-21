@@ -44,6 +44,7 @@ module Wardrobe
         def coerce(val, _atr)
           return new if val.nil?
           return new(**val) if val.is_a?(Hash)
+          return val if val.class == self
           new(val)
         end
       end

@@ -73,6 +73,12 @@ class HashCoercionTest < TestBase
     object.integer_float[1].class == Float
   end
 
+  def test_setting_with_wardrobe
+    object = HashObject.new(string_person: { 'one' => { name: 'Test' }})
+    object.string_person['two'] = Person.new(name: 'Test 2')
+    object.string_person['one'] = Person.new(name: 'Replaced Person')
+  end
+
   def test_error
     assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
       HashObject.new(string_symbol: [1,2])
