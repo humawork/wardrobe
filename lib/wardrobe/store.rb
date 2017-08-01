@@ -5,8 +5,8 @@ module Wardrobe
     include Enumerable
     attr_reader :store
 
-    def initialize
-      @store = {}
+    def initialize(hash = {})
+      @store = hash
       freeze
     end
 
@@ -39,6 +39,10 @@ module Wardrobe
       mutate do
         @store = store.merge(other.store)
       end
+    end
+
+    def add(key, value)
+      mutate { store[key] = value }
     end
 
     def del(name)

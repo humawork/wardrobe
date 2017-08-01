@@ -9,10 +9,6 @@ module Wardrobe
       super
     end
 
-    def add(name, instance)
-      mutate { store[name] = instance }
-    end
-
     private
 
     def select_defaults
