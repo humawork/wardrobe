@@ -3,7 +3,7 @@
 module Wardrobe
   class Store
     include Enumerable
-    attr_reader :store, :parent
+    attr_reader :store
 
     def initialize
       @store = {}
