@@ -13,23 +13,23 @@ module Wardrobe
     end
 
     def _attribute_store
-      _wardrobe_stores.attribute_store
+      _wardrobe_config.attribute_store
     end
 
-    def _wardrobe_stores
+    def _wardrobe_config
       if _singleton_initialized?
-        singleton_class.wardrobe_stores
+        singleton_class.wardrobe_config
       else
-        self.class.wardrobe_stores
+        self.class.wardrobe_config
       end
     end
 
     def _init_singleton!
-      return if singleton_class.instance_variable_defined?(:@wardrobe_stores)
-      parent_stores = self.class.wardrobe_stores
+      return if singleton_class.instance_variable_defined?(:@wardrobe_config)
+      parent_stores = self.class.wardrobe_config
       singleton_class.instance_exec do
         extend Wardrobe::ClassMethods
-        merge_wardrobe_stores(parent_stores)
+        merge_wardrobe_config(parent_stores)
       end
       @_singleton_initialized = true
     end

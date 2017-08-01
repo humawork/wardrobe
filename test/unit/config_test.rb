@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StoresTest < TestBase
+class ConfigTest < TestBase
 
   class TestStore < Wardrobe::Store
 
@@ -11,7 +11,7 @@ class StoresTest < TestBase
       include Wardrobe
     end
 
-    wardrobe_store = klass.wardrobe_stores.add_store(:test, TestStore)
+    wardrobe_store = klass.wardrobe_config.add_store(:test, TestStore)
 
     assert_equal TestStore, wardrobe_store.stores[:test]
   end

@@ -14,12 +14,12 @@ module Wardrobe
 
         def self.extended(base)
           super
-          base.wardrobe_stores do
+          base.wardrobe_config do
             add_store(:configurable_store, ConfigurableStore)
           end
           base.instance_variable_get(:@wardrobe_class_methods).class_exec do
             def configurable_store
-              @wardrobe_stores.configurable_store
+              @wardrobe_config.configurable_store
             end
           end
         end
@@ -31,7 +31,7 @@ module Wardrobe
           unless klass.plugin_store.store[:immutable]
             raise InvalidConfigClass, "Configurable class #{klass} is missing the `:immutable` plugin"
           end
-          wardrobe_stores do
+          wardrobe_config do
             @configurable_store = configurable_store.register(name, klass)
           end
           _create_configurable_methods(
@@ -42,12 +42,12 @@ module Wardrobe
         def _create_configurable_methods(name, blk_name, **args)
           @wardrobe_class_methods.class_exec do
             define_method(name) do
-              wardrobe_stores.configurable_store[name]
+              wardrobe_config.configurable_store[name]
             end
             define_method(blk_name) do |&blk|
               klass = self
               args[:before_update].call(klass) if args[:before_update]
-              wardrobe_stores do
+              wardrobe_config do
                 @configurable_store = configurable_store.update(name, klass, &blk)
                 if @configurable_store[name].class.plugin_store[:validation]
                   configurable_store[name]._validate!

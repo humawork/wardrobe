@@ -25,7 +25,7 @@ module Wardrobe
     end
 
     def wardrobe?
-      klass.respond_to?(:wardrobe_stores)
+      klass.respond_to?(:wardrobe_config)
     end
 
     private

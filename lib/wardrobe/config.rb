@@ -13,7 +13,7 @@ module Wardrobe
     end
   end
 
-  class Stores
+  class Config
     def self.registered_stores
       @registered_stores ||= {}.freeze
     end
