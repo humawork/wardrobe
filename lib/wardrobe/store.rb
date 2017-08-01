@@ -38,8 +38,6 @@ module Wardrobe
     def merge(other, _calling_object, _config)
       mutate do
         @store = store.merge(other.store)
-        # I guess we have to loop through each item and do a custom merge...
-        # maybe not use Hash#merge?
       end
     end
 
