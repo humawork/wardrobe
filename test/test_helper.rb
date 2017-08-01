@@ -16,6 +16,10 @@ class TestBase < Minitest::Test
     LOG_MESSAGES
   end
 
+  def setup
+    LOG_MESSAGES.clear
+  end
+
   def teardown
     LOG_MESSAGES.clear
   end

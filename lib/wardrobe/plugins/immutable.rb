@@ -30,6 +30,10 @@ module Wardrobe
           end
         end
 
+        def deep_freeze
+          freeze
+        end
+
         def mutate!
           return self if IMMUTABLE_CORE_CLASSES.include?(self.class)
           dup.instance_exec do
@@ -38,20 +42,9 @@ module Wardrobe
           end
         end
       end
-
       refine Hash do
         def deep_freeze
           each { |_k, v| v.deep_freeze }
-          freeze
-        end
-      end
-      refine String do
-        def deep_freeze
-          freeze
-        end
-      end
-      refine Logger do
-        def deep_freeze
           freeze
         end
       end
@@ -75,13 +68,6 @@ module Wardrobe
             instance_variable_set(:@_mutating, true)
             map!(&:mutate!)
             self
-          end
-        end
-      end
-      IMMUTABLE_CORE_CLASSES.each do |klass|
-        refine klass do
-          def deep_freeze
-            freeze
           end
         end
       end

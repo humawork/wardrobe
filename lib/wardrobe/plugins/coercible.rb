@@ -13,6 +13,7 @@ require 'wardrobe/plugins/coercible/refinements/boolean'
 require 'wardrobe/plugins/coercible/refinements/symbol'
 require 'wardrobe/plugins/coercible/refinements/time'
 require 'wardrobe/plugins/coercible/refinements/proc'
+require 'wardrobe/plugins/coercible/refinements/open_struct'
 
 module Wardrobe
   class Attribute
