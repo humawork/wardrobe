@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 module Wardrobe
+  class DefaultSettersStore < Store
+    def initialize
+      super({setter: Wardrobe.setters[:setter]})
+    end
+  end
+
+  class DefaultGettersStore < Store
+    def initialize
+      super({getter: Wardrobe.getters[:getter]})
+    end
+  end
+
   class Stores
     def self.registered_stores
       @registered_stores ||= {}.freeze
@@ -13,6 +25,8 @@ module Wardrobe
     register_store(:attribute_store, AttributeStore)
     register_store(:plugin_store, PluginStore)
     register_store(:option_store, OptionStore)
+    register_store(:default_setters_store, DefaultSettersStore)
+    register_store(:default_getters_store, DefaultGettersStore)
 
     attr_reader :stores
 

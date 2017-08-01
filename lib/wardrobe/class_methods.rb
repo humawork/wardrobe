@@ -53,15 +53,23 @@ module Wardrobe
     end
 
     def default_getters
-      [
-        Wardrobe.getters[:getter]
-      ]
+      wardrobe_stores.default_getters_store.values
     end
 
     def default_setters
-      [
-        Wardrobe.setters[:setter]
-      ]
+      wardrobe_stores.default_setters_store.values
+    end
+
+    def add_default_getter(getter)
+      @wardrobe_stores = wardrobe_stores.update do
+        @default_getters_store = default_getters_store.add(getter, Wardrobe.getters[getter])
+      end
+    end
+
+    def add_default_setter(setter)
+      @wardrobe_stores = wardrobe_stores.update do
+        @default_setters_store = default_setters_store.add(setter, Wardrobe.setters[setter])
+      end
     end
 
     def merge_wardrobe_stores(other_wardrobe_stores)
@@ -89,7 +97,6 @@ module Wardrobe
         end
       end
     end
-
 
     def attribute(name, klass, *args, &blk)
       merged_args = option_store.defaults.merge(args.inject({}) { |input, val| input.merge! val })

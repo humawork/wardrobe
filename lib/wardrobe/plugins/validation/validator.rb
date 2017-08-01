@@ -7,7 +7,7 @@ module Wardrobe
         using Refinements
         attr_reader :value, :atr, :error_store, :validation
 
-        def initialize(value, atr, error_store, validation = nil)
+        def initialize(value, atr, error_store = ErrorStore.new, validation = nil)
           @value = value
           @atr = atr
           @error_store = error_store
@@ -47,7 +47,12 @@ module Wardrobe
           if validation.type == :special
             send(*validation.args, report)
           else
-            error = value.send(*validation.args)
+            begin
+              error = value.send(*validation.args)
+            rescue NoMethodError => e
+              Wardrobe.logger.error("Unable to validate #{validation[:method]} on #{value.class}")
+              raise e
+            end
             report && error ? report(error) : error
           end
         end
