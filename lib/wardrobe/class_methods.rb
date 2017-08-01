@@ -30,7 +30,9 @@ module Wardrobe
 
     def inherited(child)
       wardrobe_methods = child.instance_variable_set(:@wardrobe_methods, Module.new)
+      wardrobe_class_methods = child.instance_variable_set(:@wardrobe_class_methods, Module.new)
       child.include(wardrobe_methods)
+      child.extend(wardrobe_class_methods)
       child.instance_variable_set(:@wardrobe_stores, Stores.new)
       child.merge_wardrobe_stores(wardrobe_stores)
       child.root_config = root_config
