@@ -14,6 +14,7 @@ require 'wardrobe/plugins/coercible/refinements/symbol'
 require 'wardrobe/plugins/coercible/refinements/time'
 require 'wardrobe/plugins/coercible/refinements/proc'
 require 'wardrobe/plugins/coercible/refinements/open_struct'
+require 'wardrobe/plugins/coercible/refinements/regexp'
 
 module Wardrobe
   class Attribute
