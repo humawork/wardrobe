@@ -17,11 +17,11 @@ module Wardrobe
 
     # This is called when included in another module/class
     def included(base)
+      base.include(@wardrobe_methods)
+      base.extend(@wardrobe_class_methods)
       unless base.respond_to? :wardrobe_config
         base.include(Wardrobe)
       end
-      base.include(@wardrobe_methods)
-      base.extend(@wardrobe_class_methods)
       (plugin_store.store.keys - Wardrobe.config.default_plugins.to_a).each do |plugin|
         base.plugin plugin
       end
