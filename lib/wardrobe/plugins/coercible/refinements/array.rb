@@ -16,8 +16,6 @@ module Wardrobe
           end
         end
 
-
-
         refine Array do
           class WrongNumberOfItemsError < StandardError; end
 
