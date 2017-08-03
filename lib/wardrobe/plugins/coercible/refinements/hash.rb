@@ -38,7 +38,7 @@ module Wardrobe
 
             def _coerce(key, value)
               return @_wardrobe_coercer[0].coerce(key, nil),
-              @_wardrobe_coercer[1].coerce(value, nil)
+                     @_wardrobe_coercer[1].coerce(value, nil)
             end
 
             def dup
@@ -66,8 +66,6 @@ module Wardrobe
 
           def coerce_hash(h, atr)
             hash = h.map do |key, value|
-              # TODO: Since we pass around the atr object, how should this work
-              # here? Just pass nil?
               [first[0].coerce(key, nil), first[1].coerce(value, nil)]
             end.to_h
 
