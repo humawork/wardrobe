@@ -28,14 +28,44 @@ module Wardrobe
     register_store(:default_setters_store, DefaultSettersStore)
     register_store(:default_getters_store, DefaultGettersStore)
 
-    attr_reader :stores
+    attr_reader :stores, :instance_methods_module, :class_methods_module
 
     def initialize
       @stores = {}.freeze
+      @instance_methods_module = Module.new.freeze
+      @class_methods_module = Module.new.freeze
       self.class.registered_stores.each do |key, value|
         add_store(key, value, initializer: true)
       end
       freeze
+    end
+
+    def merge_wardrobe_config(other_wardrobe_config)
+      @wardrobe_config = wardrobe_config.merge(other_wardrobe_config, self)
+    end
+
+    def self.create_and_add_to(object, merge_with: nil)
+      config = new
+      config = config.merge(merge_with, object) if merge_with
+      object.instance_variable_set(:@wardrobe_config, config)
+    end
+
+    def add_instance_methods(klass, &blk)
+      update do
+        @instance_methods_module = instance_methods_module.dup
+        instance_methods_module.class_exec(&blk)
+        instance_methods_module.freeze
+        klass.include(instance_methods_module)
+      end
+    end
+
+    def add_class_methods(klass, &blk)
+      update do
+        @class_methods_module = class_methods_module.dup
+        class_methods_module.class_exec(&blk)
+        class_methods_module.freeze
+        klass.extend(class_methods_module)
+      end
     end
 
     def update(&blk)
@@ -71,6 +101,8 @@ module Wardrobe
             "@#{name}", instance.merge(other.send(name), calling_object, self)
           )
         end
+        calling_object.include(other.instance_methods_module)
+        calling_object.extend(other.class_methods_module)
         freeze
       end
     end

@@ -8,17 +8,11 @@ module Wardrobe
     def_delegators :@wardrobe_config, :attribute_store, :plugin_store, :option_store
 
     def self.extended(base)
-      wardrobe_methods = base.instance_variable_set(:@wardrobe_methods, Module.new)
-      wardrobe_class_methods = base.instance_variable_set(:@wardrobe_class_methods, Module.new)
-      base.include(wardrobe_methods)
-      base.extend(wardrobe_class_methods)
-      base.instance_variable_set(:@wardrobe_config, Config.new)
+      Config.create_and_add_to(base)
     end
 
     # This is called when included in another module/class
     def included(base)
-      base.include(@wardrobe_methods)
-      base.extend(@wardrobe_class_methods)
       unless base.respond_to? :wardrobe_config
         base.include(Wardrobe)
       end
@@ -29,12 +23,7 @@ module Wardrobe
     end
 
     def inherited(child)
-      wardrobe_methods = child.instance_variable_set(:@wardrobe_methods, Module.new)
-      wardrobe_class_methods = child.instance_variable_set(:@wardrobe_class_methods, Module.new)
-      child.include(wardrobe_methods)
-      child.extend(wardrobe_class_methods)
-      child.instance_variable_set(:@wardrobe_config, Config.new)
-      child.merge_wardrobe_config(wardrobe_config)
+      Config.create_and_add_to(child, merge_with: wardrobe_config)
       child.root_config = root_config
     end
 
@@ -79,7 +68,7 @@ module Wardrobe
     end
 
     def define_getter(atr)
-      @wardrobe_methods.instance_exec do
+      instance_methods_module do
         define_method(atr.name) do |options: {}, &blk|
           result = atr.getters.inject(nil) do |val, getter|
             getter.block.call(val, atr, self, options)
@@ -90,8 +79,18 @@ module Wardrobe
       end
     end
 
+    def instance_methods_module(&blk)
+      return wardrobe_config.instance_methods_module unless block_given?
+      @wardrobe_config = wardrobe_config.add_instance_methods(self, &blk)
+    end
+
+    def class_methods_module(&blk)
+      return wardrobe_config.class_methods_module unless block_given?
+      @wardrobe_config = wardrobe_config.add_class_methods(self, &blk)
+    end
+
     def define_setter(atr)
-      @wardrobe_methods.instance_exec do
+      instance_methods_module do
         define_method(atr.setter_name) do |input, options: {}|
           atr.setters.inject(input) do |val, setter|
             setter.block.call(val, atr, self, options)

@@ -17,7 +17,7 @@ module Wardrobe
           base.wardrobe_config do
             add_store(:configurable_store, ConfigurableStore)
           end
-          base.instance_variable_get(:@wardrobe_class_methods).class_exec do
+          base.class_methods_module do
             def configurable_store
               @wardrobe_config.configurable_store
             end
@@ -40,7 +40,7 @@ module Wardrobe
         end
 
         def _create_configurable_methods(name, blk_name, **args)
-          @wardrobe_class_methods.class_exec do
+          class_methods_module do
             define_method(name) do
               wardrobe_config.configurable_store[name]
             end
