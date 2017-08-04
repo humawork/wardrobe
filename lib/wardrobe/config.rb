@@ -96,6 +96,7 @@ module Wardrobe
           add_store(name, other.stores[name], initializer: true)
         end
         stores.each do |name, klass|
+          next unless other.respond_to?(name)
           instance = respond_to?(name) ? send(name) : klass.new
           instance_variable_set(
             "@#{name}", instance.merge(other.send(name), calling_object, self)
