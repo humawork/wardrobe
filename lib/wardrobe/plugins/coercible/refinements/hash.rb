@@ -5,7 +5,7 @@ module Wardrobe
     module Coercible
       module Refinements
         refine Hash.singleton_class do
-          def coerce(v, _atr)
+          def coerce(v, _atr, _parent)
             case v
             when self then v
             when Array then self[*v]
@@ -15,14 +15,14 @@ module Wardrobe
         end
 
         refine Hash do
-          def coerce(v, atr)
+          def coerce(v, atr, parent)
             case v
             when Hash
-              coerce_hash(v, atr)
+              coerce_hash(v, atr, parent)
             when Array
-              coerce_hash(self.class[*v], atr)
+              coerce_hash(self.class[*v], atr, parent)
             when NilClass
-              coerce_hash({}, atr)
+              coerce_hash({}, atr, parent)
             else
               raise UnsupportedError
             end
@@ -30,15 +30,16 @@ module Wardrobe
 
           module HashInstanceCoercer
 
-            def _wardrobe_init(atr, coercer: nil)
+            def _wardrobe_init(atr, coercer: nil, parent: nil)
               @_wardrobe_atr = atr
               @_wardrobe_coercer = coercer
+              @_wardrobe_parent = parent
               self
             end
 
             def _coerce(key, value)
-              return @_wardrobe_coercer[0].coerce(key, nil),
-                     @_wardrobe_coercer[1].coerce(value, nil)
+              return @_wardrobe_coercer[0].coerce(key, nil, @_wardrobe_parent),
+                     @_wardrobe_coercer[1].coerce(value, nil, @_wardrobe_parent)
             end
 
             def dup
@@ -64,13 +65,13 @@ module Wardrobe
 
           private
 
-          def coerce_hash(h, atr)
+          def coerce_hash(h, atr, parent)
             hash = h.map do |key, value|
-              [first[0].coerce(key, nil), first[1].coerce(value, nil)]
+              [first[0].coerce(key, nil, parent), first[1].coerce(value, nil, parent)]
             end.to_h
 
             hash.singleton_class.include(HashInstanceCoercer)
-            hash._wardrobe_init(atr, coercer: first)
+            hash._wardrobe_init(atr, coercer: first, parent: parent)
             hash
           end
         end

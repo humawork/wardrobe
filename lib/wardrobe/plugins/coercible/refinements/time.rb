@@ -9,7 +9,7 @@ module Wardrobe
     module Coercible
       module Refinements
         refine Time.singleton_class do
-          def coerce(v, _atr)
+          def coerce(v, _atr, _parent)
             case v
             when self     then v
             when String   then Time.parse(v)

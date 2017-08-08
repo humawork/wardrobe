@@ -15,13 +15,14 @@ require 'wardrobe/plugins/coercible/refinements/time'
 require 'wardrobe/plugins/coercible/refinements/proc'
 require 'wardrobe/plugins/coercible/refinements/open_struct'
 require 'wardrobe/plugins/coercible/refinements/regexp'
+require 'wardrobe/plugins/coercible/refinements/basic_object'
 
 module Wardrobe
   class Attribute
     using Plugins::Coercible::Refinements
 
-    def coerce(val)
-      klass.coerce(val, self)
+    def coerce(val, parent)
+      klass.coerce(val, self, parent)
     rescue Plugins::Coercible::Refinements::UnsupportedError => e
       raise e.class,
             "Can't coerce #{val.class} `#{val}` into #{klass}."
@@ -32,8 +33,8 @@ module Wardrobe
     name: :coercer,
     before: [:setter],
     use_if: ->(atr) { atr.options[:coerce] },
-    setter: lambda do |value, atr, _instance, _options|
-      atr.coerce(value)
+    setter: lambda do |value, atr, instance, _options|
+      atr.coerce(value, instance)
     end
   )
 
@@ -43,7 +44,7 @@ module Wardrobe
       option :coerce, Boolean, default: true, setter: :coercer
 
       module ClassMethods
-        def coerce(val, _atr)
+        def coerce(val, _atr, _parent)
           return new if val.nil?
           return new(**val) if val.is_a?(Hash)
           return val if val.class == self

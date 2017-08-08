@@ -16,7 +16,7 @@ class CustomClassTest < TestBase
       @two = two
     end
 
-    def self.coerce(input, atr)
+    def self.coerce(input, atr, parent)
       case input
       when Array then new(*input)
       else

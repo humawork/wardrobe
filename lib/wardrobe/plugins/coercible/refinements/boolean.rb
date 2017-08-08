@@ -7,7 +7,7 @@ module Wardrobe
         TRUE_STRINGS = Set.new(['1', 'yes', 'true']).freeze
         FALSE_STRINGS = Set.new(['0', 'no', 'false']).freeze
         refine Wardrobe::Boolean.singleton_class do
-          def coerce(v, _atr)
+          def coerce(v, _atr, _parent)
             case v
             when TrueClass, FalseClass then v
             when Integer then integer(v)

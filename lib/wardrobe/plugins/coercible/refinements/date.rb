@@ -8,7 +8,7 @@ module Wardrobe
     module Coercible
       module Refinements
         refine Date.singleton_class do
-          def coerce(v, _atr)
+          def coerce(v, _atr, _parent)
             case v
             # DateTime has to be first. `DateTime.new === Date.new # => true`
             when DateTime then v.to_date

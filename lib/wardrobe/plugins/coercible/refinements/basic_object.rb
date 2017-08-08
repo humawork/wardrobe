@@ -4,9 +4,9 @@ module Wardrobe
   module Plugins
     module Coercible
       module Refinements
-        refine Object.singleton_class do
+        refine BasicObject.singleton_class do
           def coerce(v, _atr, _parent)
-            new(v)
+            v
           end
         end
       end
