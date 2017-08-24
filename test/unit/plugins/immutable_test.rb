@@ -40,6 +40,21 @@ class ImmutableTest < TestBase
     end
   end
 
+  class EnableDisable
+    include Wardrobe
+    plugin :immutable
+    attribute :enabled, Array, immutable: true
+    attribute :default, Array, immutable: true
+    attribute :disabled, Array, immutable: false
+  end
+
+  def test_disabled_attribute
+    instance = EnableDisable.new
+    assert_equal true, instance.enabled.frozen?
+    assert_equal true, instance.default.frozen?
+    assert_equal false, instance.disabled.frozen?
+  end
+
   def test_immutable_array_raises_error
     assert_raises(RuntimeError) do
       @object.array << 'two'

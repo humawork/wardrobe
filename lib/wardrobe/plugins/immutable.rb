@@ -31,7 +31,7 @@ module Wardrobe
         end
 
         def deep_freeze
-          freeze
+          freeze unless self.is_a?(Class)
         end
 
         def mutate!
@@ -42,10 +42,38 @@ module Wardrobe
           end
         end
       end
+      refine OpenStruct do
+        def deep_freeze
+          self.each_pair do |k,v|
+            v.deep_freeze
+          end
+          freeze
+        end
+        def mutate!
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            self.each_pair do |k,v|
+              self.send("#{k}=", v.mutate!)
+            end
+            self
+          end
+        end
+      end
+
       refine Hash do
         def deep_freeze
-          each { |_k, v| v.deep_freeze }
+          each { |k, v| k.deep_freeze; v.deep_freeze }
           freeze
+        end
+
+        def mutate!
+          dup.instance_exec do
+            instance_variable_set(:@_mutating, true)
+            keys.each do |k|
+              self[k.mutate!] = self.delete(k).mutate!
+            end
+            self
+          end
         end
       end
       refine Set do
@@ -81,7 +109,7 @@ module Wardrobe
 
         def deep_freeze
           _attribute_store.each do |_name, atr|
-            instance_variable_get(atr.ivar_name).deep_freeze
+            instance_variable_get(atr.ivar_name).deep_freeze if atr.options[:immutable]
           end
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
           freeze
@@ -98,7 +126,7 @@ module Wardrobe
       Wardrobe.register_setter(
         name: :disable_setter_for_immutable_plugin,
         before: [:setter],
-        use_if: ->(_atr) { true },
+        use_if: ->(atr) { atr.options[:immutable] },
         setter: lambda do |value, atr, instance, _options|
           return value if instance._initializing? || !instance.frozen?
           raise NoMethodError, <<~eos
@@ -111,7 +139,7 @@ module Wardrobe
       Wardrobe.register_getter(
         name: :dup_when_using_set_block,
         after: [:getter],
-        use_if: ->(_atr) { true },
+        use_if: ->(atr) { atr.options[:immutable] },
         getter: lambda do |value, atr, instance, options|
           using ImmutableInstanceMethods
           if instance._initializing?
@@ -132,8 +160,7 @@ module Wardrobe
         using ImmutableInstanceMethods
         def initialize(**hash)
           super
-          _data.deep_freeze if instance_variable_defined?(:@_data)
-          freeze
+          deep_freeze
         end
 
         def mutate(**args, &blk)
@@ -142,7 +169,7 @@ module Wardrobe
 
         def _attribute_init(atr, hash, name)
           super
-          send(atr.name).deep_freeze
+          send(atr.name)
         end
       end
     end
