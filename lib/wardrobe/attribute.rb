@@ -13,7 +13,7 @@ module Wardrobe
       @ivar_name = "@#{name}"
       @setter_name = "#{name}="
       @klass = validate_klass(klass)
-      @options = validate_options(options, config, defining_object)
+      @options = validate_and_coerce_options(options, config, defining_object)
       @getters ||= build_getter_array(defining_object)
       @setters ||= build_setter_array(defining_object)
       freeze
@@ -68,13 +68,28 @@ module Wardrobe
       end + klass.default_setters).compact.sort
     end
 
-    def validate_options(options, config, defining_object)
-      options.each do |name, _|
+    using Plugins::Coercible::Refinements
+
+    def validate_and_coerce_options(options, config, defining_object)
+      options.keys.each do |name|
         unless config.option_store[name]
           Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
           raise UnavailableOptionError
         end
+        klass = config.option_store[name].klass
+        options[name] = begin
+                          klass.coerce(options[name], nil, nil)
+                        rescue Wardrobe::Plugins::Coercible::Refinements::UnsupportedError => e
+                          if klass == Set
+                            Set.new([options[name]])
+                          elsif klass == Array
+                            [options[name]]
+                          else
+                            raise e
+                          end
+                        end
       end
+      options
     end
   end
 end

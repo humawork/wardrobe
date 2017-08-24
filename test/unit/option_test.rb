@@ -11,7 +11,7 @@ class OptionTest < TestBase
     end
     Class.new do
       include Wardrobe
-      attribute :name, String, coerce: :option
+      attribute :name, String, coerce: false
     end
   end
 end
