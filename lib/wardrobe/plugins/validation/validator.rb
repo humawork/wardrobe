@@ -32,8 +32,6 @@ module Wardrobe
               report(errors) if report
               errors
             end
-          else
-            Wardrobe.logger.warn("Unable to validate #{value.class} class")
           end
         end
 
