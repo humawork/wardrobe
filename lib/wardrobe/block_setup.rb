@@ -75,7 +75,7 @@ module Wardrobe
 
     class << self
       def register_option(option)
-        return if option.klass == Proc || option.klass == Object
+        return if option.klass == Proc || option.klass == BasicObject
         send("create_#{option.klass_name}_method", option.name)
       end
 

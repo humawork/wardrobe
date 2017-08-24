@@ -27,7 +27,7 @@ module Wardrobe
         end
       )
 
-      option :default, Object, setter: :default_setter
+      option :default, BasicObject, setter: :default_setter
     end
   end
   register_plugin(:default, Plugins::Default)
