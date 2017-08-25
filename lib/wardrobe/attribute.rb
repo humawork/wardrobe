@@ -47,8 +47,12 @@ module Wardrobe
       other.each do |key, value|
         next if merged_options[key] == value
         if merged_options[key]
-          raise 'FIX ME! Currently only hash merge is supported' unless value.is_a?(Hash)
-          merged_options[key] = merged_options[key].merge(value)
+          case value
+          when Hash, Set
+            merged_options[key] = merged_options[key].merge(value)
+          else
+            raise 'FIX ME! Currently only hash and set merge is supported'
+          end
         else
           merged_options[key] = value.dup
         end
