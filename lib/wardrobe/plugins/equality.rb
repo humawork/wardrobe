@@ -8,7 +8,7 @@ module Wardrobe
       module InstanceMethods
         def ==(other)
           return false unless other.class == self.class
-          _attribute_store.all? do |_name, atr|
+          _attribute_store.all? do |atr|
             return true if atr.options[:exclude_from_equality]
             send(atr.name) == other.send(atr.name)
           end

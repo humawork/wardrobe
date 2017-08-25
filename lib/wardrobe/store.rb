@@ -19,7 +19,7 @@ module Wardrobe
     end
 
     def each(&blk)
-      store.each(&blk)
+      store.values.each(&blk)
     end
 
     def freeze

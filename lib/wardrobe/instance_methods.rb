@@ -62,13 +62,13 @@ module Wardrobe
 
     def _wardrobe_init(data)
       # Should we also loop over the hash and report on missing or additional attributes?
-      _attribute_store.each do |name, atr|
-        _attribute_init(atr, data, name)
+      _attribute_store.each do |atr|
+        _attribute_init(atr, data)
       end
     end
 
-    def _attribute_init(atr, hash, name)
-      send(atr.setter_name, hash[name])
+    def _attribute_init(atr, hash)
+      send(atr.setter_name, hash[atr.name])
     end
   end
 end

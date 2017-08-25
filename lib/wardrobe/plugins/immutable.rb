@@ -20,7 +20,7 @@ module Wardrobe
             blk.call(self) if block_given?
             args.each do |name, _value|
               if (atr = _attribute_store[name])
-                _attribute_init(atr, args, name)
+                _attribute_init(atr, args)
               end
             end
             remove_instance_variable(:@_mutating)
@@ -108,7 +108,7 @@ module Wardrobe
         end
 
         def deep_freeze
-          _attribute_store.each do |_name, atr|
+          _attribute_store.each do |atr|
             instance_variable_get(atr.ivar_name).deep_freeze if atr.options[:immutable]
           end
           remove_instance_variable(:@_mutating) if instance_variable_defined?(:@_mutating)
@@ -167,7 +167,7 @@ module Wardrobe
           super
         end
 
-        def _attribute_init(atr, hash, name)
+        def _attribute_init(atr, hash)
           super
           send(atr.name)
         end

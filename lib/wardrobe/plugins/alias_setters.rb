@@ -19,13 +19,13 @@ module Wardrobe
       module InstanceMethods
         private
 
-        def _attribute_init(atr, hash, name)
+        def _attribute_init(atr, hash)
           return super unless atr.options[:alias_setter]
           return super if atr.options[:alias_setter].empty?
           keys_in_hash = atr.options[:alias_setter].select { |key| hash.key?(key) }
           return super unless keys_in_hash.any?
           keys_in_hash.reverse.each do |key|
-            send("#{name}=", atr.coerce(hash[key], self))
+            send("#{atr.name}=", atr.coerce(hash[key], self))
           end
         end
       end

@@ -1,13 +1,17 @@
 #Changelog
 
 ## HEAD
+
+## Breaking changes
+
+* Changed store enumerable to enumerate on values of hash instead of key/value.
+
+### Enhancements
+
 * Improved support for plugins in modules.
 * CONFIGURABLE: Added before_update and after_update callbacks
 * CONFIGURABLE: Support validation plugin
 * Rewrite getter and setter middleware to use before/after instead of priority
-
-### Enhancements
-
 * COERCION: Added support for with `add`, `<<` and `merge` when mutating Set.
 * COERCION: Added support for with `insert` when mutating Array.
 * COERCION: Added support for with `merge!` and `store` when mutating Hash.
