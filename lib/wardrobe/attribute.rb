@@ -85,6 +85,7 @@ module Wardrobe
                           elsif klass == Array
                             [options[name]]
                           else
+                            Wardrobe.logger.error "Can't coerce #{options[name].class} `#{options[name]}` into #{klass}."
                             raise e
                           end
                         end

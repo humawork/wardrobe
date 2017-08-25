@@ -72,11 +72,21 @@ module Wardrobe
       result[key] = [result[key]]
     end
 
-
     class << self
       def register_option(option)
-        return if option.klass == Proc || option.klass == BasicObject
+        # return if option.klass == Proc || option.klass == BasicObject
         send("create_#{option.klass_name}_method", option.name)
+      rescue NoMethodError
+        send("create_object_method", option.name)
+        create_merge_method(option.klass_name)
+      end
+
+      def create_merge_method(klass_name)
+        method_name = "merge_#{klass_name}"
+        return if method_defined?(method_name)
+        define_method(method_name) do |result, key, value|
+          result[key] || value.last
+        end
       end
 
       def create_array_method(name)
@@ -109,6 +119,19 @@ module Wardrobe
 
       def create_boolean_method(name)
         define_method(name) do |val = true, &blk|
+          begin
+            block_options[name] ||= []
+            block_options[name] << val
+            instance_exec(&blk) if blk || block_given?
+          ensure
+            block_options[name].pop
+            block_options.delete(name) if block_options[name].empty?
+          end
+        end
+      end
+
+      def create_object_method(name)
+        define_method(name) do |val, &blk|
           begin
             block_options[name] ||= []
             block_options[name] << val
