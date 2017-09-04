@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ValidationPredicatesMinSizeTest < MiniTest::Test
+class ValidationPredicatesMinSizeTest < TestBase
   class Foo
     include Wardrobe
     plugin :validation
@@ -11,13 +11,15 @@ class ValidationPredicatesMinSizeTest < MiniTest::Test
     attribute :string, String, validates { min_size?(1) }
     attribute :symbol, Symbol, validates { min_size?(1) }
   end
-
+  
   def test_nil
-    assert_raises(NoMethodError) {
-      Foo.new(
-        array: nil, hash: nil, set: nil, string: nil, symbol: nil
-      )._validation_errors
-    }
+    no_log do
+      assert_raises(NoMethodError) {
+        Foo.new(
+          array: nil, hash: nil, set: nil, string: nil, symbol: nil
+        )._validation_errors
+      }
+    end
   end
 
   def test_fail

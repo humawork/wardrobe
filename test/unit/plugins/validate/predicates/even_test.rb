@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ValidationPredicatesEvenTest < MiniTest::Test
+class ValidationPredicatesEvenTest < TestBase
   class Foo
     include Wardrobe
     plugin :validation
@@ -8,11 +8,13 @@ class ValidationPredicatesEvenTest < MiniTest::Test
   end
 
   def test_nil
-    assert_raises(NoMethodError) {
-      Foo.new(
+    no_log do
+      assert_raises(NoMethodError) {
+        Foo.new(
         integer: nil
-      )._validation_errors
-    }
+        )._validation_errors
+      }
+    end
   end
 
   def test_fail

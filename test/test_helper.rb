@@ -25,13 +25,25 @@ class TestBase < Minitest::Test
   end
 
   def self.debuging?
+    return @@debuging if class_variable_defined?(:@@debuging)
     @@debuging ||= false
+  end
+
+  def self.log?
+    return @@log if class_variable_defined?(:@@log)
+    @@log ||= true
   end
 
   def debug(&blk)
     @@debuging = true
     instance_exec(&blk)
     @@debuging = false
+  end
+
+  def no_log(&blk)
+    @@log = false
+    instance_exec(&blk)
+    @@log = true
   end
 end
 
@@ -54,10 +66,13 @@ LOG_MESSAGES = []
 class TestLogger < Logger
   def format_message(severity, datetime, progname, msg)
     LOG_MESSAGES << [severity, datetime, progname, msg]
-    super
+    if TestBase.log?
+      super
+      # puts caller.find { |line| line[/_test.rb/] }
+    end
   end
 end
 
 Wardrobe.configure do |c|
-  c.logger = TestLogger.new(File.open(File::NULL, "w"))
+  c.logger = TestLogger.new(STDOUT)#(File.open(File::NULL, 'w'))
 end

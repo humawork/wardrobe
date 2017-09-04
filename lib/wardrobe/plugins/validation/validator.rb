@@ -5,17 +5,18 @@ module Wardrobe
     module Validation
       class Validator
         using Refinements
-        attr_reader :value, :atr, :error_store, :validation
+        attr_reader :value, :atr, :error_store, :validation, :log
 
         def initialize(value, atr, error_store = ErrorStore.new, validation = nil)
           @value = value
           @atr = atr
           @error_store = error_store
           @validation = validation || atr.options[:validates]
+          @log = true
         end
 
         def run(report = true)
-          if validation
+          if validation && validation.any?
             validate(validation, report)
           elsif value.respond_to?(:_validate!)
             if value._validation_errors.any?
@@ -48,11 +49,22 @@ module Wardrobe
             begin
               error = value.send(*validation.args)
             rescue NoMethodError => e
-              Wardrobe.logger.error("Unable to validate #{validation[:method]} on #{value.class}")
+              log_unable_to_validate_message(validation[:method]) if log
               raise e
             end
             report && error ? report(error) : error
           end
+        end
+
+        def disable_log
+          @log = false
+          yield
+        ensure
+          @log = true
+        end
+
+        def log_unable_to_validate_message(method)
+          Wardrobe.logger.error("Unable to validate #{method} on #{value.class}")
         end
 
         def validate_list(validations, report)
@@ -123,9 +135,14 @@ module Wardrobe
         end
 
         def _optional_(validation, report)
-          validate(validation, report)
+          disable_log do
+            validate(validation, report)
+          end
         rescue NoMethodError => e
-          raise e unless value.nil?
+          unless value.nil?
+            log_unable_to_validate_message(validation[:method])
+            raise e
+          end
         end
       end
     end

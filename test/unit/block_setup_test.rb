@@ -83,12 +83,14 @@ class BlockSetupTest < TestBase
   end
 
   def test_crash
-    assert_raises(Wardrobe::Plugins::Coercible::Refinements::UnsupportedError) do
-      klass = Class.new do
-        include Wardrobe
-        plugin :option_test
-        attributes proc: 'foo' do
-          attribute :name, String
+    no_log do
+      assert_raises(Wardrobe::Plugins::Coercible::Refinements::UnsupportedError) do
+        Class.new do
+          include Wardrobe
+          plugin :option_test
+          attributes proc: 'foo' do
+            attribute :name, String
+          end
         end
       end
     end

@@ -9,15 +9,19 @@ class ValidationOnSetTest < TestBase
   end
 
   def test_init
-    assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
-      Foo.new(name: 'bar')
+    no_log do
+      assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
+        Foo.new(name: 'bar')
+      end
     end
   end
 
   def test_setter
-    foo = Foo.new(name: 'A Long Valid Name')
-    assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
-      foo.name = 'bar'
+    no_log do
+      foo = Foo.new(name: 'A Long Valid Name')
+      assert_raises(Wardrobe::Plugins::Validation::ValidationError) do
+        foo.name = 'bar'
+      end
     end
   end
 end
