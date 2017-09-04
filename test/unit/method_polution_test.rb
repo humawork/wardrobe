@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MethodPolutionTest < TestBase
 
-  ALLOWED_POLUTING_PLUGINS = { immutable: [:mutate] }
+  ALLOWED_POLUTING_PLUGINS = { immutable: [:mutate], merge: [:merge, :deep_merge] }
 
   class WardrobeClassWithoutPlugins
     include Wardrobe
@@ -43,6 +43,6 @@ class MethodPolutionTest < TestBase
   end
 
   def test_allowed_methods
-    assert_equal ALLOWED_POLUTING_PLUGINS.values.flatten, methods_class_with_polution_allowed_plugins.delete_if { |m| m.to_s[/^_/] }
+    assert_equal ALLOWED_POLUTING_PLUGINS.values.flatten.to_set, methods_class_with_polution_allowed_plugins.delete_if { |m| m.to_s[/^_/] }.to_set
   end
 end
