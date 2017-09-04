@@ -13,7 +13,9 @@ module Wardrobe
       @ivar_name = "@#{name}"
       @setter_name = "#{name}="
       @klass = validate_klass(klass)
-      @options = validate_and_coerce_options(options, config, defining_object)
+      @options = {}
+      create_option_methods(config)
+      validate_and_coerce_options(options, config, defining_object)
       @getters ||= build_getter_array(defining_object)
       @setters ||= build_setter_array(defining_object)
       freeze
@@ -51,7 +53,15 @@ module Wardrobe
           when Hash, Set
             merged_options[key] = merged_options[key].merge(value)
           else
-            raise 'FIX ME! Currently only hash and set merge is supported'
+            if value.respond_to?(:_wardrobe_config)
+              if value._wardrobe_config.plugin_store[:merge]
+                merged_options[key] = merged_options[key].merge(value)
+              else
+                raise "Unable to merge `#{value.class}`. Please add the `:merge` plugin."
+              end
+            else
+              raise 'FIX ME! Currently only hash and set merge is supported'
+            end
           end
         else
           merged_options[key] = value.dup
@@ -74,27 +84,57 @@ module Wardrobe
 
     using Plugins::Coercible::Refinements
 
-    def validate_and_coerce_options(options, config, defining_object)
-      options.keys.each do |name|
-        unless config.option_store[name]
-          Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
-          raise UnavailableOptionError
+    def create_option_methods(config)
+      config.option_store.each do |option|
+        define_singleton_method(option.name) do |&blk|
+          blk.call(options[option.name]) if block_given?
+          options[option.name]
         end
-        klass = config.option_store[name].klass
-        options[name] = begin
-                          klass.coerce(options[name], nil, nil)
-                        rescue Wardrobe::Plugins::Coercible::Refinements::UnsupportedError => e
-                          if klass == Set
-                            Set.new([options[name]])
-                          elsif klass == Array
-                            [options[name]]
-                          else
-                            Wardrobe.logger.error "Can't coerce #{options[name].class} `#{options[name]}` into #{klass}."
-                            raise e
-                          end
-                        end
+        define_singleton_method("#{option.name}=") do |value|
+          klass = config.option_store[option.name].klass
+          options[option.name] = begin
+                                   klass.coerce(value, nil, nil)
+                                 rescue Wardrobe::Plugins::Coercible::Refinements::UnsupportedError => e
+                                   if klass == Set
+                                     Set.new([value])
+                                   elsif klass == Array
+                                     [value]
+                                   else
+                                     Wardrobe.logger.error "Can't coerce #{value.class} `#{value}` into #{klass}."
+                                     raise e
+                                   end
+                                 end
+        end
       end
-      options
+    end
+
+    def validate_and_coerce_options(options, config, defining_object)
+      config.option_store.each do |option|
+        value = if options.has_key?(option.name)
+                  options.delete(option.name)
+                else
+                  option.default_value
+                end
+        send("#{option.name}=", value)
+      end
+
+      options.keys.each do |name|
+        Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
+        raise UnavailableOptionError
+      end
+
+
+      # options.keys.each do |name|
+      #   unless config.option_store[name]
+      #     Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
+      #     raise UnavailableOptionError
+      #   end
+      #   send("#{name}=", options[name])
+      # end
+      # options
+
+
+
     end
   end
 end

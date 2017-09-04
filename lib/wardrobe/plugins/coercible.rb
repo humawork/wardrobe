@@ -21,7 +21,7 @@ module Wardrobe
   class Attribute
     using Plugins::Coercible::Refinements
 
-    def coerce(val, parent)
+    def _coerce(val, parent)
       klass.coerce(val, self, parent)
     rescue Plugins::Coercible::Refinements::UnsupportedError => e
       raise e.class,
@@ -34,7 +34,7 @@ module Wardrobe
     before: [:setter],
     use_if: ->(atr) { atr.options[:coerce] },
     setter: lambda do |value, atr, instance, _options|
-      atr.coerce(value, instance)
+      atr._coerce(value, instance)
     end
   )
 

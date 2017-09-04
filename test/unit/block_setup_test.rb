@@ -1,16 +1,5 @@
 require 'test_helper'
 
-module OptionTestPlugin
-  extend Wardrobe::Plugin
-  option :symbol, Symbol
-  option :string, String
-  option :date, Date
-  option :time, Time
-  option :proc, Proc
-end
-
-Wardrobe.register_plugin(:option_test, OptionTestPlugin)
-
 class BlockModel
   include Wardrobe
   plugin :nil_if_empty
@@ -39,6 +28,25 @@ class BlockModel
 end
 
 class BlockSetupTest < TestBase
+
+  class Foo
+    include Wardrobe
+    plugin :merge
+    attribute :bar, String
+  end
+
+  module OptionTestPlugin
+    extend Wardrobe::Plugin
+    option :symbol, Symbol
+    option :string, String
+    option :date, Date
+    option :time, Time
+    option :proc, Proc
+    option :wardrobe, Foo
+  end
+
+  Wardrobe.register_plugin(:option_test, OptionTestPlugin)
+
   def test_one
     instance = BlockModel.new(name: '', status: 0, friends: [], address: '', id: 0, uuid: 0, nested_int: 0 )
     assert_nil instance.name
@@ -95,5 +103,44 @@ class BlockSetupTest < TestBase
       end
     end
     assert_equal 1, log_messages.length
+  end
+
+  def test_wardrobe_option
+    klass = Class.new do
+      include Wardrobe
+      plugin :option_test
+      attributes wardrobe: { bar: :test} do
+        attribute :name, String
+      end
+    end
+    assert_equal 'test', klass.attribute_store[:name].options[:wardrobe].bar
+  end
+
+  def test_attribute_block
+    klass = Class.new do
+      include Wardrobe
+      plugin :option_test
+      attributes wardrobe: { bar: :test } do
+        attribute :name, String do |atr|
+          atr.wardrobe.bar = 'changed'
+        end
+      end
+    end
+    assert_equal 'changed', klass.attribute_store[:name].options[:wardrobe].bar
+  end
+
+  def test_wardrobe_option_merge
+    klass = Class.new do
+      include Wardrobe
+      plugin :option_test
+      attributes wardrobe: { bar: :test } do
+        attribute :name, String do |atr|
+          atr.wardrobe.bar = 'changed'
+        end
+      end
+    end
+    Class.new(klass) do
+      attribute :name, String, wardrobe: { bar: :merged }
+    end
   end
 end

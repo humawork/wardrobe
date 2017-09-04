@@ -48,10 +48,14 @@ module Wardrobe
               klass = self
               args[:before_update].call(klass) if args[:before_update]
               wardrobe_config do
-                @configurable_store = configurable_store.update(name, klass, &blk)
-                if @configurable_store[name].class.plugin_store[:validation]
-                  configurable_store[name]._validate!
-                end
+                # begin
+                  @configurable_store = configurable_store.update(name, klass, &blk)
+                  if @configurable_store[name].class.plugin_store[:validation]
+                    configurable_store[name]._validate!
+                  end
+                # rescue => e
+                #   binding.pry
+                # end
               end
               args[:after_update].call(klass) if args[:after_update]
             end

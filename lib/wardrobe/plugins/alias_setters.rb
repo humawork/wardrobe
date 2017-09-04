@@ -25,7 +25,7 @@ module Wardrobe
           keys_in_hash = atr.options[:alias_setter].select { |key| hash.key?(key) }
           return super unless keys_in_hash.any?
           keys_in_hash.reverse.each do |key|
-            send("#{atr.name}=", atr.coerce(hash[key], self))
+            send("#{atr.name}=", atr._coerce(hash[key], self))
           end
         end
       end

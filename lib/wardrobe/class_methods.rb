@@ -99,10 +99,9 @@ module Wardrobe
       end
     end
 
-    def attribute(name, klass, *args, &blk)
-      merged_args = option_store.defaults.merge(args.inject({}) { |input, val| input.merge! val })
+    def attribute(name, klass, **args, &blk)
       @wardrobe_config = wardrobe_config.add_attribute(
-        name, klass, self, **merged_args, &blk
+        name, klass, self, **args, &blk
       )
       define_getter(attribute_store[name])
       define_setter(attribute_store[name])

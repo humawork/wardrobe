@@ -7,6 +7,7 @@ module Wardrobe
   # Wardrobe() method.
   module ModuleMethods
     def included(base)
+      return if base.respond_to?(:wardrobe_config)
       base.extend(ClassMethods)
       unless base.to_s == 'Wardrobe::RootConfig'
         base.root_config = config

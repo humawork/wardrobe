@@ -15,6 +15,12 @@ module Wardrobe
       freeze
     end
 
+    def default_value
+      if options.has_key?(:default)
+        options[:default].is_a?(Proc) ? options[:default].call : options[:default]
+      end
+    end
+
     def klass_name
       klass.to_s[/([^:]+)$/,1].downcase
     end

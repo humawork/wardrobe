@@ -32,5 +32,17 @@ class InheritanceCompositionTest < TestBase
     assert_equal 18, instance.age
   end
 
+  # Test inheritance and include Wardrobe again
+
+  class ReIncludedClass < InheritedClass
+    include Wardrobe
+    attribute :foo, String
+  end
+
+  def test_re_included_class
+    assert_equal [:name, :age, :foo], ReIncludedClass.attribute_store.store.keys
+  end
+
+
   # Add tests for different modules
 end

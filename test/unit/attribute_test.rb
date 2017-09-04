@@ -30,13 +30,12 @@ class AttributeTest < TestBase
   end
 
   def test_getter
-    assert_instance_method_call_count(2, Wardrobe::Attribute, :build_getter_array) do
+    assert_instance_method_call_count(3, Wardrobe::Attribute, :build_getter_array) do
       klass = Class.new do
         include Wardrobe
         attribute :name, String
       end
       Class.new(klass) do
-        include Wardrobe
         attribute :name, String
       end
     end
