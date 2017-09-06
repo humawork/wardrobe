@@ -108,12 +108,6 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/getting-started/plugins/">
-              <a href="/wardrobe/getting-started/plugins/">
-                <span>Plugins     </i></span>
-              </a>
-            </li>
-          
             <li class="dd-item " data-nav-id="/wardrobe/getting-started/writing-a-plugin/">
               <a href="/wardrobe/getting-started/writing-a-plugin/">
                 <span>Writing a plugin     </i></span>
@@ -297,6 +291,126 @@
 
 
 <h1 id="plugins">Plugins</h1>
+
+<p>Wardrobe comes with numerous plugins and aims at making it easy to write your own.</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Exposed options</th>
+<th>Development state</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>validation</td>
+<td><code>validates</code></td>
+<td>BETA</td>
+<td>dry-validation and Hanami inspired validations for your attributes</td>
+</tr>
+
+<tr>
+<td>immutable</td>
+<td><code>immutable</code></td>
+<td>BETA</td>
+<td>makes your object immutable. Exposes a #mutate method that will return a new immutable object</td>
+</tr>
+
+<tr>
+<td>dirty_tracker</td>
+<td><code>track</code></td>
+<td>BETA</td>
+<td>tracks instances and exposes a #_changed? method</td>
+</tr>
+
+<tr>
+<td>default</td>
+<td><code>default</code></td>
+<td>BETA</td>
+<td>default values for attributes</td>
+</tr>
+
+<tr>
+<td>configurable</td>
+<td></td>
+<td>BETA</td>
+<td>allows you to add class level immutable configuration to your classes</td>
+</tr>
+
+<tr>
+<td>nil_if_empty</td>
+<td><code>nil_if_empty</code></td>
+<td>BETA</td>
+<td>Converts empty objects like <code>''</code>, <code>{}</code> and <code>[]</code> to nil when initializing.</td>
+</tr>
+
+<tr>
+<td>nil_if_zero</td>
+<td><code>nil_if_zero</code></td>
+<td>BETA</td>
+<td></td>
+</tr>
+
+<tr>
+<td>alias_setters</td>
+<td><code>alias_setter(Array)</code></td>
+<td>BETA</td>
+<td></td>
+</tr>
+
+<tr>
+<td>optional_setter</td>
+<td><code>setter</code></td>
+<td>BETA</td>
+<td>disable the setter</td>
+</tr>
+
+<tr>
+<td>optional_getter</td>
+<td><code>getter</code></td>
+<td>BETA</td>
+<td>disable the getter</td>
+</tr>
+
+<tr>
+<td>equality</td>
+<td><code>include_in_equality</code></td>
+<td>BETA</td>
+<td>check if to wardrobe instances are equal</td>
+</tr>
+
+<tr>
+<td>presenter</td>
+<td></td>
+<td>POC</td>
+<td>presents your instance as a hash</td>
+</tr>
+
+<tr>
+<td>json_initializer</td>
+<td></td>
+<td>POC</td>
+<td>initialize your model with a json string</td>
+</tr>
+
+<tr>
+<td>html_initializer</td>
+<td></td>
+<td>POC</td>
+<td>initialize your model with a html string</td>
+</tr>
+
+<tr>
+<td>xml_initializer</td>
+<td></td>
+<td>NOT IMPLEMENTED</td>
+<td>initialize your model with a xml string</td>
+</tr>
+</tbody>
+</table>
 
 
       
