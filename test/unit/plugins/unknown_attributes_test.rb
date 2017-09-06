@@ -14,11 +14,20 @@ class UnknownAttributesTest < TestBase
     assert_equal [:another, :unknown], instance.unknown_attributes.keys
   end
 
+  def test_default_callback
+    Class.new do
+      include Wardrobe
+      plugin :unknown_attributes
+    end.new(missing: :atr)
+  rescue Wardrobe::Plugins::UnknownAttributes::UnknownAttributesError => e
+    assert_equal :atr, e.unknown_attributes[:missing]
+  end
+
   def test_class_without_callback
     assert_raises(Wardrobe::MisconfiguredPluginError) do
       Class.new do
         include Wardrobe
-        plugin :unknown_attributes
+        plugin :unknown_attributes, callback: 'invalid'
       end
     end
   end
