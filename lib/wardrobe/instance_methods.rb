@@ -16,6 +16,10 @@ module Wardrobe
       _wardrobe_config.attribute_store
     end
 
+    def _plugin_store
+      _wardrobe_config.plugin_store
+    end
+
     def _wardrobe_config
       if _singleton_initialized?
         singleton_class.wardrobe_config
