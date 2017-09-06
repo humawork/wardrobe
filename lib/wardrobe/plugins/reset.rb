@@ -5,11 +5,12 @@ module Wardrobe
 
       module InstanceMethods
         def _reset
-          initialize
+          self.class.new
         end
 
         def _reset!
-          self.class.new
+          initialize
+          self
         end
       end
     end
