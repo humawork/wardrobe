@@ -5,6 +5,13 @@ module Wardrobe
     module UnknownAttributes
       extend Wardrobe::Plugin
 
+      after_load do |klass, **args|
+        unless args[:callback].is_a?(Proc)
+          raise MisconfiguredPluginError,
+                "Provide a `callback` Proc with the unknown_attributes plugin"
+        end
+      end
+
       module InstanceMethods
         private
         def _wardrobe_init(data)

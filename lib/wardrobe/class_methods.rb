@@ -127,6 +127,7 @@ module Wardrobe
         plugin(required_plugin_name) unless plugin_store[required_plugin_name]
       end
       init_plugin_methods(plugin)
+      plugin.after_load&.call(self, **args)
     end
 
     def init_plugin_methods(plugin)

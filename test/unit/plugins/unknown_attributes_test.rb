@@ -13,4 +13,13 @@ class UnknownAttributesTest < TestBase
     instance = Foo.new(bar: 'Test', another: 'Attribute', unknown: 'value')
     assert_equal [:another, :unknown], instance.unknown_attributes.keys
   end
+
+  def test_class_without_callback
+    assert_raises(Wardrobe::MisconfiguredPluginError) do
+      Class.new do
+        include Wardrobe
+        plugin :unknown_attributes
+      end
+    end
+  end
 end

@@ -3,6 +3,7 @@
 module Wardrobe
   class PluginNameTakenError < StandardError; end
   class PluginOptionKeywordTakenError < StandardError; end
+  class MisconfiguredPluginError < StandardError; end
 
   class << self
     attr_reader :plugins, :options
@@ -26,6 +27,11 @@ module Wardrobe
 
     def plugin(name)
       required_plugins << name
+    end
+
+    def after_load(&blk)
+      @after_load = blk if block_given?
+      @after_load if instance_variable_defined?(:@after_load)
     end
 
     def option(name, klass, **kargs, &blk)
