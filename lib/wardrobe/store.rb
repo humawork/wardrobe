@@ -3,20 +3,23 @@
 module Wardrobe
   class Store
     include Enumerable
+    extend Forwardable
     attr_reader :store
+
+    def_delegators :@store, :dig, :values, :[]
 
     def initialize(hash = {})
       @store = hash
       freeze
     end
 
-    def values
-      store.values
-    end
-
-    def [](name)
-      store[name]
-    end
+    # def values
+    #   store.values
+    # end
+    #
+    # def [](name)
+    #   store[name]
+    # end
 
     def each(&blk)
       store.values.each(&blk)
