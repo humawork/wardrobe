@@ -447,6 +447,47 @@ Foo.new(&#39;{&amp;quot;bar&amp;quot;:&amp;quot;value&amp;quot;}&#39;)
     </item>
     
     <item>
+      <title>Merge</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/merge/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/merge/</guid>
+      <description>
+
+&lt;p&gt;The merge plugin will add &lt;code&gt;#merge&lt;/code&gt; and &lt;code&gt;#deep_merge&lt;/code&gt; instance methods and allow
+you to merge two wardrobe instances of the same class.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Bar
+  include Wardrobe
+  plugin :merge
+
+  attribute :foo, Hash
+end
+
+class Foo
+  include Wardrobe
+  plugin :merge
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+instance_1 = Foo.new(title: &#39;One&#39;, bar: { foo: { one: 1, two: { nested_1: 1 } }})
+instance_2 = Foo.new(title: &#39;Two&#39;, bar: { foo: { one: 2, two: { nested_2: 2 } }})
+
+instance_1.merge(instance_2)
+#=&amp;gt; #&amp;lt;Foo:0x007f890e220940 @title=&amp;quot;Two&amp;quot;, @bar=#&amp;lt;Bar:0x007f890e220620 @foo={:one=&amp;gt;2, :two=&amp;gt;{:nested_2=&amp;gt;2}}&amp;gt;&amp;gt;
+
+instance_1.deep_merge(instance_2)
+#=&amp;gt; #&amp;lt;Foo:0x007f9f63036fb0 @title=&amp;quot;Two&amp;quot;, @bar=#&amp;lt;Bar:0x007f9f63037870 @foo={:one=&amp;gt;2, :two=&amp;gt;{:nested_1=&amp;gt;1, :nested_2=&amp;gt;2}}&amp;gt;&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Nil if Empty</title>
       <link>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</link>
       <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
@@ -553,6 +594,104 @@ end
 foo = Foo.new(bar: &#39;value&#39;)
 
 foo.bar = &#39;changed&#39; #=&amp;gt; NoMethodError: undefined method `bar=&#39; for #&amp;lt;Foo:0x007f8953916660&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Presenter</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/presenter/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/presenter/</guid>
+      <description>
+
+&lt;p&gt;The presenter plugin will present your Wardrobe instances as a hash.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Bar
+  include Wardrobe
+  plugin :presenter
+
+  attribute :string, String
+  attribute :time, Time
+end
+
+class Foo
+  include Wardrobe
+  plugin :presenter, time_formatter: -&amp;gt;(time) { time.iso8601 }
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+instance = Foo.new(title: &#39;A Foo&#39;, bar: {string: &#39;A String&#39;, time: &#39;2017-01-01T09:00:00+02:00&#39;})
+#=&amp;gt; #&amp;lt;Foo:0x007fc2e9165d60 @title=&amp;quot;A Foo&amp;quot;, @bar=#&amp;lt;Bar:0x007fc2e915c648 @string=&amp;quot;A String&amp;quot;, @time=2017-01-01 09:00:00 UTC&amp;gt;&amp;gt;
+
+instance._present
+#=&amp;gt; {:title=&amp;gt;&amp;quot;A Foo&amp;quot;, :bar=&amp;gt;{:string=&amp;gt;&amp;quot;A String&amp;quot;, :time=&amp;gt;&amp;quot;2017-01-01T09:00:00+02:00&amp;quot;}}
+
+attributes = {
+  bar: {
+    time: nil
+  }
+}
+instance._present(attributes: attributes)
+#=&amp;gt; {:bar=&amp;gt;{:time=&amp;gt;&amp;quot;2017-01-01T09:00:00+02:00&amp;quot;}}
+
+instance._present(attributes: attributes, time_formatter: -&amp;gt;(input) { input.utc.iso8601 })
+#=&amp;gt; {:bar=&amp;gt;{:time=&amp;gt;&amp;quot;2017-01-01T09:00:00Z&amp;quot;}}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Reset</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/reset/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/reset/</guid>
+      <description>
+
+&lt;p&gt;The reset plugin will allow you to reset a Wardrobe instance with either
+&lt;code&gt;#_reset&lt;/code&gt; or &lt;code&gt;#_reset!&lt;/code&gt;. &lt;code&gt;#_reset&lt;/code&gt; will return a new instance while &lt;code&gt;#_reset!&lt;/code&gt;
+will mutate and reset the instance called on.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Bar
+  include Wardrobe
+  attribute :foo, Hash
+end
+
+class Foo
+  include Wardrobe
+  plugin :reset
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+# We create a instance of Foo
+instance = Foo.new(title: &#39;One&#39;, bar: { foo: { one: 1, two: { nested_1: 1 } }})
+#=&amp;gt; #&amp;lt;Foo:0x007f841ea7b080 @title=&amp;quot;One&amp;quot;, @bar=#&amp;lt;Bar:0x007f841ea7a720 @foo={:one=&amp;gt;1, :two=&amp;gt;{:nested_1=&amp;gt;1}}&amp;gt;&amp;gt;
+
+# We can now `#_reset` to get a new instance with default values.
+new_instance = instance._reset
+#=&amp;gt; #&amp;lt;Foo:0x007f841ea991e8 @title=nil, @bar=#&amp;lt;Bar:0x007f841ea98fe0 @foo={}&amp;gt;&amp;gt;
+
+# Notice that the first instance still has the same `object_id`
+instance
+#=&amp;gt; #&amp;lt;Foo:0x007f841ea7b080 @title=&amp;quot;One&amp;quot;, @bar=#&amp;lt;Bar:0x007f841ea7a720 @foo={:one=&amp;gt;1, :two=&amp;gt;{:nested_1=&amp;gt;1}}&amp;gt;&amp;gt;
+
+# If we `#_reset!` the instance then we will modify the original instance.
+instance._reset!
+#=&amp;gt; #&amp;lt;Foo:0x007f841ea7b080 @title=nil, @bar=#&amp;lt;Bar:0x007f841ea632f0 @foo={}&amp;gt;&amp;gt;
+
+instance
+#=&amp;gt; #&amp;lt;Foo:0x007f841ea7b080 @title=nil, @bar=#&amp;lt;Bar:0x007f841ea632f0 @foo={}&amp;gt;&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

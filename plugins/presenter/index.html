@@ -9,7 +9,7 @@
 
     
     
-    <title>Nil if Empty</title>
+    <title>Presenter</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/nil_if_empty/">
+  <body class="" data-url="/wardrobe/plugins/presenter/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -201,7 +201,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/nil_if_empty/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/nil_if_empty/">
               <a href="/wardrobe/plugins/nil_if_empty/">
                 <span>Nil if Empty     </i></span>
               </a>
@@ -225,7 +225,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/presenter/">
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/presenter/">
               <a href="/wardrobe/plugins/presenter/">
                 <span>Presenter     </i></span>
               </a>
@@ -285,7 +285,7 @@
                     
                   
                 
-                <span itemprop="title"> Nil if Empty</span>
+                <span itemprop="title"> Presenter</span>
               </div>
               
                   <div class="progress">
@@ -308,26 +308,48 @@
             
               <div id="body-inner">
                 
-                <h1>Nil if Empty</h1>
+                <h1>Presenter</h1>
                 
 
 
 
-<p>The <code>nil_if_empty</code> plugin works with String, Array and Hash and will set the
-value to nil when coercing if the value returns true when <code>#empty?</code> is called.</p>
+<p>The presenter plugin will present your Wardrobe instances as a hash.</p>
 
 <h2 id="example">Example</h2>
 
-<pre><code class="language-ruby">class Foo
+<pre><code class="language-ruby">class Bar
   include Wardrobe
-  plugin :nil_if_empty
-  attribute :string, String, nil_if_empty: true
-  attribute :array, Array, nil_if_empty: true
-  attribute :hash, Hash, nil_if_empty: true
+  plugin :presenter
+
+  attribute :string, String
+  attribute :time, Time
 end
 
-foo = Foo.new(string: '', array: [], hash: {})
-foo #=&gt; &lt;Foo:0x007fb8389a2610 @string=nil, @array=nil, @hash=nil&gt;
+class Foo
+  include Wardrobe
+  plugin :presenter, time_formatter: -&gt;(time) { time.iso8601 }
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+instance = Foo.new(title: 'A Foo', bar: {string: 'A String', time: '2017-01-01T09:00:00+02:00'})
+#=&gt; #&lt;Foo:0x007fc2e9165d60 @title=&quot;A Foo&quot;, @bar=#&lt;Bar:0x007fc2e915c648 @string=&quot;A String&quot;, @time=2017-01-01 09:00:00 UTC&gt;&gt;
+
+instance._present
+#=&gt; {:title=&gt;&quot;A Foo&quot;, :bar=&gt;{:string=&gt;&quot;A String&quot;, :time=&gt;&quot;2017-01-01T09:00:00+02:00&quot;}}
+
+attributes = {
+  bar: {
+    time: nil
+  }
+}
+instance._present(attributes: attributes)
+#=&gt; {:bar=&gt;{:time=&gt;&quot;2017-01-01T09:00:00+02:00&quot;}}
+
+instance._present(attributes: attributes, time_formatter: -&gt;(input) { input.utc.iso8601 })
+#=&gt; {:bar=&gt;{:time=&gt;&quot;2017-01-01T09:00:00Z&quot;}}
+
 </code></pre>
 
 

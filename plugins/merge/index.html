@@ -9,7 +9,7 @@
 
     
     
-    <title>Dirty Tracker</title>
+    <title>Merge</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/dirty_tracker/">
+  <body class="" data-url="/wardrobe/plugins/merge/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -101,6 +101,18 @@
               </a>
             </li>
           
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/block-syntax/">
+              <a href="/wardrobe/getting-started/block-syntax/">
+                <span>Block Syntax     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/getting-started/plugins/">
+              <a href="/wardrobe/getting-started/plugins/">
+                <span>Plugins     </i></span>
+              </a>
+            </li>
+          
             <li class="dd-item " data-nav-id="/wardrobe/getting-started/writing-a-plugin/">
               <a href="/wardrobe/getting-started/writing-a-plugin/">
                 <span>Writing a plugin     </i></span>
@@ -165,8 +177,8 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/dirty_tracker/">
-              <a href="/wardrobe/plugins/dirty_tracker/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/dirty-tracker/">
+              <a href="/wardrobe/plugins/dirty-tracker/">
                 <span>Dirty Tracker     </i></span>
               </a>
             </li>
@@ -180,6 +192,12 @@
             <li class="dd-item " data-nav-id="/wardrobe/plugins/json_initializer/">
               <a href="/wardrobe/plugins/json_initializer/">
                 <span>JSON Initializer     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/merge/">
+              <a href="/wardrobe/plugins/merge/">
+                <span>Merge     </i></span>
               </a>
             </li>
           
@@ -204,6 +222,24 @@
             <li class="dd-item " data-nav-id="/wardrobe/plugins/optional_setter/">
               <a href="/wardrobe/plugins/optional_setter/">
                 <span>Optional Setter     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/presenter/">
+              <a href="/wardrobe/plugins/presenter/">
+                <span>Presenter     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/reset/">
+              <a href="/wardrobe/plugins/reset/">
+                <span>Reset     </i></span>
+              </a>
+            </li>
+          
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/unknown_attributes/">
+              <a href="/wardrobe/plugins/unknown_attributes/">
+                <span>Unknown Attributes     </i></span>
               </a>
             </li>
           
@@ -249,7 +285,7 @@
                     
                   
                 
-                <span itemprop="title"> Dirty Tracker</span>
+                <span itemprop="title"> Merge</span>
               </div>
               
                   <div class="progress">
@@ -272,51 +308,40 @@
             
               <div id="body-inner">
                 
-                <h1>Dirty Tracker</h1>
+                <h1>Merge</h1>
                 
 
 
 
-<p>Dirty Tracker will track any changes to a Wardrobe instance including nested
-values.</p>
+<p>The merge plugin will add <code>#merge</code> and <code>#deep_merge</code> instance methods and allow
+you to merge two wardrobe instances of the same class.</p>
 
 <h2 id="example">Example</h2>
 
-<pre><code class="language-ruby">class Foo
+<pre><code class="language-ruby">class Bar
   include Wardrobe
-  plugin :dirty_tracker
+  plugin :merge
 
-  attribute :name, String
+  attribute :foo, Hash
 end
 
-class Bar
+class Foo
   include Wardrobe
-  plugin :dirty_tracker
+  plugin :merge
 
-  attribute :name, String
-  attribute :hash, Hash
-  attribute :children, Array[Foo]
+  attribute :title, String
+  attribute :bar, Bar
 end
 
-bar = Bar.new(
-  name: 'Clean',
-  hash: { first: 1, second: 2 },
-  children: [{name: 'Clean Child'}]
-)
+instance_1 = Foo.new(title: 'One', bar: { foo: { one: 1, two: { nested_1: 1 } }})
+instance_2 = Foo.new(title: 'Two', bar: { foo: { one: 2, two: { nested_2: 2 } }})
 
-bar._dirty? #=&gt; false
+instance_1.merge(instance_2)
+#=&gt; #&lt;Foo:0x007f890e220940 @title=&quot;Two&quot;, @bar=#&lt;Bar:0x007f890e220620 @foo={:one=&gt;2, :two=&gt;{:nested_2=&gt;2}}&gt;&gt;
 
-bar.name = 'Dirty'
-bar._dirty? #=&gt; true
+instance_1.deep_merge(instance_2)
+#=&gt; #&lt;Foo:0x007f9f63036fb0 @title=&quot;Two&quot;, @bar=#&lt;Bar:0x007f9f63037870 @foo={:one=&gt;2, :two=&gt;{:nested_1=&gt;1, :nested_2=&gt;2}}&gt;&gt;
 
-bar._reset_dirty_tracker!
-bar._dirty? #=&gt; false
-
-bar.children.first.name = 'Dirty Child'
-bar._dirty? #=&gt; true
-
-bar._reset_dirty_tracker!
-bar._dirty? #=&gt; false
 </code></pre>
 
 

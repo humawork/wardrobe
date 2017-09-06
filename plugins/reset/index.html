@@ -9,7 +9,7 @@
 
     
     
-    <title>Nil if Empty</title>
+    <title>Reset</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/nil_if_empty/">
+  <body class="" data-url="/wardrobe/plugins/reset/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -201,7 +201,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/nil_if_empty/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/nil_if_empty/">
               <a href="/wardrobe/plugins/nil_if_empty/">
                 <span>Nil if Empty     </i></span>
               </a>
@@ -231,7 +231,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/reset/">
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/reset/">
               <a href="/wardrobe/plugins/reset/">
                 <span>Reset     </i></span>
               </a>
@@ -285,7 +285,7 @@
                     
                   
                 
-                <span itemprop="title"> Nil if Empty</span>
+                <span itemprop="title"> Reset</span>
               </div>
               
                   <div class="progress">
@@ -308,26 +308,48 @@
             
               <div id="body-inner">
                 
-                <h1>Nil if Empty</h1>
+                <h1>Reset</h1>
                 
 
 
 
-<p>The <code>nil_if_empty</code> plugin works with String, Array and Hash and will set the
-value to nil when coercing if the value returns true when <code>#empty?</code> is called.</p>
+<p>The reset plugin will allow you to reset a Wardrobe instance with either
+<code>#_reset</code> or <code>#_reset!</code>. <code>#_reset</code> will return a new instance while <code>#_reset!</code>
+will mutate and reset the instance called on.</p>
 
 <h2 id="example">Example</h2>
 
-<pre><code class="language-ruby">class Foo
+<pre><code class="language-ruby">class Bar
   include Wardrobe
-  plugin :nil_if_empty
-  attribute :string, String, nil_if_empty: true
-  attribute :array, Array, nil_if_empty: true
-  attribute :hash, Hash, nil_if_empty: true
+  attribute :foo, Hash
 end
 
-foo = Foo.new(string: '', array: [], hash: {})
-foo #=&gt; &lt;Foo:0x007fb8389a2610 @string=nil, @array=nil, @hash=nil&gt;
+class Foo
+  include Wardrobe
+  plugin :reset
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+# We create a instance of Foo
+instance = Foo.new(title: 'One', bar: { foo: { one: 1, two: { nested_1: 1 } }})
+#=&gt; #&lt;Foo:0x007f841ea7b080 @title=&quot;One&quot;, @bar=#&lt;Bar:0x007f841ea7a720 @foo={:one=&gt;1, :two=&gt;{:nested_1=&gt;1}}&gt;&gt;
+
+# We can now `#_reset` to get a new instance with default values.
+new_instance = instance._reset
+#=&gt; #&lt;Foo:0x007f841ea991e8 @title=nil, @bar=#&lt;Bar:0x007f841ea98fe0 @foo={}&gt;&gt;
+
+# Notice that the first instance still has the same `object_id`
+instance
+#=&gt; #&lt;Foo:0x007f841ea7b080 @title=&quot;One&quot;, @bar=#&lt;Bar:0x007f841ea7a720 @foo={:one=&gt;1, :two=&gt;{:nested_1=&gt;1}}&gt;&gt;
+
+# If we `#_reset!` the instance then we will modify the original instance.
+instance._reset!
+#=&gt; #&lt;Foo:0x007f841ea7b080 @title=nil, @bar=#&lt;Bar:0x007f841ea632f0 @foo={}&gt;&gt;
+
+instance
+#=&gt; #&lt;Foo:0x007f841ea7b080 @title=nil, @bar=#&lt;Bar:0x007f841ea632f0 @foo={}&gt;&gt;
 </code></pre>
 
 

@@ -52,6 +52,11 @@
   </url>
   
   <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/merge/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</loc>
     <lastmod>2017-07-18T12:45:34+02:00</lastmod>
   </url>
@@ -68,6 +73,21 @@
   
   <url>
     <loc>https://agensdev.github.io/wardrobe/plugins/optional_setter/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/presenter/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/reset/</loc>
+    <lastmod>2017-07-18T12:45:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://agensdev.github.io/wardrobe/plugins/unknown_attributes/</loc>
     <lastmod>2017-07-18T12:45:34+02:00</lastmod>
   </url>
   

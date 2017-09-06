@@ -9,7 +9,7 @@
 
     
     
-    <title>Nil if Empty</title>
+    <title>Unknown Attributes</title>
     <link href="https://agensdev.github.io/wardrobe//css/nucleus.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/font-awesome.min.css" rel="stylesheet">
     <link href="https://agensdev.github.io/wardrobe//css/hybrid.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 </style>
 
   </head>
-  <body class="" data-url="/wardrobe/plugins/nil_if_empty/">
+  <body class="" data-url="/wardrobe/plugins/unknown_attributes/">
     
     <nav id="sidebar">
   <div id="header-wrapper">
@@ -201,7 +201,7 @@
               </a>
             </li>
           
-            <li class="dd-item active" data-nav-id="/wardrobe/plugins/nil_if_empty/">
+            <li class="dd-item " data-nav-id="/wardrobe/plugins/nil_if_empty/">
               <a href="/wardrobe/plugins/nil_if_empty/">
                 <span>Nil if Empty     </i></span>
               </a>
@@ -237,7 +237,7 @@
               </a>
             </li>
           
-            <li class="dd-item " data-nav-id="/wardrobe/plugins/unknown_attributes/">
+            <li class="dd-item active" data-nav-id="/wardrobe/plugins/unknown_attributes/">
               <a href="/wardrobe/plugins/unknown_attributes/">
                 <span>Unknown Attributes     </i></span>
               </a>
@@ -285,7 +285,7 @@
                     
                   
                 
-                <span itemprop="title"> Nil if Empty</span>
+                <span itemprop="title"> Unknown Attributes</span>
               </div>
               
                   <div class="progress">
@@ -295,6 +295,7 @@
 <li>
 <ul>
 <li><a href="#example">Example</a></li>
+<li><a href="#custom-callback-lambda">Custom callback lambda</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -308,26 +309,43 @@
             
               <div id="body-inner">
                 
-                <h1>Nil if Empty</h1>
+                <h1>Unknown Attributes</h1>
                 
 
 
 
-<p>The <code>nil_if_empty</code> plugin works with String, Array and Hash and will set the
-value to nil when coercing if the value returns true when <code>#empty?</code> is called.</p>
+<p><code>unknown_attributes</code> will by default raise an error if a class is initialized
+with unhandled attributes. An optional <code>callback</code> lambda can be applied to
+override the default behavior.</p>
 
 <h2 id="example">Example</h2>
 
 <pre><code class="language-ruby">class Foo
   include Wardrobe
-  plugin :nil_if_empty
-  attribute :string, String, nil_if_empty: true
-  attribute :array, Array, nil_if_empty: true
-  attribute :hash, Hash, nil_if_empty: true
+  plugin :unknown_attributes
+  attribute :bar, String
 end
 
-foo = Foo.new(string: '', array: [], hash: {})
-foo #=&gt; &lt;Foo:0x007fb8389a2610 @string=nil, @array=nil, @hash=nil&gt;
+Foo.new(bar: 'Test')
+#=&gt; #&lt;Foo:0x007fc34a142160 @bar=&quot;Test&quot;&gt;
+
+Foo.new(bar: 'Test', missing: 'Lorem ipsum', random: 'Value')
+#=&gt; Wardrobe::Plugins::UnknownAttributes::UnknownAttributesError: missing, random
+
+
+</code></pre>
+
+<h2 id="custom-callback-lambda">Custom callback lambda</h2>
+
+<pre><code class="language-ruby">class Bar
+  include Wardrobe
+  plugin :unknown_attributes, callback: -&gt;(attributes, instance) { instance.missing = attributes }
+  attribute :foo, String
+  attribute :missing, Hash
+end
+
+Bar.new(foo: 'Test', a: 1, b: 2, c: 3)
+#=&gt; #&lt;Bar:0x007fc0fb8d8998 @foo=&quot;Test&quot;, @missing={:a=&gt;1, :b=&gt;2, :c=&gt;3}&gt;
 </code></pre>
 
 

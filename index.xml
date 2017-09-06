@@ -529,6 +529,47 @@ Foo.new(&#39;{&amp;quot;bar&amp;quot;:&amp;quot;value&amp;quot;}&#39;)
     </item>
     
     <item>
+      <title>Merge</title>
+      <link>https://agensdev.github.io/wardrobe/plugins/merge/</link>
+      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
+      
+      <guid>https://agensdev.github.io/wardrobe/plugins/merge/</guid>
+      <description>
+
+&lt;p&gt;The merge plugin will add &lt;code&gt;#merge&lt;/code&gt; and &lt;code&gt;#deep_merge&lt;/code&gt; instance methods and allow
+you to merge two wardrobe instances of the same class.&lt;/p&gt;
+
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class Bar
+  include Wardrobe
+  plugin :merge
+
+  attribute :foo, Hash
+end
+
+class Foo
+  include Wardrobe
+  plugin :merge
+
+  attribute :title, String
+  attribute :bar, Bar
+end
+
+instance_1 = Foo.new(title: &#39;One&#39;, bar: { foo: { one: 1, two: { nested_1: 1 } }})
+instance_2 = Foo.new(title: &#39;Two&#39;, bar: { foo: { one: 2, two: { nested_2: 2 } }})
+
+instance_1.merge(instance_2)
+#=&amp;gt; #&amp;lt;Foo:0x007f890e220940 @title=&amp;quot;Two&amp;quot;, @bar=#&amp;lt;Bar:0x007f890e220620 @foo={:one=&amp;gt;2, :two=&amp;gt;{:nested_2=&amp;gt;2}}&amp;gt;&amp;gt;
+
+instance_1.deep_merge(instance_2)
+#=&amp;gt; #&amp;lt;Foo:0x007f9f63036fb0 @title=&amp;quot;Two&amp;quot;, @bar=#&amp;lt;Bar:0x007f9f63037870 @foo={:one=&amp;gt;2, :two=&amp;gt;{:nested_1=&amp;gt;1, :nested_2=&amp;gt;2}}&amp;gt;&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Nil if Empty</title>
       <link>https://agensdev.github.io/wardrobe/plugins/nil_if_empty/</link>
       <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
@@ -635,48 +676,6 @@ end
 foo = Foo.new(bar: &#39;value&#39;)
 
 foo.bar = &#39;changed&#39; #=&amp;gt; NoMethodError: undefined method `bar=&#39; for #&amp;lt;Foo:0x007f8953916660&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Block Syntax</title>
-      <link>https://agensdev.github.io/wardrobe/getting-started/block-syntax/</link>
-      <pubDate>Tue, 18 Jul 2017 12:45:34 +0200</pubDate>
-      
-      <guid>https://agensdev.github.io/wardrobe/getting-started/block-syntax/</guid>
-      <description>&lt;p&gt;Many plugins expose options for attributes. These can be applied to each attribute or to a group of attributes in a block.&lt;/p&gt;
-
-&lt;p&gt;Per attribute syntax:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
- include Wardrobe
- plugin :nil_if_empty
-
- attribute :first_name, String, nil_if_empty: true
- attribute :last_name, String, nil_if_empty: true
- attribute :friends, Array, nil_if_empty: true
-end
-User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
-# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Block syntax:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;class User
- include Wardrobe
- plugin :nil_if_empty
-
- attributes do
-   nil_if_empty true do
-     attribute :first_name, String
-     attribute :last_name, String
-     attribute :friends, Array
-   end
- end
-end
-User.new(first_name: &#39;&#39;, last_name: &#39;&#39;, friends: [])
-# =&amp;gt; #&amp;lt;User:0x007fb242b5e798 @friends=nil, @first_name=nil, @last_name=nil&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
