@@ -7,7 +7,12 @@ module Wardrobe
         using ImmutableInstanceMethods
         def register(name, klass)
           mutate do
-            store.merge!(name => klass.new.freeze)
+            case klass
+            when Hash
+              store.merge!(name => Hash.new.freeze)
+            else
+              store.merge!(name => klass.new.freeze)
+            end
           end
         end
 
@@ -17,6 +22,21 @@ module Wardrobe
           else
             duplicate = @store[name].mutate(_options: { klass: klass }, &blk)
             @store = @store.merge(name => duplicate)
+            freeze
+          end
+        end
+
+        def update_hash(name, klass, hash_key, hash_klass, &blk)
+          if frozen?
+            dup.update_hash(name, klass, hash_key, hash_klass, &blk)
+          else
+            duplicate = @store[name].mutate(_options: { klass: klass }) do |hash|
+              hash[hash_key] ||= hash_klass.new
+              hash[hash_key] = hash[hash_key].mutate(_options: { klass: klass }, &blk)
+            end
+            @store = @store.mutate do |store|
+              store[name] = store[name].merge(duplicate)
+            end
             freeze
           end
         end
