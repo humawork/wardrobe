@@ -87,7 +87,7 @@ module Wardrobe
     def create_option_methods(config)
       config.option_store.each do |option|
         define_singleton_method(option.name) do |&blk|
-          blk.call(options[option.name]) if block_given?
+          blk.call(options[option.name]) if blk
           options[option.name]
         end
         define_singleton_method("#{option.name}=") do |value|
@@ -122,19 +122,6 @@ module Wardrobe
         Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
         raise UnavailableOptionError
       end
-
-
-      # options.keys.each do |name|
-      #   unless config.option_store[name]
-      #     Wardrobe.logger.error "Option '#{name}' is unavailable for attribute '#{self.name}' on '#{defining_object}'"
-      #     raise UnavailableOptionError
-      #   end
-      #   send("#{name}=", options[name])
-      # end
-      # options
-
-
-
     end
   end
 end
