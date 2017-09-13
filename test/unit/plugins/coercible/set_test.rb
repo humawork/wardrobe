@@ -63,13 +63,13 @@ class SetCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
       SetObject.new(set_with_subclass: :sym)
     end
-    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
       SetObject.new(set: Time.now)
     end
-    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
       SetObject.new(array: 'string')
     end
   end

@@ -82,7 +82,7 @@ module Wardrobe
       end + klass.default_setters).compact.sort
     end
 
-    using Plugins::Coercible::Refinements
+    using Refinements::Coercible
 
     def create_option_methods(config)
       config.option_store.each do |option|
@@ -94,7 +94,7 @@ module Wardrobe
           klass = config.option_store[option.name].klass
           options[option.name] = begin
                                    klass.coerce(value, nil, nil)
-                                 rescue Wardrobe::Plugins::Coercible::Refinements::UnsupportedError => e
+                                 rescue Wardrobe::Refinements::Coercible::UnsupportedError => e
                                    if klass == Set
                                      Set.new([value])
                                    elsif klass == Array

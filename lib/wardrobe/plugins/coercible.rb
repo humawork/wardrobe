@@ -1,29 +1,12 @@
 # frozen_string_literal: true
-require 'wardrobe/plugins/coercible/refinements/unsupported_error'
-require 'wardrobe/plugins/coercible/refinements/array'
-require 'wardrobe/plugins/coercible/refinements/set'
-require 'wardrobe/plugins/coercible/refinements/date'
-require 'wardrobe/plugins/coercible/refinements/date_time'
-require 'wardrobe/plugins/coercible/refinements/float'
-require 'wardrobe/plugins/coercible/refinements/hash'
-require 'wardrobe/plugins/coercible/refinements/integer'
-require 'wardrobe/plugins/coercible/refinements/object'
-require 'wardrobe/plugins/coercible/refinements/string'
-require 'wardrobe/plugins/coercible/refinements/boolean'
-require 'wardrobe/plugins/coercible/refinements/symbol'
-require 'wardrobe/plugins/coercible/refinements/time'
-require 'wardrobe/plugins/coercible/refinements/proc'
-require 'wardrobe/plugins/coercible/refinements/open_struct'
-require 'wardrobe/plugins/coercible/refinements/regexp'
-require 'wardrobe/plugins/coercible/refinements/basic_object'
 
 module Wardrobe
   class Attribute
-    using Plugins::Coercible::Refinements
+    using Refinements::Coercible
 
     def _coerce(val, parent)
       klass.coerce(val, self, parent)
-    rescue Plugins::Coercible::Refinements::UnsupportedError => e
+    rescue Refinements::Coercible::UnsupportedError => e
       raise e.class,
             "Can't coerce #{val.class} `#{val}` into #{klass}."
     end

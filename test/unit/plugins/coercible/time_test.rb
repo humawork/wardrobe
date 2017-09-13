@@ -36,7 +36,7 @@ class TimeCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
       TimeObject.new(string: [])
     end
   end

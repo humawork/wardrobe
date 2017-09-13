@@ -20,7 +20,7 @@ class CustomClassTest < TestBase
       case input
       when Array then new(*input)
       else
-        raise Wardrobe::Plugins::Coercible::Refinements::UnsupportedError
+        raise Wardrobe::Refinements::Coercible::UnsupportedError
       end
     end
   end
@@ -52,7 +52,7 @@ class CustomClassTest < TestBase
       )
     end
 
-    assert_raises(Wardrobe::Plugins::Coercible::Refinements::UnsupportedError) do
+    assert_raises(Wardrobe::Refinements::Coercible::UnsupportedError) do
       WardrobeClass.new(
         custom_coerce: 1
       )

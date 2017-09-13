@@ -37,7 +37,7 @@ class DateTimeCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Plugins::Coercible::Refinements::UnsupportedError do
+    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
       DateTimeObject.new(string: [])
     end
   end
