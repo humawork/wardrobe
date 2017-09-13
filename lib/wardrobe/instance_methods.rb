@@ -3,8 +3,6 @@
 module Wardrobe
   module InstanceMethods
     def initialize(**hash)
-      # raise "POC: More than one arg not supported..." if args.length > 1
-      # kargs = args.first.merge(kargs) if args.any?
       _initialize { _wardrobe_init(hash) }
     end
 

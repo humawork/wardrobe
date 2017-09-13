@@ -4,6 +4,8 @@ require 'wardrobe/version'
 require 'wardrobe/boolean'
 require 'wardrobe/store'
 
+require 'wardrobe/refinements/deep_symbolize_keys'
+
 require 'wardrobe/plugins/coercible/refinements/unsupported_error'
 require 'wardrobe/plugins/coercible/refinements/array'
 require 'wardrobe/plugins/coercible/refinements/set'
