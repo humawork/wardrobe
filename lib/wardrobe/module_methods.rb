@@ -9,6 +9,7 @@ module Wardrobe
     def included(base)
       return if base.respond_to?(:wardrobe_config)
       base.extend(ClassMethods)
+      base.include(InstanceMethods)
       unless base.to_s == 'Wardrobe::RootConfig'
         base.root_config = config
         config.default_plugins.each do |plugin|
@@ -16,7 +17,6 @@ module Wardrobe
           base.plugin plugin
         end
       end
-      base.include(InstanceMethods)
     end
 
     def create_class(plugins: [], attributes: [])

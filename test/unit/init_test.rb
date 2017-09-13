@@ -57,4 +57,17 @@ class InitTest < TestBase
       Foo.new('a string')
     end
   end
+
+  def test_default
+    Wardrobe.configure do |c|
+      c.default_plugins << :flex_initializer
+    end
+    klass = Class.new do
+      include Wardrobe
+      attribute :foo, String
+    end
+    instance = klass.new({ 'foo' => 'Bar'})
+    assert_equal 'Bar', instance.foo
+  end
+
 end
