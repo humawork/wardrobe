@@ -9,6 +9,8 @@ module Wardrobe
           when self then v
           when Array then self[*v]
           when NilClass then {}
+          else
+            raise UnsupportedError
           end
         end
       end
