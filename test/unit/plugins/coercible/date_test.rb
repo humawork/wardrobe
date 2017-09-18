@@ -3,6 +3,7 @@ require 'test_helper'
 class DateCoercionTest < TestBase
   class DateObject
     include Wardrobe
+    attribute :nil,      Date
     attribute :string,   Date
     attribute :date,     Date
     attribute :time,     Date
@@ -15,6 +16,7 @@ class DateCoercionTest < TestBase
     time = Time.now.freeze
     date = time.to_date.freeze
     object = DateObject.new(
+      nil: nil,
       string: date.to_s,
       date: date,
       time: time,
@@ -22,6 +24,7 @@ class DateCoercionTest < TestBase
       integer: time.to_i,
       float: time.to_f
     )
+    assert_nil object.nil
     assert_equal date, object.string
     assert_equal date, object.date
     assert_equal date, object.time
@@ -31,7 +34,7 @@ class DateCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       DateObject.new(string: [])
     end
   end

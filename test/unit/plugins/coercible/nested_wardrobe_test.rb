@@ -54,7 +54,7 @@ class NestedWardrobeTest < TestBase
   end
 
   def test_string_as_input_for_nested_wardrobe_in_array
-    assert_raises(Wardrobe::Refinements::Coercible::UnsupportedError) do
+    assert_raises(Wardrobe::Coercible::UnsupportedError) do
       Three.new(
         group: 'Foo'
       )

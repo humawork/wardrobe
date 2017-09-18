@@ -82,8 +82,6 @@ module Wardrobe
       end + klass.default_setters).compact.sort
     end
 
-    using Refinements::Coercible
-
     def create_option_methods(config)
       config.option_store.each do |option|
         define_singleton_method(option.name) do |&blk|
@@ -93,8 +91,8 @@ module Wardrobe
         define_singleton_method("#{option.name}=") do |value|
           klass = config.option_store[option.name].klass
           options[option.name] = begin
-                                   klass.coerce(value, nil, nil)
-                                 rescue Wardrobe::Refinements::Coercible::UnsupportedError => e
+                                   Wardrobe::Coercible.coerce(value, to: klass, parent: nil)
+                                 rescue Wardrobe::Coercible::UnsupportedError => e
                                    if klass == Set
                                      Set.new([value])
                                    elsif klass == Array

@@ -13,7 +13,14 @@ module Wardrobe
           result = {}
           _attribute_store.store.each do |key, atr|
             if attributes.nil? || (attributes && attributes.key?(key))
-              result[key] = send(atr.name)._present(attributes: (attributes[key] if attributes), **options)
+              value = send(atr.name)._present(attributes: (attributes[key] if attributes), **options)
+              if attributes && path = attributes.dig(key, :_, :path)
+                unless value.nil? && options[:remove_nil]
+                  result._set_at(value, path.split('/'))
+                end
+              else
+                result[key] = value unless value.nil? && options[:remove_nil]
+              end
             end
           end
           result

@@ -20,10 +20,10 @@ class SymbolCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       SymbolObject.new(string: [1,2])
     end
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       SymbolObject.new(symbol: Time.now)
     end
   end

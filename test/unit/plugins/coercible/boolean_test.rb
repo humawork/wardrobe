@@ -55,13 +55,13 @@ class BooleanCoercionTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       BooleanObject.new(yes: 'ja')
     end
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       BooleanObject.new(yes: 11)
     end
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       BooleanObject.new(yes: [1])
     end
   end

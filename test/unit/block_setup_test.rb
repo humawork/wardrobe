@@ -92,7 +92,7 @@ class BlockSetupTest < TestBase
 
   def test_crash
     no_log do
-      assert_raises(Wardrobe::Refinements::Coercible::UnsupportedError) do
+      assert_raises(Wardrobe::Coercible::UnsupportedError) do
         Class.new do
           include Wardrobe
           plugin :option_test

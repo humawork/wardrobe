@@ -58,13 +58,13 @@ class CoercibleOpenStructTest < TestBase
   end
 
   def test_error
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       Foo.new(hash: Time.now)
     end
   end
 
   def test_klass_error
-    assert_raises Wardrobe::Refinements::Coercible::UnsupportedError do
+    assert_raises Wardrobe::Coercible::UnsupportedError do
       klass = Class.new do
         include Wardrobe
         plugin :coercible_open_struct

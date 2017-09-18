@@ -5,7 +5,8 @@ require 'wardrobe/boolean'
 require 'wardrobe/store'
 
 require 'wardrobe/refinements/deep_symbolize_keys'
-require 'wardrobe/refinements/coercible'
+# require 'wardrobe/refinements/coercible'
+require 'wardrobe/coercible'
 
 require 'wardrobe/middleware_registry'
 require 'wardrobe/middleware'

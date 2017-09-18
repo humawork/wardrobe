@@ -8,28 +8,25 @@ class CustomClassTest < TestBase
     end
   end
 
-  class CustomClassWithCoerceMethod
+
+  class CustomClassWithCoercion
     attr_reader :one, :two
 
     def initialize(one, two)
       @one = one
       @two = two
     end
+  end
 
-    def self.coerce(input, atr, parent)
-      case input
-      when Array then new(*input)
-      else
-        raise Wardrobe::Refinements::Coercible::UnsupportedError
-      end
-    end
+  Wardrobe::Coercible.add_coercer(Array => CustomClassWithCoercion) do |val, klass|
+    klass.new(*val)
   end
 
   class WardrobeClass
     include Wardrobe
     attribute :string, String
     attribute :custom, CustomClass
-    attribute :custom_coerce, CustomClassWithCoerceMethod
+    attribute :custom_coerce, CustomClassWithCoercion
   end
 
   def test_coercion
@@ -52,7 +49,7 @@ class CustomClassTest < TestBase
       )
     end
 
-    assert_raises(Wardrobe::Refinements::Coercible::UnsupportedError) do
+    assert_raises(Wardrobe::Coercible::UnsupportedError) do
       WardrobeClass.new(
         custom_coerce: 1
       )

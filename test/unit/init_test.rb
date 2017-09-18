@@ -42,7 +42,7 @@ class InitTest < TestBase
   def test_string_hash_with_double_splat
     assert_raises(TypeError) do
       data = { 'one' => 'One', 'two' => 'Two' }
-      instance = Foo.new(**data)
+      Foo.new(**data)
     end
   end
 
