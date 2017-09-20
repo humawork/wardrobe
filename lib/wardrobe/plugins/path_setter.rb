@@ -13,7 +13,8 @@ module Wardrobe
         use_if: ->(atr) { atr.options[:path] },
         setter: lambda do |_value, atr, instance, _options|
           return _value unless instance._initializing?
-          instance._initializing_hash.at(*atr.options[:path].split('/'))
+          res = instance._initializing_hash.at(*atr.options[:path].split('/'))
+          res || _value
         end
       )
 

@@ -6,7 +6,7 @@ module Wardrobe
     add_coercer(NilClass => Hash)  { Hash.new }
     add_coercer(Hash => Hash)  { |v| v }
     add_coercer(Array => Hash) { |v| Hash[*v] }
-    add_coercer(Object => Hash) { |v| binding.pry; v.to_h }
+    add_coercer(Object => Hash) { |v| v.to_h }
 
     add_coercer(NilClass => {}) do |v, klass, parent|
       InstanceCoercer::Hash.init({}, klass, parent)
