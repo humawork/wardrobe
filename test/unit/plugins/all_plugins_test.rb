@@ -15,8 +15,9 @@ class AllPluginsTest < TestBase
   end
 
   def test_one
-    instance = PluginsWithMiddleware.new(foo: '')
-    # order = PluginsWithMiddleware.attribute_store.foo.setters.map(&:name)
-    assert_equal 5, instance.foo
+    assert_nil PluginsWithMiddleware.new(foo: '').foo
+    assert_nil PluginsWithMiddleware.new(foo: 0).foo
+    assert_equal '5', PluginsWithMiddleware.new().foo
+    assert_equal 'Bar', PluginsWithMiddleware.new(foo: 'Bar').foo
   end
 end

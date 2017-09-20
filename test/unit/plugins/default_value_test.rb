@@ -1,40 +1,45 @@
 require 'test_helper'
 
-module DefaultMixin
-  include Wardrobe
-  plugin :default
-  attribute :name,     String, default: 'missing name'
-  attribute :address,  String, default: :address_default
-  attribute :zip_code, String, default: -> { '0' + '1' }
-  attribute :for_sale, Boolean, default: false
-  attribute :for_rent, Boolean, default: true
-
-  def address_default
-    'missing address'
-  end
-end
-
-class House
-  include DefaultMixin
-  attribute :floors,     Integer, default: 2
-  attribute :bedrooms,   Integer, default: :bedrooms_default
-  attribute :bathrooms,  Integer, default: ->() { 1 + 3 }
-  attribute :condition,  Symbol, default: :new
-  attribute :no_default, String
-
-  def bedrooms_default
-    10
-  end
-end
-
-class HouseWithAddressDefaultOverride < House
-  def address_default
-    'overridden'
-  end
-end
-
-
 class DefaultValueTest < TestBase
+  module DefaultMixin
+    include Wardrobe
+    plugin :default
+    attribute :name,     String, default: 'missing name'
+    attribute :address,  String, default: :address_default
+    attribute :zip_code, String, default: proc { '0' + '1' }
+    attribute :for_sale, Boolean, default: false
+    attribute :for_rent, Boolean, default: true
+
+    def address_default
+      'missing address'
+    end
+  end
+
+  class Foo
+    include Wardrobe
+    attribute :bar, String
+  end
+
+  class House
+    include DefaultMixin
+    attribute :floors,     Integer, default: 2
+    attribute :bedrooms,   Integer, default: :bedrooms_default
+    attribute :bathrooms,  Integer, default: proc { 1 + 3 }
+    attribute :condition,  Symbol, default: :new
+    attribute :no_default, String
+    attribute :wardrobe,   Foo, default: proc { |_, atr| atr.klass.new(bar: 'Child') }
+
+    def bedrooms_default
+      10
+    end
+  end
+
+  class HouseWithAddressDefaultOverride < House
+    def address_default
+      'overridden'
+    end
+  end
+
   def setup
     @house = House.new
   end
@@ -74,5 +79,9 @@ class DefaultValueTest < TestBase
 
   def test_default_method_override
     assert_equal 'overridden', HouseWithAddressDefaultOverride.new.address
+  end
+
+  def test_default_for_wardrobe_child
+    assert_equal 'Child', @house.wardrobe.bar
   end
 end

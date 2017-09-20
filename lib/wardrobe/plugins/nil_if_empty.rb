@@ -7,7 +7,7 @@ module Wardrobe
 
       Wardrobe.register_setter(
         name: :nil_if_empty,
-        before: [:setter, :default_setter],
+        before: [:setter],
         after: [:coercer],
         use_if: ->(atr) { atr.options[:nil_if_empty] },
         setter: lambda do |value, atr, _instance, _options|

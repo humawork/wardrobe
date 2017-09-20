@@ -7,8 +7,7 @@ module Wardrobe
 
       Wardrobe.register_setter(
         name: :default_setter,
-        before: [:setter],
-        after: [:coercer, :nil_if_empty, :nil_if_zero],
+        before: [:setter, :coercer],
         use_if: ->(atr) { !atr.options[:default].nil? },
         setter: lambda do |value, atr, instance, _options|
           if !value.nil? && ![{},[]].include?(value)
@@ -19,7 +18,7 @@ module Wardrobe
             when Symbol
               default.match?(/default$/) ? instance.send(default) : default
             when Proc
-              default.arity.zero? ? default.call : default.call(instance)
+              default.arity.zero? ? default.call : default.call(instance, atr)
             else
               default
             end

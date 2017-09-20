@@ -4,6 +4,7 @@ module Wardrobe
   register_setter(
     name: :coercer,
     before: [:setter],
+    after: [:default_setter],
     use_if: ->(atr) { atr.options[:coerce] },
     setter: lambda do |value, atr, instance, _options|
       begin
