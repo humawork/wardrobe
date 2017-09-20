@@ -5,6 +5,7 @@ class PathSetterTest < TestBase
     include Wardrobe
     plugin :path_setter
     attribute :bar, String, path: 'this/is/a/0/nested'
+    attribute :foo, String, path: 'foo/bar'
   end
 
   def test_path_setter_success
@@ -26,5 +27,10 @@ class PathSetterTest < TestBase
     assert_raises(Wardrobe::Refinements::Path::PathError) do
       Foo.new({ this: []})
     end
+  end
+
+  def test_foo_conflict
+    instance = Foo.new({ foo: { bar: 'Test'}})
+    assert_equal 'Test', instance.foo
   end
 end
