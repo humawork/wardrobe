@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+require_relative 'presenter/array'
+require_relative 'presenter/false_class'
+require_relative 'presenter/hash'
+require_relative 'presenter/integer'
+require_relative 'presenter/nil_class'
+require_relative 'presenter/object'
+require_relative 'presenter/proc'
+require_relative 'presenter/regexp'
+require_relative 'presenter/set'
+require_relative 'presenter/string'
+require_relative 'presenter/symbol'
+require_relative 'presenter/time'
+require_relative 'presenter/true_class'

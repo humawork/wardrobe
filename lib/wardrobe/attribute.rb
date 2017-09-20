@@ -85,23 +85,32 @@ module Wardrobe
     def create_option_methods(config)
       config.option_store.each do |option|
         define_singleton_method(option.name) do |&blk|
-          blk.call(options[option.name]) if blk
+          if blk
+            if options[option.name].nil? && option.options[:init]
+              options[option.name] = option.options[:init].call(option, self)
+            end
+            blk.call(options[option.name])
+          end
           options[option.name]
         end
         define_singleton_method("#{option.name}=") do |value|
           klass = config.option_store[option.name].klass
-          options[option.name] = begin
-                                   Wardrobe::Coercible.coerce(value, to: klass, parent: nil)
-                                 rescue Wardrobe::Coercible::UnsupportedError => e
-                                   if klass == Set
-                                     Set.new([value])
-                                   elsif klass == Array
-                                     [value]
-                                   else
-                                     Wardrobe.logger.error "Can't coerce #{value.class} `#{value}` into #{klass}."
-                                     raise e
-                                   end
-                                 end
+          if value.nil? && option.options[:coerce_if_nil] == false
+            options[option.name] = nil
+          else
+            options[option.name] = begin
+              Wardrobe::Coercible.coerce(value, to: klass, parent: self)
+            rescue Wardrobe::Coercible::UnsupportedError => e
+              if klass == Set
+                Set.new([value])
+              elsif klass == Array
+                [value]
+              else
+                Wardrobe.logger.error "Can't coerce #{value.class} `#{value}` into #{klass}."
+                raise e
+              end
+            end
+          end
         end
       end
     end

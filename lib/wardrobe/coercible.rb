@@ -6,8 +6,8 @@ module Wardrobe
 
     class UnsupportedError < StandardError; end
 
-    def coerce(val, to:, parent:)
-      coercer(val, to: to).call(val, to, parent)
+    def coerce(val, to:, parent: nil, atr: nil)
+      coercer(val, to: to).call(val, to, parent, atr)
     end
 
     def add_coercer(hash, &blk)

@@ -7,10 +7,10 @@ module Wardrobe
     use_if: ->(atr) { atr.options[:coerce] },
     setter: lambda do |value, atr, instance, _options|
       begin
-        Wardrobe::Coercible.coerce(value, to: atr.klass, parent: instance)
+        Wardrobe::Coercible.coerce(value, to: atr.klass, parent: instance, atr: atr)
       rescue Wardrobe::Coercible::UnsupportedError => e
         raise e.class,
-              "Can't coerce #{value.class} `#{value}` into #{atr.klass}."
+              "Can't coerce #{value.class} `#{value}` into #{atr.klass} for attribute `#{atr.name}` in class #{instance.class}."
       end
     end
   )
