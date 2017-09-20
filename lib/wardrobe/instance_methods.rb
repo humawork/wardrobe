@@ -3,11 +3,15 @@
 module Wardrobe
   module InstanceMethods
     def initialize(**hash)
-      _initialize { _wardrobe_init(hash) }
+      _initialize(hash) { _wardrobe_init(hash) }
     end
 
     def _initializing?
       instance_variable_defined?(:@_initializing) && @_initializing
+    end
+
+    def _initializing_hash
+      instance_variable_defined?(:@_initializing_hash) && @_initializing_hash
     end
 
     def _attribute_store
@@ -52,10 +56,12 @@ module Wardrobe
 
     private
 
-    def _initialize
+    def _initialize(hash)
+      instance_variable_set(:@_initializing_hash, hash)
       instance_variable_set(:@_initializing, true)
       yield
       remove_instance_variable(:@_initializing)
+      remove_instance_variable(:@_initializing_hash)
     end
 
     def _singleton_initialized?

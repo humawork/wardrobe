@@ -9,7 +9,7 @@ class OptionalSetterTest < TestBase
 
   def test_optinal_setter
     foo = Foo.new(bar: 'value')
-    assert 'value', foo.bar
+    assert_equal 'value', foo.bar
     assert_raises(NoMethodError) do
       foo.bar = 'changed'
     end
