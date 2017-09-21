@@ -7,16 +7,16 @@ module Wardrobe
     add_coercer(Array => Array)    { |v| v }
     add_coercer(Set => Array)      { |v| v.to_a }
 
-    add_coercer(NilClass => []) do |v, klass, parent|
-      InstanceCoercer::Array.init(klass.class.new, klass, parent)
+    add_coercer(NilClass => []) do |v, klass, parent, atr|
+      InstanceCoercer::Array.init(klass.class.new, klass, parent, atr)
     end
 
-    add_coercer(Set => []) do |v, klass, parent|
-      InstanceCoercer::Array.init(v, klass, parent)
+    add_coercer(Set => []) do |v, klass, parent, atr|
+      InstanceCoercer::Array.init(v, klass, parent, atr)
     end
 
-    add_coercer(Array => []) do |v, klass, parent|
-      InstanceCoercer::Array.init(v, klass, parent)
+    add_coercer(Array => []) do |v, klass, parent, atr|
+      InstanceCoercer::Array.init(v, klass, parent, atr)
     end
   end
 end

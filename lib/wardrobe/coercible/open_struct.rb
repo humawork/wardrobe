@@ -9,12 +9,12 @@ module Wardrobe
     add_coercer(OpenStruct => OpenStruct) { |v| v }
     add_coercer(Hash => OpenStruct)       { |v| OpenStruct.new(v) }
 
-    add_coercer(NilClass => OpenStruct.new) do |v, klass, parent|
-      InstanceCoercer::OpenStruct.init({}, klass, parent)
+    add_coercer(NilClass => OpenStruct.new) do |v, klass, parent, atr|
+      InstanceCoercer::OpenStruct.init({}, klass, parent, atr)
     end
 
-    add_coercer(Hash => OpenStruct.new) do |v, klass, parent|
-      InstanceCoercer::OpenStruct.init(v, klass, parent)
+    add_coercer(Hash => OpenStruct.new) do |v, klass, parent, atr|
+      InstanceCoercer::OpenStruct.init(v, klass, parent, atr)
     end
   end
 end
