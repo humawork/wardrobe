@@ -33,7 +33,7 @@ module Wardrobe
       if to_hash && from_klass = val.class.ancestors.find { |klass| to_hash[klass] }
         return to_hash[from_klass]
       end
-      raise UnsupportedError, "No coercer from #{val.class} to #{to}"
+      raise UnsupportedError
     end
 
     def coercers
