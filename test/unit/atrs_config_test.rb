@@ -23,7 +23,7 @@ class WardrobeConfigTest < TestBase
   end
 
   def test_correct_plugin_and_option_count
-    assert_equal 2, Person.option_store.store.count
+    assert_equal 3, Person.option_store.store.count
     assert_equal 2, Person.plugin_store.store.count
   end
 

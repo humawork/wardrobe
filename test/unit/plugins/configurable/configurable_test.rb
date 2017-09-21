@@ -20,7 +20,7 @@ class TestConfig
   plugin :validation
   attribute :title, String, validates { filled? }
   attribute :proc_test, Proc
-  attribute :child, ChildTestConfig
+  attribute :child, ChildTestConfig, init_if_nil: true
 end
 
 class TestConfigWithValidation

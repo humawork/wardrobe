@@ -6,7 +6,7 @@ module Wardrobe
     extend Forwardable
     attr_reader :store
 
-    def_delegators :@store, :dig, :values, :[]
+    def_delegators :@store, :dig, :values, :[], :has_key?
 
     def initialize(hash = {})
       @store = hash

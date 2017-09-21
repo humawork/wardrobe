@@ -6,15 +6,15 @@ class ResetTest < TestBase
     plugin :default
     plugin :reset
     attribute :name, String, default: 'Default String'
-    attribute :hash,   Hash
-    attribute :array,  Array
+    attribute :hash, Hash
+    attribute :array, Array
   end
 
   class Bar
     include Wardrobe
     plugin :reset
     attribute :name, String
-    attribute :child,  Foo
+    attribute :child, Foo, init_if_nil: true
   end
 
   def setup

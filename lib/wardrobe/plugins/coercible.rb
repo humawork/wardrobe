@@ -20,6 +20,7 @@ module Wardrobe
     module Coercible
       extend Wardrobe::Plugin
       option :coerce, Boolean, default: true, setter: :coercer
+      option :init_if_nil, Boolean, default: false
     end
   end
   register_plugin(:coercible, Plugins::Coercible)
