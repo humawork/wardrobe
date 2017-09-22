@@ -13,6 +13,14 @@ module Wardrobe
 
     # This is called when included in another module/class
     def included(base)
+      instance_methods_module.freeze
+      if base.class == Module && base.respond_to?(:class_methods_module)
+        ddd = class_methods_module
+        base.class_methods_module do
+          include(ddd)
+        end
+      end
+      class_methods_module.freeze
       unless base.respond_to? :wardrobe_config
         base.include(Wardrobe)
       end
@@ -20,9 +28,13 @@ module Wardrobe
         base.plugin plugin
       end
       base.merge_wardrobe_config(wardrobe_config)
+      base.instance_methods_module.freeze
+      base.class_methods_module.freeze
     end
 
     def inherited(child)
+      instance_methods_module.freeze
+      class_methods_module.freeze
       Config.create_and_add_to(child, merge_with: wardrobe_config)
       child.root_config = root_config
     end

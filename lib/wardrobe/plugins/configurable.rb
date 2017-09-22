@@ -18,7 +18,7 @@ module Wardrobe
             add_store(:configurable_store, ConfigurableStore)
           end
           base.class_methods_module do
-            def configurable_store
+            define_method(:configurable_store) do
               @wardrobe_config.configurable_store
             end
           end

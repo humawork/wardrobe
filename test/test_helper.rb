@@ -36,14 +36,16 @@ class TestBase < Minitest::Test
 
   def debug(&blk)
     @@debuging = true
-    instance_exec(&blk)
+    res = instance_exec(&blk)
     @@debuging = false
+    res
   end
 
   def no_log(&blk)
     @@log = false
-    instance_exec(&blk)
+    res = instance_exec(&blk)
     @@log = true
+    res
   end
 end
 
