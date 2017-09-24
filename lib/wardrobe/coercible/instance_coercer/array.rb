@@ -3,7 +3,7 @@ module Wardrobe
     module InstanceCoercer
       module Array
         def self.init(val, klass, parent, atr)
-          val = val.to_a.map! do |item|
+          val = val.to_a.map do |item|
             Wardrobe::Coercible.coerce(item, to: klass.first, parent: parent, atr: atr)
           end
           val.singleton_class.include(self)
