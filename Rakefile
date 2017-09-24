@@ -18,3 +18,16 @@ task :console do
 end
 
 task default: :test
+
+task :plugins do
+  require 'wardrobe'
+  require 'pry'
+  require 'pry-byebug'
+  Dir['./lib/wardrobe/plugins/*.rb'].each { |f| require f }
+  Wardrobe.plugins.each do |name, mod|
+    puts "Plugin `#{name}`"
+    mod.options.each do |opt|
+      puts "    Option `#{opt.name}` (#{opt.klass}) default: `#{opt.default}`"
+    end
+  end
+end
