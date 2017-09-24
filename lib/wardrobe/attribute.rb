@@ -52,6 +52,7 @@ module Wardrobe
           case value
           when Hash, Set
             merged_options[key] = merged_options[key].merge(value)
+          when NilClass
           else
             if value.respond_to?(:_wardrobe_config)
               if value._wardrobe_config.plugin_store[:merge]
@@ -60,7 +61,7 @@ module Wardrobe
                 raise "Unable to merge `#{value.class}`. Please add the `:merge` plugin."
               end
             else
-              raise 'FIX ME! Currently only hash and set merge is supported'
+              raise "Unsupported! Unable to merge option `#{key}` with value `#{value}` (#{value.class})"
             end
           end
         else
