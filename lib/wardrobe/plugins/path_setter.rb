@@ -14,7 +14,7 @@ module Wardrobe
         setter: lambda do |_value, atr, instance, _options|
           return _value unless instance._initializing?
           res = instance._initializing_hash.at(*atr.options[:path].split('/'))
-          res || _value
+          res.nil? ? _value : res
         end
       )
 

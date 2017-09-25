@@ -6,6 +6,7 @@ class PathSetterTest < TestBase
     plugin :path_setter
     attribute :bar, String, path: 'this/is/a/0/nested'
     attribute :foo, String, path: 'foo/bar'
+    attribute :boolean, Wardrobe::Boolean, path: 'a/nested/boolean'
   end
 
   def test_path_setter_success
@@ -38,5 +39,10 @@ class PathSetterTest < TestBase
     instance = Testing.new(bar: 'Aye', foo: 'Nay')
     assert_equal 'Aye', instance.bar
     assert_equal 'Nay', instance.foo
+  end
+
+  def test_false_boolean
+    instance = Testing.new({ a: { nested: { boolean: false}}})
+    assert_equal false, instance.boolean
   end
 end
