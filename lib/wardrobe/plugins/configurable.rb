@@ -25,19 +25,10 @@ module Wardrobe
         end
 
         def configurable(name, setter_name, klass, before_update: nil, after_update: nil)
-          case klass
-          when Hash
-            raise "Only Symbol supported as key" unless klass.keys.first == Symbol
-            validate_klass(klass.values.last)
-            _create_configurable_set_hash_method(
-              name, setter_name, klass, before_update: before_update, after_update: after_update
-            )
-          else
-            validate_klass(klass)
-            _create_configurable_set_method(
-              name, setter_name, before_update: before_update, after_update: after_update
-            )
-          end
+          validate_klass(klass)
+          _create_configurable_set_method(
+            name, setter_name, before_update: before_update, after_update: after_update
+          )
           _create_configurable_get_method(name)
           wardrobe_config do
             @configurable_store = configurable_store.register(name, klass)
@@ -61,34 +52,31 @@ module Wardrobe
           end
         end
 
-        def _create_configurable_set_hash_method(name, setter_name, hash, **args)
+        def _create_configurable_set_method(name, setter_name, **opts)
           class_methods_module do
-            define_method(setter_name) do |key, &blk|
+            define_method(setter_name) do |*args, **kargs, &blk|
               klass = self
-              args[:before_update].call(klass) if args[:before_update]
+              opts[:before_update].call(klass) if opts[:before_update]
               wardrobe_config do
-                @configurable_store = configurable_store.update_hash(name, klass, key, hash.values.first, &blk)
-                if @configurable_store[name][key].class.plugin_store[:validation]
-                  configurable_store[name][key]._validate!
+                if args.any? || kargs.any?
+                  @configurable_store = configurable_store.update(name, klass) do |object|
+                    begin
+                      object.configurable_update(*args, **kargs, &blk)
+                    rescue NoMethodError => e
+                      if e.message.match(/confgiurable_update/)
+                        Wardrobe.logger.error("#{object.class} is missing a `#configurable_update` method")
+                      end
+                      raise e
+                    end
+                  end
+                else
+                  @configurable_store = configurable_store.update(name, klass, &blk)
                 end
-              end
-              args[:after_update].call(klass) if args[:after_update]
-            end
-          end
-        end
-
-        def _create_configurable_set_method(name, setter_name, **args)
-          class_methods_module do
-            define_method(setter_name) do |&blk|
-              klass = self
-              args[:before_update].call(klass) if args[:before_update]
-              wardrobe_config do
-                @configurable_store = configurable_store.update(name, klass, &blk)
                 if @configurable_store[name].class.plugin_store[:validation]
                   configurable_store[name]._validate!
                 end
               end
-              args[:after_update].call(klass) if args[:after_update]
+              opts[:after_update].call(klass) if opts[:after_update]
             end
           end
         end

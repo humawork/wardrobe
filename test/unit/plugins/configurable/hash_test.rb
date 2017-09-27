@@ -1,18 +1,43 @@
 require 'test_helper'
 
 class ConfigurableHashTest < TestBase
-  class TestConfig
+  class Link
     include Wardrobe
     plugin :immutable
     attribute :title, String
     attribute :href, String
   end
 
+  class LinkStore
+    include Wardrobe
+    include Enumerable
+    extend Forwardable
+    plugin :immutable
+    attribute :links, Hash[Symbol => Link]
+
+    def_delegators :@links, :[]
+
+    def each(&block)
+      @links.each(&block)
+    end
+
+    def configurable_update(name, **kargs, &blk)
+      if links[name]
+        kargs.each do |k,v|
+          links[name].send("#{k}=", v)
+        end
+      else
+        links[name] = Link.new(kargs)
+      end
+      blk.call(links[name]) if blk
+    end
+  end
+
   class Base
     include Wardrobe
     plugin :configurable
 
-    configurable :links, :link, Hash[Symbol =>TestConfig]
+    configurable :links, :link, LinkStore
 
     link :one do |l|
       l.title = 'Title'
@@ -39,5 +64,12 @@ class ConfigurableHashTest < TestBase
   def test_child
     assert_equal 'Changed', Child.links[:one].title
     assert_equal 'Another Link', Child.links[:two].title
+  end
+
+  def test_other
+    klass = Class.new(Child) do
+      link :three, title: 'Link 3'
+    end
+    assert_equal 'Link 3', klass.links[:three].title
   end
 end
