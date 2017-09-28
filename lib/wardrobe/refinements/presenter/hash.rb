@@ -18,7 +18,7 @@ module Wardrobe
           options[:path] << self
           key_atrs = attributes&.dig(:_key)
           val_atrs = attributes&.dig(:_val)
-          present_some = attributes && (attributes.keys - [:_val, :_key]).any?
+          present_some = attributes && (attributes.keys - [:_, :_val, :_key]).any?
           {}.tap do |res|
             each do |k,v|
               if present_some
