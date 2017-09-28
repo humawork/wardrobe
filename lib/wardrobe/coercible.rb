@@ -7,7 +7,7 @@ module Wardrobe
     class UnsupportedError < StandardError; end
 
     def coerce(val, to:, parent: nil, atr: nil)
-      coercer(val, to: to).call(val, to, parent, atr)
+      coercer(val.class, to).call(val, to, parent, atr)
     end
 
     def add_coercer(hash, &blk)
@@ -22,7 +22,15 @@ module Wardrobe
       end
     end
 
-    def coercer(val, to:)
+    def coerce_lookup_cache
+      @@coercer_lookup_cache ||= {}
+    end
+
+    def coercer(from, to)
+      coerce_lookup_cache.dig(to, from) || find_coercer(from, to)
+    end
+
+    def find_coercer(from, to)
       to_hash = if to.respond_to?(:ancestors)
                   if res = to.ancestors.find { |k| coercers[k] }
                     coercers[res]
@@ -30,7 +38,9 @@ module Wardrobe
                 elsif res = coercers.dig(to.class, :instance_of)
                   res
                 end
-      if to_hash && from_klass = val.class.ancestors.find { |klass| to_hash[klass] }
+      if to_hash && from_klass = from.ancestors.find { |klass| to_hash[klass] }
+        coerce_lookup_cache[to] ||= {}
+        coerce_lookup_cache[to][from] = to_hash[from_klass]
         return to_hash[from_klass]
       end
       raise UnsupportedError
@@ -42,6 +52,8 @@ module Wardrobe
   end
 end
 
+require 'set'
+require 'date'
 require 'wardrobe/coercible/array'
 require 'wardrobe/coercible/set'
 require 'wardrobe/coercible/date'
