@@ -11,6 +11,7 @@ module Wardrobe
         use_if: ->(atr) { atr.options[:use_last_set_attribute] },
         setter: lambda do |value, atr, instance, options|
           instance.instance_variable_set(:@_last_set_attribute, atr.name)
+          value
         end
       )
 
