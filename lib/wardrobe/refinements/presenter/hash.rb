@@ -13,9 +13,8 @@ module Wardrobe
             self[segment]._set_at(value, segments)
           end
         end
+
         def _present(attributes: nil, **options)
-          options[:path] ||= []
-          options[:path] << self
           key_atrs = attributes&.dig(:_key)
           val_atrs = attributes&.dig(:_val)
           present_some = attributes && (attributes.keys - [:_, :_val, :_key]).any?
@@ -26,15 +25,13 @@ module Wardrobe
               end
               key = k._present(attributes: key_atrs, **options)
               val = if present_some
-                      v._present(attributes: val_atrs.merge(attributes[k]), **options)
+                      v._present(attributes: (val_atrs || {}).merge(attributes[k]), **options)
                     else
                       v._present(attributes: val_atrs, **options)
                     end
               res[key] = val
             end
           end
-        ensure
-          options[:path].pop
         end
       end
     end

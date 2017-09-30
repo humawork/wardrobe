@@ -5,14 +5,9 @@ module Wardrobe
     module Presenter
       refine Set do
         def _present(attributes: nil, **options)
-          options[:path] ||= []
-          options[:path] << self
-          child_attributes = attributes&.dig(:_itm)
           map do |item|
-            item._present(attributes: child_attributes, **options)
+            item._present(attributes: attributes, **options)
           end
-        ensure
-          options[:path].pop
         end
       end
     end
