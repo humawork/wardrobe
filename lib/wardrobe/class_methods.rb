@@ -25,7 +25,7 @@ module Wardrobe
         base.include(Wardrobe)
       end
       (plugin_store.store.keys - Wardrobe.config.default_plugins.to_a).each do |plugin|
-        base.plugin plugin
+        base.plugin(plugin) unless base.plugin_store[plugin]
       end
       base.merge_wardrobe_config(wardrobe_config)
       base.instance_methods_module.freeze

@@ -16,6 +16,14 @@ module Wardrobe
           end
         end
 
+        def merge(other, _calling_object, _config)
+          mutate do
+            @store = store.merge(other.store) do |key, old_val, new_val|
+              old_val.respond_to?(:merge) ? old_val.merge(new_val) : new_val
+            end
+          end
+        end
+
         def update(name, klass, &blk)
           if frozen?
             dup.update(name, klass, &blk)

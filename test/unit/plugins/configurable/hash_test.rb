@@ -31,6 +31,23 @@ class ConfigurableHashTest < TestBase
       end
       blk.call(links[name]) if blk
     end
+
+    def merge(other)
+      mutate do |copy|
+        copy.links.merge!(other.links)
+      end
+    end
+  end
+
+  module ModuleLink
+    include Wardrobe
+    plugin :configurable
+
+    configurable :links, :link, LinkStore
+
+    link :from_module do |l|
+      l.title = 'Link added from module'
+    end
   end
 
   class Base
@@ -54,11 +71,19 @@ class ConfigurableHashTest < TestBase
     end
   end
 
+  class ChildWithModule < Base
+    include ModuleLink
+  end
+
   def test_base
     assert Base.links.frozen?
     assert Base.links[:one].frozen?
     assert_equal 'Title', Base.links[:one].title
     refute Base.links[:two]
+  end
+
+  def test_child_with_module
+    assert_equal 2, ChildWithModule.links.links.length
   end
 
   def test_child
