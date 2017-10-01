@@ -15,20 +15,10 @@ module Wardrobe
         end
 
         def _present(attributes: nil, **options)
-          key_atrs = attributes&.dig(:_key)
-          val_atrs = attributes&.dig(:_val)
-          present_some = attributes && (attributes.keys - [:_, :_val, :_key]).any?
           {}.tap do |res|
             each do |k,v|
-              if present_some
-                next unless attributes[k]
-              end
-              key = k._present(attributes: key_atrs, **options)
-              val = if present_some
-                      v._present(attributes: (val_atrs || {}).merge(attributes[k]), **options)
-                    else
-                      v._present(attributes: val_atrs, **options)
-                    end
+              key = k._present(attributes: nil, **options)
+              val = v._present(attributes: (attributes ? attributes[k] : nil), **options)
               res[key] = val
             end
           end
