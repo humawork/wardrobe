@@ -7,11 +7,22 @@ class PathSetterTest < TestBase
     attribute :bar, String, path: 'this/is/a/0/nested'
     attribute :foo, String, path: 'foo/bar'
     attribute :boolean, Wardrobe::Boolean, path: 'a/nested/boolean'
+    attribute :array, String, path: %w(this/is/a/0/nested this/is/another/0/nested)
   end
 
   def test_path_setter_success
     foo = Testing.new({ this: { is: { a: [{ nested: 'thing'}]}}})
     assert_equal 'thing', foo.bar
+  end
+
+  def test_path_array_setter_success_first
+    foo = Testing.new({ this: { is: { a: [{ nested: 'first'}], another: [{ nested: 'second'}]}}})
+    assert_equal 'first', foo.array
+  end
+
+  def test_path_array_setter_success_second
+    foo = Testing.new({ this: { is: { another: [{ nested: 'second'}]}}})
+    assert_equal 'second', foo.array
   end
 
   def test_path_setter_missing

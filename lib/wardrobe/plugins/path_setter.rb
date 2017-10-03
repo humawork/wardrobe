@@ -13,12 +13,22 @@ module Wardrobe
         use_if: ->(atr) { atr.options[:path] },
         setter: lambda do |_value, atr, instance, _options|
           return _value unless instance._initializing?
-          res = instance._initializing_hash.at(*atr.options[:path].split('/'))
-          res.nil? ? _value : res
+          res = nil
+          path_option = atr.options[:path]
+          if path_option.instance_of?(String)
+            res = instance._initializing_hash.at(*path_option.split('/'))
+          elsif path_option.instance_of?(Array)
+            path_option.each{|path|
+              if res = instance._initializing_hash.at(*path.split('/'))
+                break
+              end
+            }
+          end
+            res.nil? ? _value : res
         end
       )
 
-      option :path, String, setter: :path_setter
+      option :path, BasicObject, setter: :path_setter
     end
   end
   register_plugin(:path_setter, Plugins::PathSetter)
